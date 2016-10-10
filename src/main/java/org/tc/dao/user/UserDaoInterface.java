@@ -1,10 +1,10 @@
-package org.tc.services.user;
+package org.tc.dao.user;
 
 import org.tc.models.User;
 
 import java.util.List;
 
-public interface UserServiceInterface {
+public interface UserDaoInterface {
     void create(User newUser);
 
     void delete(User user);
@@ -13,8 +13,9 @@ public interface UserServiceInterface {
 
     User getById(int id);
 
+    User getByEmail(String email);
+
     User getByName(String username);
 
     void update(User changedUser);
-
 }

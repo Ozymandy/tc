@@ -11,6 +11,7 @@ import java.util.List;
 public class CourseService implements CourseServiceInterface {
     @Autowired
     private CourseDaoInterface courseDao;
+
     @Override
     public void create(Course newCourse) {
         courseDao.create(newCourse);

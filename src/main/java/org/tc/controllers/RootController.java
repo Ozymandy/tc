@@ -11,10 +11,11 @@ import org.tc.services.course.CourseServiceInterface;
 public class RootController {
     @Autowired
     private CourseServiceInterface courseService;
+
     @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public ModelAndView index() {
-        ModelAndView mav = new ModelAndView("views/index");
-        mav.addObject("courses",courseService.getAll());
+        ModelAndView mav = new ModelAndView("classpath:views/index");
+        mav.addObject("courses", courseService.getAll());
         return mav;
     }
 }

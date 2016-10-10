@@ -11,7 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 public class TCApplication {
 
     public static void main(String[] args) {
-        ApplicationContext ctx = SpringApplication.run(TCApplication.class, args);
+        SpringApplication.run(TCApplication.class, args);
     }
 }
 

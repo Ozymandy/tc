@@ -5,10 +5,15 @@ import org.tc.models.Course;
 import java.util.List;
 
 public interface CourseDaoInterface {
-    public void create(Course newCourse);
-    public void delete(Course course);
-    public List<Course> getAll();
-    public Course getById(int id);
-    public Course getByName(String courseName);
-    public void update(Course changedCourse);
+    void create(Course newCourse);
+
+    void delete(Course course);
+
+    List<Course> getAll();
+
+    Course getById(int id);
+
+    Course getByName(String courseName);
+
+    void update(Course changedCourse);
 }
