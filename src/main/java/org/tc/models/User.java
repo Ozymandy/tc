@@ -1,5 +1,7 @@
 package org.tc.models;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,20 +19,22 @@ public class User {
     @Column(name = "UserId")
     private int id;
     @Column
+    @NotEmpty
     private String password;
     @Column
-    private String userName;
+    @NotEmpty
+    private String username;
     @Column
     private String email;
     @ManyToOne
     @JoinColumn(name = "RoleId")
     private Role role;
 
-    public User(int id, String password, String userName, String email,
+    public User(int id, String password, String username, String email,
                 Role role) {
         this.id = id;
         this.password = password;
-        this.userName = userName;
+        this.username = username;
         this.email = email;
         this.role = role;
     }
@@ -58,12 +62,13 @@ public class User {
         this.password = password;
     }
 
-    public String getUserName() {
-        return this.userName;
+    public void setUsername(String userName) {
+        this.username = userName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public String getUsername() {
+
+        return username;
     }
 
     public String getEmail() {
