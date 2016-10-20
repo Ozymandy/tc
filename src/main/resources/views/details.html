@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <title>Details</title>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>
+            Course Details
+            <div class="logout">
+            <span id="currentUserLogin" th:text="${username}">
+            </span>
+                <a href="/logout">
+                    <i class="icon-off"></i>
+                </a>
+            </div>
+        </h1>
+    </header>
+    <div class="form-horizontal">
+        <div class="control-group">
+            <div class="control-label">Name</div>
+            <div id="titleField" class="controls text" th:text="${course.getName()}"></div>
+        </div>
+        <div class="control-group">
+            <div class="control-label">Description</div>
+            <div id="descriptionField" class="controls text" th:text="${course.getDescription()}"></div>
+        </div>
+        <div class="control-group">
+            <div class="control-label">Links</div>
+            <div id="linksField" class="controls text" th:text="${course.getLinks()}"></div>
+        </div>
+        <div class="form-actions">
+            <a class="btn" href="/">Back</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

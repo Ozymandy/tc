@@ -2,7 +2,6 @@ package org.tc.controllers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.WebAttributes;
@@ -16,7 +15,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import org.tc.models.Role;
 import org.tc.models.User;
 import org.tc.models.forms.RegistrationForm;
-import org.tc.security.RegistrationValidator;
+import org.tc.validators.RegistrationValidator;
 import org.tc.security.SecurityServiceInterface;
 import org.tc.security.filterUtils.AuthValidationException;
 import org.tc.services.role.RoleServiceInterface;
@@ -76,9 +75,9 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             List<Role> roles = roleService.getAll();
             mav.addObject("roles", roles);
+            mav.addObject("errors",bindingResult.getAllErrors());
             return mav;
         }
-        //TODO: validator
         User newUser = new User();
         newUser.setPassword(form.getPassword());
         newUser.setEmail(form.getEmail());
@@ -88,12 +87,15 @@ public class UserController {
         securityService.autologin(form.getUsername(), form.getPassword());
         return new ModelAndView(new RedirectView("/"));
     }
+    //TODO baaaaaack
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public ModelAndView logoutGet() {
+    public ModelAndView logoutGet(HttpServletRequest req) {
         ModelAndView mav = new ModelAndView("classpath:views/logout");
         Authentication auth = SecurityContextHolder
                 .getContext().getAuthentication();
         String username = auth.getName();
+        String back = req.getHeader("referer");
+        mav.addObject("back", back);
         mav.addObject("username", username);
         return mav;
     }

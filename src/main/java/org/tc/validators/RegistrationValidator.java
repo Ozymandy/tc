@@ -1,4 +1,4 @@
-package org.tc.security;
+package org.tc.validators;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

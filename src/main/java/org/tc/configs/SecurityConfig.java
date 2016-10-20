@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -42,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         filter.setRequiresAuthenticationRequestMatcher
                 (new AntPathRequestMatcher("/login", "POST"));
         filter.setAuthenticationSuccessHandler
-                (new SimpleUrlAuthenticationSuccessHandler("/"));
+                (new SavedRequestAwareAuthenticationSuccessHandler());
         SimpleUrlAuthenticationFailureHandler handler =
                 new SimpleUrlAuthenticationFailureHandler("/login?error");
         //handler.setUseForward(true);
@@ -73,7 +74,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .and().csrf().disable()
                 .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout","POST"))
+                .logoutRequestMatcher
+                        (new AntPathRequestMatcher("/logout","POST"))
                 .invalidateHttpSession(true)
                 .logoutSuccessUrl("/login");
     }
