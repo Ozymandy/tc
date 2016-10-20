@@ -1774,7 +1774,7 @@ table [class*=span],
 .dropdown-menu > li > a:hover > [class*=" icon-"],
 .dropdown-menu > .active > a > [class^="icon-"],
 .dropdown-menu > .active > a > [class*=" icon-"] {
-  background-image: url("**/images/glyphicons-halflings-white.png");
+  background-image: url("../images/glyphicons-halflings-white.png");
 }
 .icon-glass {
   background-position: 0      0;
@@ -2982,4 +2982,10 @@ header .logout {
 }
 .text-group .text-only {
   padding-left: 180px;
+}
+.control-group .text {
+  padding-top: 5px;
+}
+.courses-top-control {
+  margin-bottom: 12px;
 }

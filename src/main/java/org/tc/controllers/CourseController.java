@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -42,5 +43,25 @@ public class CourseController {
         } else {
             return new ModelAndView(new RedirectView("/404"));
         }
+    }
+
+    @RequestMapping(value = {"/courses/create"}, method = RequestMethod.GET)
+    public ModelAndView create(@ModelAttribute("course") Course course) {
+        ModelAndView mav = new ModelAndView("classpath:views/create");
+        Authentication auth = SecurityContextHolder
+                .getContext().getAuthentication();
+        String username = auth.getName();
+        mav.addObject("username", username);
+        return mav;
+    }
+
+    @RequestMapping(value = {"/courses/create"}, method = RequestMethod.POST)
+    public ModelAndView createPost(@ModelAttribute("course") Course course) {
+        ModelAndView mav = new ModelAndView("classpath:views/create");
+        Authentication auth = SecurityContextHolder
+                .getContext().getAuthentication();
+        String username = auth.getName();
+        mav.addObject("username", username);
+        return mav;
     }
 }
