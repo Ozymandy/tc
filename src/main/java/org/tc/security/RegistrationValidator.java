@@ -6,6 +6,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 import org.tc.models.User;
+import org.tc.models.forms.RegistrationForm;
 import org.tc.services.user.UserServiceInterface;
 
 @Component
@@ -20,18 +21,18 @@ public class RegistrationValidator implements Validator {
 
     @Override
     public void validate(Object o, Errors errors) {
-        User user = (User)o;
+        RegistrationForm form = (RegistrationForm)o;
         ValidationUtils
                 .rejectIfEmptyOrWhitespace(errors,
                         "username", "Blank.UserName");
-        if (userService.getByName(user.getUsername()) != null) {
+        if (userService.getByName(form.getUsername()) != null) {
             errors.rejectValue("username", "User.Exists");
         }
         ValidationUtils
                 .rejectIfEmptyOrWhitespace(errors,
                         "password", "Blank.Password");
-        if (user.getPassword().length() < 6 ||
-                user.getPassword().length() > 32) {
+        if (form.getPassword().length() < 6 ||
+                form.getPassword().length() > 32) {
             errors.rejectValue("password", "Size.User.Password");
         }
     }

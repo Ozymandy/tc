@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <title>Registration</title>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Registration</h1>
+    </header>
+    <div class="alert alert-error" th:if="${errors}">
+        <div>
+            <strong>Okay, Houston, we've had a problem here.</strong>
+        </div>
+        <ul>
+            <li th:each="error, iterationStatus : ${errors}"  th:text="${#messages.msg(error.getCode())}">.</li>
+        </ul>
+    </div>
+<form class="form-horizontal" th:action="@{/registration}" th:object="${newUser}" method="post">
+    <fieldset>
+        <div class="control-group">
+            <label class="control-label">Login</label>
+            <div class="controls">
+                    <input id="loginField" class="span3" th:field="*{username}" type="text" />
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Password</label>
+            <div class="controls">
+                <input  id="passwordField" th:field="*{password}" class="span3"  type="password" />
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">E-mail</label>
+            <div class="controls">
+                <input  id="emailField" th:field="*{email}" class="span3"  type="text" />
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Who are you?</label>
+            <div class="controls">
+        <select id="optionsList" name="optionsListId" class="span3" th:field="*{role}">
+            <option th:each="role : ${roles}" th:value="${role.getName()}"
+                    th:text="${role.getName()}"
+                    th:selected="${roles.contains(role.getName())}">Options</option>
+        </select>
+                </div>
+        </div>
+        <div class="form-actions">
+            <button id="loginButton" class="btn btn-primary" type="submit">Sign up</button>
+        </div>
+    </fieldset>
+</form>
+    </div>
+</body>
+</html>

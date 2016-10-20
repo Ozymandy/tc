@@ -64,12 +64,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests().antMatchers("/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
+                .authorizeRequests()
+                .antMatchers("/login","/registration","/css/**").permitAll()
+                .anyRequest().authenticated().and()
                 .addFilterAt(usernamePasswordAuthenticationFilter(),
                         UsernamePasswordAuthenticationFilter.class)
                 .formLogin()
-                .loginPage("/login");
+                .loginPage("/login")
+                .and().csrf().disable()
+                .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout","POST"))
+                .invalidateHttpSession(true)
+                .logoutSuccessUrl("/login");
     }
 }

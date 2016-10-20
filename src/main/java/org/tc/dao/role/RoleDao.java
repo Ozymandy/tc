@@ -1,6 +1,7 @@
 package org.tc.dao.role;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import org.tc.models.Role;
 
 import javax.persistence.EntityManager;
@@ -8,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
+@Transactional
 public class RoleDao implements RoleDaoInterface {
     @PersistenceContext
     private EntityManager entityManager;
@@ -40,8 +42,8 @@ public class RoleDao implements RoleDaoInterface {
     @Override
     public Role getByName(String roleName) {
         return (Role) entityManager
-                .createQuery("from tc.Role where name=:name")
-                .setParameter("name", roleName);
+                .createQuery("from Role where name=:name")
+                .setParameter("name", roleName).getSingleResult();
     }
 
     @Override

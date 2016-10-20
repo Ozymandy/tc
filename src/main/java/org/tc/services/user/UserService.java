@@ -18,6 +18,9 @@ public class UserService implements UserServiceInterface {
 
     @Override
     public void create(User newUser) {
+        String password=bCryptPasswordEncoder
+                .encode(newUser.getPassword());
+        newUser.setPassword(password);
         userDao.create(newUser);
     }
 

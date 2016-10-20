@@ -1,14 +1,26 @@
 package org.tc.controllers;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
+import org.tc.models.Role;
 import org.tc.models.User;
+import org.tc.models.forms.RegistrationForm;
+import org.tc.security.RegistrationValidator;
+import org.tc.security.SecurityServiceInterface;
 import org.tc.security.filterUtils.AuthValidationException;
+import org.tc.services.role.RoleServiceInterface;
+import org.tc.services.user.UserServiceInterface;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -18,9 +30,18 @@ import java.util.List;
 @Controller
 public class UserController {
 
+    @Autowired
+    private SecurityServiceInterface securityService;
+    @Autowired
+    private RoleServiceInterface roleService;
+    @Autowired
+    private UserServiceInterface userService;
+    @Autowired
+    private RegistrationValidator userValidator;
+
     @RequestMapping(value = {"/login"}, method = RequestMethod.GET)
     public ModelAndView login(@ModelAttribute("user") User user,
-                              HttpServletRequest req, String error) {
+                              HttpServletRequest req) {
         ModelAndView mav = new ModelAndView("classpath:views/login");
         try {
             AuthValidationException validationException =
@@ -35,6 +56,45 @@ public class UserController {
             mav.addObject("errors", errors);
         }
         return mav;
+
     }
 
+    @RequestMapping(value = "/registration", method = RequestMethod.GET)
+    public ModelAndView registration(@ModelAttribute("newUser") RegistrationForm form) {
+        List<Role> roles = roleService.getAll();
+        ModelAndView mav = new ModelAndView("classpath:views/registration");
+        mav.addObject("roles", roles);
+        return mav;
+    }
+
+    @RequestMapping(value = "/registration", method = RequestMethod.POST)
+    public ModelAndView registration
+            (@ModelAttribute("newUser") RegistrationForm form,
+             BindingResult bindingResult) {
+        userValidator.validate(form, bindingResult);
+        ModelAndView mav = new ModelAndView("classpath:views/registration");
+        if (bindingResult.hasErrors()) {
+            List<Role> roles = roleService.getAll();
+            mav.addObject("roles", roles);
+            return mav;
+        }
+        //TODO: validator
+        User newUser = new User();
+        newUser.setPassword(form.getPassword());
+        newUser.setEmail(form.getEmail());
+        newUser.setRole(roleService.getByName(form.getRole()));
+        newUser.setUsername(form.getUsername());
+        userService.create(newUser);
+        securityService.autologin(form.getUsername(), form.getPassword());
+        return new ModelAndView(new RedirectView("/"));
+    }
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public ModelAndView logoutGet() {
+        ModelAndView mav = new ModelAndView("classpath:views/logout");
+        Authentication auth = SecurityContextHolder
+                .getContext().getAuthentication();
+        String username = auth.getName();
+        mav.addObject("username", username);
+        return mav;
+    }
 }

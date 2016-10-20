@@ -1,6 +1,7 @@
 package org.tc.dao.course;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import org.tc.models.Course;
 
 import javax.persistence.EntityManager;
@@ -8,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
+@Transactional
 public class CourseDao implements CourseDaoInterface {
     @PersistenceContext
     private EntityManager entityManager;
