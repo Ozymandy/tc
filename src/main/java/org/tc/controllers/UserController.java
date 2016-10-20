@@ -87,7 +87,6 @@ public class UserController {
         securityService.autologin(form.getUsername(), form.getPassword());
         return new ModelAndView(new RedirectView("/courses"));
     }
-    //TODO baaaaaack
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public ModelAndView logoutGet(HttpServletRequest req) {
         ModelAndView mav = new ModelAndView("classpath:views/logout");

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <title>Update course</title>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>
+            Update Course
+            <div class="logout">
+            <span id="currentUserLogin" th:text="${username}">
+            </span>
+                <a href="/logout">
+                    <i class="icon-off"></i>
+                </a>
+            </div>
+        </h1>
+    </header>
+    <form class="form-horizontal" th:action="@{'/courses/'+${course.getId()}+'/update'}" th:object="${course}" method="POST">
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label">Name</label>
+                <div class="controls">
+                    <input id="titleField" class="span5" type="text" th:field="*{name}" th:value="${course.getName()}"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Description</label>
+                <div class="controls">
+                    <textarea id="descriptionField" class="span5" rows="3" th:field="*{description}" th:inline="text">
+                        [[${course.getDescription()}]]
+                    </textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Links</label>
+                <div class="controls">
+                    <textarea id="linksField" class="span5" rows="3" th:field="*{links}" th:inline="text" >
+                        [[${course.getLinks()}]]
+                    </textarea>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button id="updateButton" class="btn btn-primary" type="submit">Update</button>
+                <a class="btn" href="/courses">Cancel</a>
+            </div>
+        </fieldset>
+    </form>
+</div>
+</body>
+</html>
