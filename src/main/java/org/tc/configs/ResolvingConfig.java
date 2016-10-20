@@ -50,8 +50,12 @@ public class ResolvingConfig {
     public EmbeddedServletContainerCustomizer containerCustomizer() {
         return new EmbeddedServletContainerCustomizer() {
             @Override
-            public void customize(ConfigurableEmbeddedServletContainer container) {
-                container.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/404"));
+            public void customize
+                    (ConfigurableEmbeddedServletContainer container) {
+                container.addErrorPages
+                        (new ErrorPage(HttpStatus.NOT_FOUND, "/404"));
+                container.addErrorPages
+                        (new ErrorPage(HttpStatus.BAD_REQUEST, "/404"));
             }
         };
     }

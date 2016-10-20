@@ -27,7 +27,7 @@
         <tbody>
         <tr th:each="course : ${courses}">
             <td th:text="${course.getId()}"></td>
-            <td><a th:href="@{'/details/'+${course.getId()}}" th:text="${course.getName()}"></a></td>
+            <td><a th:href="@{'/courses/'+${course.getId()}}" th:text="${course.getName()}"></a></td>
         </tr>
         </tbody>
     </table>
