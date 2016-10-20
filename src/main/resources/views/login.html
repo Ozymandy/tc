@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
@@ -9,29 +10,29 @@
     <header>
         <h1>Login</h1>
     </header>
-    <div class="alert alert-error" th:if="${param.error}">
-        <div>
+    <div class="alert alert-error" th:if="${errors}">
+            <div>
             <strong>Okay, Houston, we've had a problem here.</strong>
         </div>
         <ul>
-            <li>Login must not be blank.</li>
+            <li th:each="error, iterationStatus : ${errors}"  th:text="${#messages.msg(error)}">.</li>
         </ul>
     </div>
-    <form class="form-horizontal" th:action="@{/login}" method="post">
+    <form class="form-horizontal" th:action="@{/login}" th:object="${user}" method="post">
         <fieldset>
             <div class="control-group">
                 <label class="control-label">Login</label>
                 <div class="controls">
                     <div class="input-prepend">
                         <span class="add-on">@</span>
-                        <input name="username" id="loginField" class="span3" type="text"/>
+                        <input id="loginField" class="span3" th:field="*{username}" type="text" />
                     </div>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label">Password</label>
                 <div class="controls">
-                    <input name="password" id="passwordField" class="span3" type="password"/>
+                    <input  id="passwordField" th:field="*{password}" class="span3"  type="password" />
                 </div>
             </div>
             <div class="form-actions">

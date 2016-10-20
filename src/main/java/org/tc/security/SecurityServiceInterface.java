@@ -1,4 +1,4 @@
-package org.tc.services.security;
+package org.tc.security;
 
 public interface SecurityServiceInterface {
     String findLoggedInUserName();

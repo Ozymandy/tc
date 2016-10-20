@@ -1,7 +1,9 @@
 package org.tc.configs;
 
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
@@ -17,16 +19,29 @@ public class ResolvingConfig {
     }
 
     @Bean
-    public SpringTemplateEngine templateEngine(){
+    public SpringTemplateEngine templateEngine() {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver());
+        templateEngine.setMessageSource(messageSource());
         return templateEngine;
     }
 
     @Bean
-    public ThymeleafViewResolver thymeleafViewResolver(){
+    public ThymeleafViewResolver thymeleafViewResolver() {
         ThymeleafViewResolver thymeleafViewResolver = new ThymeleafViewResolver();
         thymeleafViewResolver.setTemplateEngine(templateEngine());
-        return  thymeleafViewResolver;
+        return thymeleafViewResolver;
+    }
+
+    @Bean(name = "messageSource")
+    public MessageSource messageSource() {
+        ReloadableResourceBundleMessageSource bean =
+                new ReloadableResourceBundleMessageSource();
+        bean.setUseCodeAsDefaultMessage(true);
+        bean.setBasename("classpath:messages");
+        bean.setFallbackToSystemLocale(false);
+        bean.setDefaultEncoding("UTF-8");
+        bean.setCacheSeconds(5);
+        return bean;
     }
 }

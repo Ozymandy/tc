@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.tc.models.User;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
@@ -50,9 +51,13 @@ public class UserDao implements UserDaoInterface {
 
     @Override
     public User getByName(String username) {
-        return (User) entityManager
-                .createQuery("from User where username=:username")
-                .setParameter("username", username);
+        try {
+            return (User) entityManager
+                    .createQuery("from User where username=:username")
+                    .setParameter("username", username).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Override

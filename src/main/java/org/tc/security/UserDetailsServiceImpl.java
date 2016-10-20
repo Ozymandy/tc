@@ -1,4 +1,4 @@
-package org.tc.services.security;
+package org.tc.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -26,6 +26,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         grantedAuthorities.add(user.getRole());
         return new org.springframework.security.core.userdetails
-                .User(user.getUserName(),user.getPassword(),grantedAuthorities);
+                .User(user.getUsername(), user.getPassword(), grantedAuthorities);
     }
 }
