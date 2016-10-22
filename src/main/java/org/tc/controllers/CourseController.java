@@ -80,7 +80,15 @@ public class CourseController {
     }
     @RequestMapping(value = {"/courses/{id}/update"}, method = RequestMethod.POST)
     public ModelAndView updatePost(@PathVariable("id") int id,
-                                   @ModelAttribute("course") Course course){
+                                   @ModelAttribute("course") Course course,
+                                   BindingResult bindingResult){
+        validator.validate(course,bindingResult);
+        if (bindingResult.hasErrors()) {
+            ModelAndView mav = new ModelAndView("classpath:views/update");
+            mav.addObject("course", course);
+            mav.addObject("errors", bindingResult.getAllErrors());
+            return mav;
+        }
         ModelAndView mav = new ModelAndView("classpath:views/update");
         courseService.update(course);
         return mav;

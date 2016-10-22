@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/style.css}"/>
     <title>Update course</title>
 </head>
 <body>
@@ -19,6 +19,14 @@
             </div>
         </h1>
     </header>
+    <div class="alert alert-error" th:if="${errors}">
+        <div>
+            <strong>Okay, Houston, we've had a problem here.</strong>
+        </div>
+        <ul>
+            <li th:each="error, iterationStatus : ${errors}"  th:text="${#messages.msg(error.getCode())}">.</li>
+        </ul>
+    </div>
     <form class="form-horizontal" th:action="@{'/courses/'+${course.getId()}+'/update'}" th:object="${course}" method="POST">
         <fieldset>
             <div class="control-group">
