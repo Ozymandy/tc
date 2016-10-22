@@ -1,6 +1,7 @@
 package org.tc.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -42,16 +43,14 @@ public class CourseController {
         }
     }
 
+    @Secured("Lecturer")
     @RequestMapping(value = {"/courses/create"}, method = RequestMethod.GET)
-    public ModelAndView create() {
+    public ModelAndView create(@ModelAttribute("course") Course course) {
         ModelAndView mav = new ModelAndView("classpath:views/create");
-        Authentication auth = SecurityContextHolder
-                .getContext().getAuthentication();
-        String username = auth.getName();
-        mav.addObject("username", username);
         return mav;
     }
 
+    @Secured("Lecturer")
     @RequestMapping(value = {"/courses/create"}, method = RequestMethod.POST)
     public ModelAndView create(@ModelAttribute("course") Course course,
                                    BindingResult bindingResult) {

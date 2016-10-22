@@ -17,7 +17,7 @@
             </div>
         </h1>
     </header>
-    <div class="courses-top-control">
+    <div class="courses-top-control" sec:authorize="hasAuthority('Lecturer')">
         <a id="createCourseButton" class="btn btn-primary" href="/courses/create">Create</a>
     </div>
     <table class="table table-striped table-bordered">

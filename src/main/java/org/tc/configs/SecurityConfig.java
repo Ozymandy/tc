@@ -65,9 +65,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests()
-                .antMatchers("/login","/registration","/resources/**").permitAll()
-                .anyRequest().authenticated().and()
+                .authorizeRequests().antMatchers("/courses/create")
+                .hasAuthority("Lecturer")
+                .antMatchers("/login","/registration","/resources/**")
+                .permitAll().anyRequest().authenticated().and()
                 .addFilterAt(usernamePasswordAuthenticationFilter(),
                         UsernamePasswordAuthenticationFilter.class)
                 .formLogin()
@@ -77,6 +78,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutRequestMatcher
                         (new AntPathRequestMatcher("/logout","POST"))
                 .invalidateHttpSession(true)
-                .logoutSuccessUrl("/login");
+                .logoutSuccessUrl("/login").and()
+                .exceptionHandling().accessDeniedPage("/403");
     }
 }
