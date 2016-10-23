@@ -14,4 +14,6 @@ public interface CourseServiceInterface {
     Course getById(int id);
 
     void update(Course changedCourse);
+
+    boolean isOwner(String username, int courseId);
 }

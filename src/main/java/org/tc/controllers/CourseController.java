@@ -2,6 +2,8 @@ package org.tc.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -50,7 +52,8 @@ public class CourseController {
 
     @Secured("Lecturer")
     @RequestMapping(value = {"/courses/create"}, method = RequestMethod.GET)
-    public ModelAndView create(@ModelAttribute("course") CourseForm courseForm) {
+    public ModelAndView create(@ModelAttribute("course")
+                                       CourseForm courseForm) {
         ModelAndView mav = new ModelAndView("classpath:views/create");
         return mav;
     }
@@ -69,10 +72,16 @@ public class CourseController {
         courseService.create(course);
         return new ModelAndView(new RedirectView("/courses"));
     }
-    @RequestMapping(value = {"/courses/{id}/update"}, method = RequestMethod.GET)
+
+    @RequestMapping(value = {"/courses/{id}/update"},
+            method = RequestMethod.GET)
     public ModelAndView updateGet(@PathVariable("id") int id) {
-        Course course = courseService.getById(id);
-        if (course != null) {
+        Authentication auth = SecurityContextHolder
+                .getContext().getAuthentication();
+        //maybe is better implements this using spring security? But if yes
+        //it will be 403 access denied so no unknown course
+        if (courseService.isOwner(auth.getName(), id)) {
+            Course course = courseService.getById(id);
             ModelAndView mav = new ModelAndView("classpath:views/update");
             mav.addObject("course", course);
             return mav;
@@ -81,7 +90,8 @@ public class CourseController {
         }
     }
 
-    @RequestMapping(value = {"/courses/{id}/update"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/courses/{id}/update"},
+            method = RequestMethod.POST)
     public ModelAndView updatePost(@PathVariable("id") int id,
                                    @ModelAttribute("course") Course course,
                                    BindingResult bindingResult) {
