@@ -2,8 +2,6 @@ package org.tc.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,7 +12,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 import org.tc.exceptions.CourseNotFoundException;
 import org.tc.models.Course;
+import org.tc.models.forms.CourseForm;
 import org.tc.services.course.CourseServiceInterface;
+import org.tc.services.user.UserServiceInterface;
+import org.tc.utils.converters.CourseConverter;
 import org.tc.validators.CourseValidator;
 
 @Controller
@@ -23,6 +24,10 @@ public class CourseController {
     private CourseValidator validator;
     @Autowired
     private CourseServiceInterface courseService;
+    @Autowired
+    private UserServiceInterface userService;
+    @Autowired
+    private CourseConverter courseConverter;
 
     @RequestMapping(value = {"/courses"}, method = RequestMethod.GET)
     public ModelAndView index() {
@@ -45,43 +50,42 @@ public class CourseController {
 
     @Secured("Lecturer")
     @RequestMapping(value = {"/courses/create"}, method = RequestMethod.GET)
-    public ModelAndView create(@ModelAttribute("course") Course course) {
+    public ModelAndView create(@ModelAttribute("course") CourseForm courseForm) {
         ModelAndView mav = new ModelAndView("classpath:views/create");
         return mav;
     }
 
     @Secured("Lecturer")
     @RequestMapping(value = {"/courses/create"}, method = RequestMethod.POST)
-    public ModelAndView create(@ModelAttribute("course") Course course,
-                                   BindingResult bindingResult) {
-        validator.validate(course, bindingResult);
+    public ModelAndView create(@ModelAttribute("course") CourseForm courseForm,
+                               BindingResult bindingResult) {
+        validator.validate(courseForm, bindingResult);
         if (bindingResult.hasErrors()) {
             ModelAndView mav = new ModelAndView("classpath:views/create");
             mav.addObject("errors", bindingResult.getAllErrors());
             return mav;
         }
+        Course course = courseConverter.convert(courseForm);
         courseService.create(course);
-        return new ModelAndView(new RedirectView("/"));
+        return new ModelAndView(new RedirectView("/courses"));
     }
-    //TODO test get without mav
-    //TODO unknown
     @RequestMapping(value = {"/courses/{id}/update"}, method = RequestMethod.GET)
-    public ModelAndView updateGet(@PathVariable("id") int id){
+    public ModelAndView updateGet(@PathVariable("id") int id) {
         Course course = courseService.getById(id);
-        if(course!=null) {
+        if (course != null) {
             ModelAndView mav = new ModelAndView("classpath:views/update");
             mav.addObject("course", course);
             return mav;
-        }
-        else{
+        } else {
             throw new CourseNotFoundException("Update course");
         }
     }
+
     @RequestMapping(value = {"/courses/{id}/update"}, method = RequestMethod.POST)
     public ModelAndView updatePost(@PathVariable("id") int id,
                                    @ModelAttribute("course") Course course,
-                                   BindingResult bindingResult){
-        validator.validate(course,bindingResult);
+                                   BindingResult bindingResult) {
+        validator.validate(course, bindingResult);
         if (bindingResult.hasErrors()) {
             ModelAndView mav = new ModelAndView("classpath:views/update");
             mav.addObject("course", course);

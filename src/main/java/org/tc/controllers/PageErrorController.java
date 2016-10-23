@@ -23,6 +23,7 @@ public class PageErrorController {
     }
     @RequestMapping(value = "/403", method = RequestMethod.GET)
     public ModelAndView accessDenied(HttpServletRequest req) {
+        //TODO more custom page
         ModelAndView mav = new ModelAndView("classpath:views/403");
         return mav;
     }

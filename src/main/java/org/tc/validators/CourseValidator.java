@@ -5,6 +5,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 import org.tc.models.Course;
+import org.tc.models.forms.CourseForm;
 
 @Component
 public class CourseValidator implements Validator {
@@ -16,7 +17,7 @@ public class CourseValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        Course course = (Course) target;
+        CourseForm course = (CourseForm) target;
         ValidationUtils
                 .rejectIfEmptyOrWhitespace(errors,
                         "name", "Blank.Name.Course");

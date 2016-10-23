@@ -1,33 +1,30 @@
 package org.tc.models;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import java.sql.Date;
-import java.util.List;
 
 @Entity
-@Table(name="Course")
+@Table(name = "Course")
 public class Course {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CourseId")
     private int id;
     private String name;
     private String description;
     private String links;
     private Date date;
+    @ManyToOne
+    @JoinColumn(name = "UserId")
+    private User user;
+
     public Course(int id, String name, String description, String links,
                   Date date) {
         this.id = id;
@@ -82,6 +79,14 @@ public class Course {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
 }

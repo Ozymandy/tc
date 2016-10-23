@@ -15,6 +15,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import org.tc.models.Role;
 import org.tc.models.User;
 import org.tc.models.forms.RegistrationForm;
+import org.tc.utils.converters.UserConverter;
 import org.tc.validators.RegistrationValidator;
 import org.tc.security.SecurityServiceInterface;
 import org.tc.security.filterUtils.AuthValidationException;
@@ -37,6 +38,8 @@ public class UserController {
     private UserServiceInterface userService;
     @Autowired
     private RegistrationValidator userValidator;
+    @Autowired
+    private UserConverter userConverter;
 
     @RequestMapping(value = {"/login"}, method = RequestMethod.GET)
     public ModelAndView login(@ModelAttribute("user") User user,
@@ -78,11 +81,7 @@ public class UserController {
             mav.addObject("errors",bindingResult.getAllErrors());
             return mav;
         }
-        User newUser = new User();
-        newUser.setPassword(form.getPassword());
-        newUser.setEmail(form.getEmail());
-        newUser.setRole(roleService.getByName(form.getRole()));
-        newUser.setUsername(form.getUsername());
+        User newUser = userConverter.convert(form);
         userService.create(newUser);
         securityService.autologin(form.getUsername(), form.getPassword());
         return new ModelAndView(new RedirectView("/courses"));

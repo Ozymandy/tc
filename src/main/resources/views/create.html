@@ -27,7 +27,7 @@
             <li th:each="error, iterationStatus : ${errors}"  th:text="${#messages.msg(error.getCode())}">.</li>
         </ul>
     </div>
-    <form class="form-horizontal" th:action="@{/create}" th:object="${course}" method="POST">
+    <form class="form-horizontal" th:action="@{/courses/create}" th:object="${course}" method="POST">
         <fieldset>
             <div class="control-group">
                 <label class="control-label">Name</label>
@@ -51,6 +51,7 @@
                 <button id="createButton" class="btn btn-primary" type="submit">Create</button>
                 <a class="btn" href="/courses">Cancel</a>
             </div>
+            <input id="userField" class="span5" type="hidden" th:name="user" th:value="${username}"/>
         </fieldset>
     </form>
 </div>

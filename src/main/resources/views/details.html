@@ -25,6 +25,10 @@
             <div id="titleField" class="controls text" th:text="${course.getName()}"></div>
         </div>
         <div class="control-group">
+            <div class="control-label">Lecturer</div>
+            <div id="ownerField" class="controls text" th:text="${course.getUser().getEmail()}"></div>
+        </div>
+        <div class="control-group">
             <div class="control-label">Description</div>
             <div id="descriptionField" class="controls text" th:text="${course.getDescription()}"></div>
         </div>
