@@ -114,4 +114,17 @@ public class CourseController {
         courseService.update(course);
         return mav;
     }
+    @RequestMapping(value={"/courses/{id}/subscribe"},method=RequestMethod.GET)
+    public ModelAndView subscribe(@PathVariable("id") int id){
+        Course course = courseService.getById(id);
+        if(course!=null) {
+            ModelAndView mav = new ModelAndView("classpath:views/subscribe");
+            mav.addObject("h1", "Subscribe");
+            mav.addObject("course", course);
+            return mav;
+        }
+        else{
+            throw new CourseNotFoundException("Not Found");
+        }
+    }
 }
