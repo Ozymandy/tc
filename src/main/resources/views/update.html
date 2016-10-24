@@ -13,7 +13,7 @@
             <strong>Okay, Houston, we've had a problem here.</strong>
         </div>
         <ul>
-            <li th:each="error, iterationStatus : ${errors}"  th:text="${#messages.msg(error.getCode())}">.</li>
+            <li th:each="error, iterationStatus : ${errors}"  th:text="${#messages.msg(error.getDefaultMessage())}">.</li>
         </ul>
     </div>
     <form class="form-horizontal" th:action="@{'/courses/'+${course.getId()}+'/update'}" th:object="${course}" method="POST">

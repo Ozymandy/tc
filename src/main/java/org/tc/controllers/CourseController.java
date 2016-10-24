@@ -19,12 +19,11 @@ import org.tc.services.course.CourseServiceInterface;
 import org.tc.services.user.UserServiceInterface;
 import org.tc.utils.converters.CourseConverter;
 import org.tc.utils.converters.CourseDTOConverter;
-import org.tc.validators.CourseValidator;
+
+import javax.validation.Valid;
 
 @Controller
 public class CourseController {
-    @Autowired
-    private CourseValidator validator;
     @Autowired
     private CourseServiceInterface courseService;
     @Autowired
@@ -67,9 +66,8 @@ public class CourseController {
 
     @Secured("Lecturer")
     @RequestMapping(value = {"/courses/create"}, method = RequestMethod.POST)
-    public ModelAndView create(@ModelAttribute("course") CourseForm courseForm,
+    public ModelAndView create(@Valid @ModelAttribute("course") CourseForm courseForm,
                                BindingResult bindingResult) {
-        validator.validate(courseForm, bindingResult);
         if (bindingResult.hasErrors()) {
             ModelAndView mav = new ModelAndView("classpath:views/create");
             mav.addObject("h1","Create course");
@@ -102,9 +100,9 @@ public class CourseController {
     @RequestMapping(value = {"/courses/{id}/update"},
             method = RequestMethod.POST)
     public ModelAndView updatePost(@PathVariable("id") int id,
+                                   @Valid
                                    @ModelAttribute("course") Course course,
                                    BindingResult bindingResult) {
-        validator.validate(course, bindingResult);
         if (bindingResult.hasErrors()) {
             ModelAndView mav = new ModelAndView("classpath:views/update");
             mav.addObject("course", course);

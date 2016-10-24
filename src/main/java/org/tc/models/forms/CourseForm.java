@@ -1,9 +1,23 @@
 package org.tc.models.forms;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.Size;
+
 public class CourseForm {
+
+    @Size(
+            min = 2,
+            max = 50,
+            message = "Size.Course.Name"
+    )
+    @NotEmpty(message = "Blank.Course.Name")
     private String name;
+    @NotEmpty(message = "Blank.Course.Desc")
     private String description;
+    @NotEmpty(message = "Blank.Course.Link")
     private String links;
+    private String user;
 
     public String getName() {
         return name;
@@ -37,7 +51,5 @@ public class CourseForm {
     public void setUser(String user) {
         this.user = user;
     }
-
-    private String user;
 
 }
