@@ -18,6 +18,7 @@ import org.tc.models.forms.CourseForm;
 import org.tc.services.course.CourseServiceInterface;
 import org.tc.services.user.UserServiceInterface;
 import org.tc.utils.converters.CourseConverter;
+import org.tc.utils.converters.CourseDTOConverter;
 import org.tc.validators.CourseValidator;
 
 @Controller
@@ -30,11 +31,15 @@ public class CourseController {
     private UserServiceInterface userService;
     @Autowired
     private CourseConverter courseConverter;
+    @Autowired
+    private CourseDTOConverter courseDTOConverter;
 
     @RequestMapping(value = {"/courses"}, method = RequestMethod.GET)
     public ModelAndView index() {
         ModelAndView mav = new ModelAndView("classpath:views/index");
-        mav.addObject("courses", courseService.getAll());
+        mav.addObject("h1","Courses");
+        mav.addObject("courses", courseDTOConverter
+                .convertAll(courseService.getAll()));
         return mav;
     }
 
@@ -43,6 +48,7 @@ public class CourseController {
         Course course = courseService.getById(id);
         if (course != null) {
             ModelAndView mav = new ModelAndView("classpath:views/details");
+            mav.addObject("h1","Course details");
             mav.addObject("course", course);
             return mav;
         } else {
@@ -55,6 +61,7 @@ public class CourseController {
     public ModelAndView create(@ModelAttribute("course")
                                        CourseForm courseForm) {
         ModelAndView mav = new ModelAndView("classpath:views/create");
+        mav.addObject("h1","Create course");
         return mav;
     }
 
@@ -65,6 +72,7 @@ public class CourseController {
         validator.validate(courseForm, bindingResult);
         if (bindingResult.hasErrors()) {
             ModelAndView mav = new ModelAndView("classpath:views/create");
+            mav.addObject("h1","Create course");
             mav.addObject("errors", bindingResult.getAllErrors());
             return mav;
         }
@@ -83,6 +91,7 @@ public class CourseController {
         if (courseService.isOwner(auth.getName(), id)) {
             Course course = courseService.getById(id);
             ModelAndView mav = new ModelAndView("classpath:views/update");
+            mav.addObject("h1","Update course");
             mav.addObject("course", course);
             return mav;
         } else {
@@ -99,6 +108,7 @@ public class CourseController {
         if (bindingResult.hasErrors()) {
             ModelAndView mav = new ModelAndView("classpath:views/update");
             mav.addObject("course", course);
+            mav.addObject("h1","Update course");
             mav.addObject("errors", bindingResult.getAllErrors());
             return mav;
         }

@@ -20,16 +20,16 @@ public class CourseValidator implements Validator {
         CourseForm course = (CourseForm) target;
         ValidationUtils
                 .rejectIfEmptyOrWhitespace(errors,
-                        "name", "Blank.Name.Course");
+                        "name", "Blank.Course.Name");
         ValidationUtils
                 .rejectIfEmptyOrWhitespace(errors,
-                        "description", "Blank.Desc.Course");
+                        "description", "Blank.Course.Desc");
         ValidationUtils
                 .rejectIfEmptyOrWhitespace(errors,
-                        "links", "Blank.Link.Course");
+                        "links", "Blank.Course.Link");
         if (course.getName().length() < 2 ||
                 course.getName().length() > 50) {
-            errors.rejectValue("name", "Size.Name.Course");
+            errors.rejectValue("name", "Size.Course.Name");
         }
     }
 }

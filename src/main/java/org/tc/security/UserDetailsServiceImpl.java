@@ -21,11 +21,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String userName)
+            throws UsernameNotFoundException {
         User user = userService.getByName(userName);
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         grantedAuthorities.add(user.getRole());
         return new org.springframework.security.core.userdetails
-                .User(user.getUsername(), user.getPassword(), grantedAuthorities);
+                .User(user.getUsername(), user.getPassword(),
+                grantedAuthorities);
     }
 }

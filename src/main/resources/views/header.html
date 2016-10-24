@@ -1,0 +1,12 @@
+<header th:fragment="header">
+    <h1 th:inline="text">
+        [[${h1}]]
+        <div class="logout">
+            <span id="currentUserLogin" th:text="${username}">
+            </span>
+            <a href="/logout">
+                <i class="icon-off"></i>
+            </a>
+        </div>
+    </h1>
+</header>

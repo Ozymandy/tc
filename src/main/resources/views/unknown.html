@@ -7,18 +7,7 @@
 </head>
 <body>
 <div class="container">
-    <header>
-        <h1>
-            Unknown course
-            <div class="logout">
-            <span id="currentUserLogin" th:text="${username}">
-            </span>
-                <a href="/logout">
-                    <i class="icon-off"></i>
-                </a>
-            </div>
-        </h1>
-    </header>
+    <header th:replace="header :: header" ></header>
     <div class="alert alert-error">
         <div>
             <strong>Okay, Houston, we've had a problem here.</strong>

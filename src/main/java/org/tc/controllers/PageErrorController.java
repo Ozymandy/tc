@@ -13,6 +13,7 @@ public class PageErrorController {
     @RequestMapping(value = "/unknown")
     public ModelAndView unknownCourse(RuntimeException e) {
         ModelAndView mav = new ModelAndView("classpath:views/unknown");
+        mav.addObject("h1","Unknown course");
         return mav;
     }
 
@@ -25,6 +26,7 @@ public class PageErrorController {
     public ModelAndView accessDenied(HttpServletRequest req) {
         //TODO more custom page
         ModelAndView mav = new ModelAndView("classpath:views/403");
+        mav.addObject("h1","Access denied");
         return mav;
     }
 }

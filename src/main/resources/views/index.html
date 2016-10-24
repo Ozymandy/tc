@@ -6,17 +6,7 @@
 </head>
 <body>
 <div class="container">
-    <header>
-        <h1>Courses
-            <div class="logout">
-            <span id="currentUserLogin" th:text="${username}">
-            </span>
-                <a href="/logout">
-                    <i class="icon-off"></i>
-                </a>
-            </div>
-        </h1>
-    </header>
+    <header th:replace="header :: header" ></header>
     <div class="courses-top-control" sec:authorize="hasAuthority('Lecturer')">
         <a id="createCourseButton" class="btn btn-primary" href="/courses/create">Create</a>
     </div>
@@ -30,8 +20,8 @@
         <tbody>
         <tr th:each="course : ${courses}">
             <td th:text="${course.getId()}"></td>
-            <td><a th:href="@{'/courses/'+${course.getId()}}" th:text="${course.getName()}"></a></td>
-            <td><a th:if="${@courseService.isOwner(username,course.getId())}" class="btn btn-mini" th:href="@{'/courses/'+${course.getId()}+'/update'}">Update</a></td>
+            <td><a th:href="@{'/courses/'+${course.getId()}}" th:text="${course.getCourseName()}"></a></td>
+            <td><a th:if="${course.getIsOwner()}" class="btn btn-mini" th:href="@{'/courses/'+${course.getId()}+'/update'}">Update</a></td>
         </tr>
         </tbody>
     </table>

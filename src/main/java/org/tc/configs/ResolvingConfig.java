@@ -22,6 +22,7 @@ public class ResolvingConfig {
     public SpringResourceTemplateResolver templateResolver() {
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
         templateResolver.setSuffix(".html");
+        templateResolver.addTemplateAlias("header","classpath:views/header");
         templateResolver.setTemplateMode("HTML5");
         return templateResolver;
     }
