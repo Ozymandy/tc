@@ -14,9 +14,13 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 import org.tc.exceptions.CourseNotFoundException;
 import org.tc.models.Course;
+import org.tc.models.User;
 import org.tc.models.forms.CourseForm;
+import org.tc.models.usercourse.Subscribers;
 import org.tc.services.course.CourseServiceInterface;
 import org.tc.services.user.UserServiceInterface;
+import org.tc.services.usercourse.UserCourseService;
+import org.tc.services.usercourse.UserCourseServiceInterface;
 import org.tc.utils.converters.CourseConverter;
 import org.tc.utils.converters.CourseDTOConverter;
 
@@ -32,6 +36,8 @@ public class CourseController {
     private CourseConverter courseConverter;
     @Autowired
     private CourseDTOConverter courseDTOConverter;
+    @Autowired
+    private UserCourseServiceInterface userCourseService;
 
     @RequestMapping(value = {"/courses"}, method = RequestMethod.GET)
     public ModelAndView index() {
@@ -125,6 +131,23 @@ public class CourseController {
         }
         else{
             throw new CourseNotFoundException("Not Found");
+        }
+    }
+    @RequestMapping(value={"/courses/{id}/subscribe"},method=RequestMethod.POST)
+    public ModelAndView subscribePost(@PathVariable("id") int id){
+        Course course = courseService.getById(id);
+        if(course!=null) {
+            Authentication auth = SecurityContextHolder
+                    .getContext().getAuthentication();
+            User user = userService.getByName(auth.getName());
+            Subscribers subs = new Subscribers();
+            subs.setCourse(course);
+            subs.setUser(user);
+            userCourseService.create(subs);
+            return new ModelAndView(new RedirectView("/courses"));
+        }
+        else{
+            throw new CourseNotFoundException("Course not found");
         }
     }
 }

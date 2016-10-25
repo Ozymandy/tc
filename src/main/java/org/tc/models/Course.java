@@ -1,5 +1,7 @@
 package org.tc.models;
 
+import org.tc.models.usercourse.Subscribers;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,8 +9,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.sql.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "Course")
@@ -24,6 +28,10 @@ public class Course {
     @ManyToOne
     @JoinColumn(name = "UserId")
     private User user;
+    //@WhereJoinTable(clause = "relationtype = 'subscriber'")
+    @OneToMany
+    @JoinColumn(name = "courseid")
+    private List<Subscribers> subscribers;
 
     public Course(int id, String name, String description, String links,
                   Date date) {
@@ -39,6 +47,14 @@ public class Course {
 
     public Course(int id) {
         this.id = id;
+    }
+
+    public List<Subscribers> getSubscribers() {
+        return subscribers;
+    }
+
+    public void setSubscribers(List<Subscribers> subscribers) {
+        this.subscribers = subscribers;
     }
 
     public int getId() {

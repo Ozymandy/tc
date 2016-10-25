@@ -1,6 +1,7 @@
 package org.tc.models;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.tc.models.usercourse.Subscribers;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,14 +10,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.BitSet;
+import java.util.List;
 
 @Entity
 @Table(name = "User")
 public class User {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "UserId")
     private int id;
     @Column
@@ -30,6 +32,9 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "RoleId")
     private Role role;
+    @OneToMany
+    @JoinColumn(name = "userid")
+    private List<Subscribers> coursesSubscribe;
 
     public User(int id, String password, String username, String email,
                 Role role) {
@@ -45,6 +50,14 @@ public class User {
     }
 
     public User() {
+    }
+
+    public List<Subscribers> getCoursesSubscribe() {
+        return coursesSubscribe;
+    }
+
+    public void setCoursesSubscribe(List<Subscribers> coursesSubscribe) {
+        this.coursesSubscribe = coursesSubscribe;
     }
 
     public int getId() {
@@ -63,13 +76,13 @@ public class User {
         this.password = password;
     }
 
-    public void setUsername(String userName) {
-        this.username = userName;
-    }
-
     public String getUsername() {
 
         return username;
+    }
+
+    public void setUsername(String userName) {
+        this.username = userName;
     }
 
     public String getEmail() {
