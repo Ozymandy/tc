@@ -150,4 +150,22 @@ public class CourseController {
             throw new CourseNotFoundException("Course not found");
         }
     }
+    @RequestMapping(value={"/courses/{id}/attend"},method=RequestMethod.GET)
+    public ModelAndView attend(@PathVariable("id") int id){
+        Course course = courseService.getById(id);
+        if(course!=null) {
+            ModelAndView mav = new ModelAndView("classpath:views/attend");
+            mav.addObject("h1", "Attend");
+            mav.addObject("course", course);
+            return mav;
+        }
+        else{
+            throw new CourseNotFoundException("Not Found");
+        }
+    }
+    @RequestMapping(value={"/courses/{id}/attend"},method=RequestMethod.POST)
+    public ModelAndView attendPost(@PathVariable("id") int id){
+        ModelAndView mav = new ModelAndView("classpath:views/attend");
+        return mav;
+    }
 }
