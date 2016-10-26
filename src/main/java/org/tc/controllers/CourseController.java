@@ -161,7 +161,8 @@ public class CourseController {
         }
     }
 
-    @RequestMapping(value = {"/courses/{id}/attend"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/courses/{id}/attend"},
+            method = RequestMethod.POST)
     public ModelAndView attendPost(@PathVariable("id") int id) {
         Course course = courseService.getById(id);
         Authentication auth = SecurityContextHolder
@@ -172,5 +173,14 @@ public class CourseController {
         attendee.setUser(user);
         userCourseService.create(attendee);
         return new ModelAndView(new RedirectView("/courses"));
+    }
+    @RequestMapping(value = {"/courses/{id}/evaluate"},
+            method = RequestMethod.GET)
+    public ModelAndView evaluate(@PathVariable("id") int id) {
+        Course course = courseService.getById(id);
+        ModelAndView mav = new ModelAndView("classpath:views/evaluate");
+        mav.addObject("h1", "Evaluate");
+        mav.addObject("course", course);
+        return mav;
     }
 }
