@@ -6,6 +6,23 @@ public class CourseDTO {
     private String Description;
     private String links;
     private boolean isOwner;
+    private boolean isSubscribed;
+
+    public boolean isOwner() {
+        return isOwner;
+    }
+
+    public void setOwner(boolean owner) {
+        isOwner = owner;
+    }
+
+    public boolean isSubscribed() {
+        return isSubscribed;
+    }
+
+    public void setSubscribed(boolean subscribed) {
+        isSubscribed = subscribed;
+    }
 
     public int getId() {
         return id;

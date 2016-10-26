@@ -58,4 +58,12 @@ public class CourseService implements CourseServiceInterface {
             return false;
         }
     }
+
+    @Override
+    public boolean isSubcribed(String username, int courseId) {
+        User user = userDao.getByName(username);
+        Course course = courseDao.getById(courseId);
+        return user.getCoursesSubscribe().stream().anyMatch
+                (usercourse ->usercourse.getCourse().getId()==course.getId());
+    }
 }

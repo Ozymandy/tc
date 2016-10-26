@@ -22,7 +22,9 @@
         <tr th:each="course : ${courses}">
             <td th:text="${course.getId()}"></td>
             <td><a th:href="@{'/courses/'+${course.getId()}}" th:text="${course.getCourseName()}"></a></td>
-            <td sec:authorize="hasAuthority('user')"><a class="btn btn-mini" th:href="@{'/courses/'+${course.getId()}+ '/subscribe'}">Subscribe</a></td>
+            <td sec:authorize="hasAuthority('user')">
+                <a class="btn btn-mini" th:href="@{${course.isSubscribed()}?'/courses/'+${course.getId()}+ '/attend':'/courses/'+${course.getId()}+ '/subscribe'}" th:text="${course.isSubscribed()?'Attend':'Subscribe'}"></a>
+            </td>
             <td sec:authorize="hasAuthority('Lecturer')"><a th:if="${course.getIsOwner()}" class="btn btn-mini" th:href="@{'/courses/'+${course.getId()}+'/update'}">Update</a></td>
         </tr>
         </tbody>

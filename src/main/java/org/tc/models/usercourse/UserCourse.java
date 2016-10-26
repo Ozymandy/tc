@@ -7,29 +7,38 @@ import org.tc.models.User;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-@IdClass(UserCourseId.class)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "relationtype",
         discriminatorType = DiscriminatorType.STRING, length = 15)
 @DiscriminatorOptions(force = true)
 public abstract class UserCourse {
-
-    @ManyToOne
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    private int id;
+    @ManyToOne
     @JoinColumn(name = "userid")
     private User user;
     @ManyToOne
-    @Id
     @JoinColumn(name = "courseid")
     private Course course;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Course getCourse() {
         return course;

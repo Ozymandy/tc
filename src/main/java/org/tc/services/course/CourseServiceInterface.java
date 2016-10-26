@@ -16,4 +16,6 @@ public interface CourseServiceInterface {
     void update(Course changedCourse);
 
     boolean isOwner(String username, int courseId);
+
+    boolean isSubcribed(String username, int courseId);
 }

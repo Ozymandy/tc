@@ -12,19 +12,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
+import org.tc.dto.CourseDTO;
 import org.tc.exceptions.CourseNotFoundException;
 import org.tc.models.Course;
 import org.tc.models.User;
 import org.tc.models.forms.CourseForm;
+import org.tc.models.usercourse.Attendee;
 import org.tc.models.usercourse.Subscribers;
 import org.tc.services.course.CourseServiceInterface;
 import org.tc.services.user.UserServiceInterface;
-import org.tc.services.usercourse.UserCourseService;
 import org.tc.services.usercourse.UserCourseServiceInterface;
 import org.tc.utils.converters.CourseConverter;
 import org.tc.utils.converters.CourseDTOConverter;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 public class CourseController {
@@ -42,9 +44,10 @@ public class CourseController {
     @RequestMapping(value = {"/courses"}, method = RequestMethod.GET)
     public ModelAndView index() {
         ModelAndView mav = new ModelAndView("classpath:views/index");
-        mav.addObject("h1","Courses");
-        mav.addObject("courses", courseDTOConverter
-                .convertAll(courseService.getAll()));
+        mav.addObject("h1", "Courses");
+        List<CourseDTO> courses = courseDTOConverter
+                .convertAll(courseService.getAll());
+        mav.addObject("courses", courses);
         return mav;
     }
 
@@ -53,7 +56,7 @@ public class CourseController {
         Course course = courseService.getById(id);
         if (course != null) {
             ModelAndView mav = new ModelAndView("classpath:views/details");
-            mav.addObject("h1","Course details");
+            mav.addObject("h1", "Course details");
             mav.addObject("course", course);
             return mav;
         } else {
@@ -66,7 +69,7 @@ public class CourseController {
     public ModelAndView create(@ModelAttribute("course")
                                        CourseForm courseForm) {
         ModelAndView mav = new ModelAndView("classpath:views/create");
-        mav.addObject("h1","Create course");
+        mav.addObject("h1", "Create course");
         return mav;
     }
 
@@ -76,7 +79,7 @@ public class CourseController {
                                BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             ModelAndView mav = new ModelAndView("classpath:views/create");
-            mav.addObject("h1","Create course");
+            mav.addObject("h1", "Create course");
             mav.addObject("errors", bindingResult.getAllErrors());
             return mav;
         }
@@ -95,7 +98,7 @@ public class CourseController {
         if (courseService.isOwner(auth.getName(), id)) {
             Course course = courseService.getById(id);
             ModelAndView mav = new ModelAndView("classpath:views/update");
-            mav.addObject("h1","Update course");
+            mav.addObject("h1", "Update course");
             mav.addObject("course", course);
             return mav;
         } else {
@@ -112,7 +115,7 @@ public class CourseController {
         if (bindingResult.hasErrors()) {
             ModelAndView mav = new ModelAndView("classpath:views/update");
             mav.addObject("course", course);
-            mav.addObject("h1","Update course");
+            mav.addObject("h1", "Update course");
             mav.addObject("errors", bindingResult.getAllErrors());
             return mav;
         }
@@ -120,52 +123,54 @@ public class CourseController {
         courseService.update(course);
         return mav;
     }
-    @RequestMapping(value={"/courses/{id}/subscribe"},method=RequestMethod.GET)
-    public ModelAndView subscribe(@PathVariable("id") int id){
+
+    @RequestMapping(value = {"/courses/{id}/subscribe"}, method = RequestMethod.GET)
+    public ModelAndView subscribe(@PathVariable("id") int id) {
         Course course = courseService.getById(id);
-        if(course!=null) {
-            ModelAndView mav = new ModelAndView("classpath:views/subscribe");
-            mav.addObject("h1", "Subscribe");
-            mav.addObject("course", course);
-            return mav;
-        }
-        else{
-            throw new CourseNotFoundException("Not Found");
-        }
+        ModelAndView mav = new ModelAndView("classpath:views/subscribe");
+        mav.addObject("h1", "Subscribe");
+        mav.addObject("course", course);
+        return mav;
     }
-    @RequestMapping(value={"/courses/{id}/subscribe"},method=RequestMethod.POST)
-    public ModelAndView subscribePost(@PathVariable("id") int id){
+
+    @RequestMapping(value = {"/courses/{id}/subscribe"}, method = RequestMethod.POST)
+    public ModelAndView subscribePost(@PathVariable("id") int id) {
         Course course = courseService.getById(id);
-        if(course!=null) {
-            Authentication auth = SecurityContextHolder
-                    .getContext().getAuthentication();
-            User user = userService.getByName(auth.getName());
-            Subscribers subs = new Subscribers();
-            subs.setCourse(course);
-            subs.setUser(user);
-            userCourseService.create(subs);
-            return new ModelAndView(new RedirectView("/courses"));
-        }
-        else{
-            throw new CourseNotFoundException("Course not found");
-        }
+        Authentication auth = SecurityContextHolder
+                .getContext().getAuthentication();
+        User user = userService.getByName(auth.getName());
+        Subscribers subs = new Subscribers();
+        subs.setCourse(course);
+        subs.setUser(user);
+        userCourseService.create(subs);
+        return new ModelAndView(new RedirectView("/courses"));
     }
-    @RequestMapping(value={"/courses/{id}/attend"},method=RequestMethod.GET)
-    public ModelAndView attend(@PathVariable("id") int id){
+
+    @RequestMapping(value = {"/courses/{id}/attend"}, method = RequestMethod.GET)
+    public ModelAndView attend(@PathVariable("id") int id) {
+        Authentication auth = SecurityContextHolder
+                .getContext().getAuthentication();
         Course course = courseService.getById(id);
-        if(course!=null) {
+        if (courseService.isSubcribed(auth.getName(), id)) {
             ModelAndView mav = new ModelAndView("classpath:views/attend");
             mav.addObject("h1", "Attend");
             mav.addObject("course", course);
             return mav;
-        }
-        else{
-            throw new CourseNotFoundException("Not Found");
+        } else {
+            return new ModelAndView(new RedirectView("/403"));
         }
     }
-    @RequestMapping(value={"/courses/{id}/attend"},method=RequestMethod.POST)
-    public ModelAndView attendPost(@PathVariable("id") int id){
-        ModelAndView mav = new ModelAndView("classpath:views/attend");
-        return mav;
+
+    @RequestMapping(value = {"/courses/{id}/attend"}, method = RequestMethod.POST)
+    public ModelAndView attendPost(@PathVariable("id") int id) {
+        Course course = courseService.getById(id);
+        Authentication auth = SecurityContextHolder
+                .getContext().getAuthentication();
+        User user = userService.getByName(auth.getName());
+        Attendee attendee = new Attendee();
+        attendee.setCourse(course);
+        attendee.setUser(user);
+        userCourseService.create(attendee);
+        return new ModelAndView(new RedirectView("/courses"));
     }
 }

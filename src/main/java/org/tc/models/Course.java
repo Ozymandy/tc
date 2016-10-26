@@ -1,5 +1,6 @@
 package org.tc.models;
 
+import org.tc.models.usercourse.Attendee;
 import org.tc.models.usercourse.Subscribers;
 
 import javax.persistence.Column;
@@ -28,10 +29,13 @@ public class Course {
     @ManyToOne
     @JoinColumn(name = "UserId")
     private User user;
-    //@WhereJoinTable(clause = "relationtype = 'subscriber'")
     @OneToMany
     @JoinColumn(name = "courseid")
     private List<Subscribers> subscribers;
+
+    @OneToMany
+    @JoinColumn(name = "courseid")
+    private List<Attendee> attendee;
 
     public Course(int id, String name, String description, String links,
                   Date date) {
@@ -47,6 +51,14 @@ public class Course {
 
     public Course(int id) {
         this.id = id;
+    }
+
+    public List<Attendee> getAttendee() {
+        return attendee;
+    }
+
+    public void setAttendee(List<Attendee> attendee) {
+        this.attendee = attendee;
     }
 
     public List<Subscribers> getSubscribers() {

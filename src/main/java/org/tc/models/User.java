@@ -1,6 +1,7 @@
 package org.tc.models;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.tc.models.usercourse.Attendee;
 import org.tc.models.usercourse.Subscribers;
 
 import javax.persistence.Column;
@@ -35,6 +36,10 @@ public class User {
     @OneToMany
     @JoinColumn(name = "userid")
     private List<Subscribers> coursesSubscribe;
+    @OneToMany
+    @JoinColumn(name = "userid")
+
+    private List<Attendee> coursesAttend;
 
     public User(int id, String password, String username, String email,
                 Role role) {
@@ -50,6 +55,14 @@ public class User {
     }
 
     public User() {
+    }
+
+    public List<Attendee> getCoursesAttend() {
+        return coursesAttend;
+    }
+
+    public void setCoursesAttend(List<Attendee> coursesAttend) {
+        this.coursesAttend = coursesAttend;
     }
 
     public List<Subscribers> getCoursesSubscribe() {
