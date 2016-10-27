@@ -7,6 +7,14 @@ public class CourseDTO {
     private String links;
     private boolean isOwner;
     private boolean isSubscribed;
+    private boolean isAttendee;
+    public boolean isAttendee() {
+        return isAttendee;
+    }
+
+    public void setAttendee(boolean attendee) {
+        isAttendee = attendee;
+    }
 
     public boolean isOwner() {
         return isOwner;

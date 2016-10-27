@@ -2,13 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/style.css}"/>
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/resources/css/style.css}"/>
 </head>
 <body>
 <div class="container">
-    <header th:replace="header :: header" ></header>
+    <header th:replace="header :: header"></header>
     <div class="courses-top-control" sec:authorize="hasAuthority('Lecturer')">
-        <a id="createCourseButton" class="btn btn-primary" href="/courses/create">Create</a>
+        <a id="createCourseButton" class="btn btn-primary"
+           href="/courses/create">Create</a>
     </div>
     <table class="table table-striped table-bordered">
         <thead>
@@ -21,11 +23,22 @@
         <tbody>
         <tr th:each="course : ${courses}">
             <td th:text="${course.getId()}"></td>
-            <td><a th:href="@{'/courses/'+${course.getId()}}" th:text="${course.getCourseName()}"></a></td>
+            <td><a th:href="@{'/courses/'+${course.getId()}}"
+                   th:text="${course.getCourseName()}"></a></td>
             <td sec:authorize="hasAuthority('user')">
-                <a class="btn btn-mini" th:href="@{${course.isSubscribed()}?'/courses/'+${course.getId()}+ '/attend':'/courses/'+${course.getId()}+ '/subscribe'}" th:text="${course.isSubscribed()?'Attend':'Subscribe'}"></a>
+                <a class="btn btn-mini"
+                   th:unless="${course.isSubscribed()}"
+                   th:href="'/courses/'+${course.getId()}+ '/subscribe'">Subscribe</a>
+                <a class="btn btn-mini"
+                   th:if="${course.isSubscribed() and  not course.isAttendee()}"
+                   th:href="'/courses/'+${course.getId()}+ '/attend'">Attend</a>
+                <a class="btn btn-mini" th:if="${course.isAttendee()}"
+                   th:href="'/courses/'+${course.getId()}+ '/evaluate'">Evaluate</a>
             </td>
-            <td sec:authorize="hasAuthority('Lecturer')"><a th:if="${course.getIsOwner()}" class="btn btn-mini" th:href="@{'/courses/'+${course.getId()}+'/update'}">Update</a></td>
+            <td sec:authorize="hasAuthority('Lecturer')"><a
+                    th:if="${course.getIsOwner()}" class="btn btn-mini"
+                    th:href="@{'/courses/'+${course.getId()}+'/update'}">Update</a>
+            </td>
         </tr>
         </tbody>
     </table>

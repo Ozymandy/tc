@@ -32,10 +32,12 @@ public class Course {
     @OneToMany
     @JoinColumn(name = "courseid")
     private List<Subscribers> subscribers;
-
     @OneToMany
     @JoinColumn(name = "courseid")
     private List<Attendee> attendee;
+    @OneToMany
+    @JoinColumn(name = "courseid")
+    private List<Evaluation> evaluations;
 
     public Course(int id, String name, String description, String links,
                   Date date) {
@@ -51,6 +53,14 @@ public class Course {
 
     public Course(int id) {
         this.id = id;
+    }
+
+    public List<Evaluation> getEvaluations() {
+        return evaluations;
+    }
+
+    public void setEvaluations(List<Evaluation> evaluations) {
+        this.evaluations = evaluations;
     }
 
     public List<Attendee> getAttendee() {

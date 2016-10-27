@@ -35,10 +35,9 @@ public class CourseService implements CourseServiceInterface {
     @Override
     public Course getById(int id) {
         Course course = courseDao.getById(id);
-        if(course!=null){
+        if (course != null) {
             return course;
-        }
-        else{
+        } else {
             throw new CourseNotFoundException("Course not found");
         }
     }
@@ -52,7 +51,7 @@ public class CourseService implements CourseServiceInterface {
     public boolean isOwner(String username, int courseId) {
         User user = userDao.getByName(username);
         Course course = courseDao.getById(courseId);
-        if (course!=null && (user.getId() == course.getUser().getId())) {
+        if (course != null && (user.getId() == course.getUser().getId())) {
             return true;
         } else {
             return false;
@@ -60,10 +59,18 @@ public class CourseService implements CourseServiceInterface {
     }
 
     @Override
-    public boolean isSubcribed(String username, int courseId) {
+    public boolean isSubscribed(String username, int courseId) {
         User user = userDao.getByName(username);
         Course course = courseDao.getById(courseId);
-        return user.getCoursesSubscribe().stream().anyMatch
-                (usercourse ->usercourse.getCourse().getId()==course.getId());
+        return user.getCoursesSubscribe().stream().anyMatch(usercourse ->
+                usercourse.getCourse().getId() == course.getId());
+    }
+
+    @Override
+    public boolean isAttendee(String username, int courseId) {
+        User user = userDao.getByName(username);
+        Course course = courseDao.getById(courseId);
+        return user.getCoursesAttend().stream().anyMatch(usercourse ->
+                usercourse.getCourse().getId() == course.getId());
     }
 }

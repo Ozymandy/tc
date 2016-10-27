@@ -28,14 +28,18 @@ public class CourseDTOConverter implements Converter<Course, CourseDTO> {
         dto.setCourseName(source.getName());
         dto.setLinks(source.getLinks());
         dto.setSubscribed(courseService.
-                isSubcribed(auth.getName(), source.getId()));
+                isSubscribed(auth.getName(), source.getId()));
+        dto.setAttendee(courseService.isAttendee
+                (auth.getName(), source.getId()));
         dto.setIsOwner(courseService.isOwner(auth.getName(), source.getId()));
         return dto;
     }
 
     public List<CourseDTO> convertAll(List<Course> courses) {
         Stream<Course> stream = courses.stream();
-        return stream.map(course -> {return this.convert(course);})
+        return stream.map(course -> {
+            return this.convert(course);
+        })
                 .collect(Collectors.toList());
     }
 }

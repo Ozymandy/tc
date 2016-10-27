@@ -2,33 +2,40 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/style.css}"/>
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/resources/css/style.css}"/>
 </head>
 <body>
 <div class="container">
-    <header th:replace="header :: header" ></header>
-    <form class="form-horizontal" th:action="@{'/courses/'+${course.getId()}+'/evaluate'}" method="POST">
+    <header th:replace="header :: header"></header>
+    <form class="form-horizontal"
+          th:action="@{'/courses/'+${course.getId()}+'/evaluate'}"
+          th:object="${evaluation}" method="POST">
         <fieldset>
             <div class="control-group">
                 <div class="control-label">
                     Course
                 </div>
-                <div id="titleField" class="controls text" th:text="${course.getName()}"></div>
+                <div id="titleField" class="controls text"
+                     th:text="${course.getName()}"></div>
             </div>
             <div class="control-group">
                 <div class="control-label">
                     Lecturer
                 </div>
-                <div id="ownerField" class="controls text" th:text="${course.getUser().getEmail()}"></div>
+                <div id="ownerField" class="controls text"
+                     th:text="${course.getUser().getEmail()}"></div>
             </div>
             <div class="control-group">
                 <label id="gradeField" class="control-label">Grade</label>
                 <div class="controls">
-                    <input class="span2" type="text"/>
+                    <input class="span2" type="text" th:field="*{mark}"/>
                 </div>
             </div>
             <div class="form-actions">
-                <button id="evaluateButton" class="btn btn-success" type="submit">Evaluate</button>
+                <button id="evaluateButton" class="btn btn-success"
+                        type="submit">Evaluate
+                </button>
                 <a class="btn" href="/courses">Cancel</a>
             </div>
         </fieldset>

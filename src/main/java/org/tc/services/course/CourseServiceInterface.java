@@ -17,5 +17,7 @@ public interface CourseServiceInterface {
 
     boolean isOwner(String username, int courseId);
 
-    boolean isSubcribed(String username, int courseId);
+    boolean isSubscribed(String username, int courseId);
+
+    boolean isAttendee(String username, int courseId);
 }

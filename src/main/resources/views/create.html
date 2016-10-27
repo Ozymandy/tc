@@ -2,45 +2,55 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/style.css}"/>
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/resources/css/style.css}"/>
     <title>Create course</title>
 </head>
 <body>
 <div class="container">
-    <header th:replace="header :: header" ></header>
+    <header th:replace="header :: header"></header>
     <div class="alert alert-error" th:if="${errors}">
         <div>
             <strong>Okay, Houston, we've had a problem here.</strong>
         </div>
         <ul>
-            <li th:each="error, iterationStatus : ${errors}"  th:text="${#messages.msg(error.getDefaultMessage())}">.</li>
+            <li th:each="error, iterationStatus : ${errors}"
+                th:text="${#messages.msg(error.getDefaultMessage())}">.
+            </li>
         </ul>
     </div>
-    <form class="form-horizontal" th:action="@{/courses/create}" th:object="${course}" method="POST">
+    <form class="form-horizontal" th:action="@{/courses/create}"
+          th:object="${course}" method="POST">
         <fieldset>
             <div class="control-group">
                 <label class="control-label">Name</label>
                 <div class="controls">
-                    <input id="titleField" class="span5" type="text" th:field="*{name}" />
+                    <input id="titleField" class="span5" type="text"
+                           th:field="*{name}"/>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label">Description</label>
                 <div class="controls">
-                    <textarea id="descriptionField" class="span5" rows="3" th:field="*{description}"></textarea>
+                    <textarea id="descriptionField" class="span5" rows="3"
+                              th:field="*{description}"></textarea>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label">Links</label>
                 <div class="controls">
-                    <textarea id="linksField" class="span5" rows="3" th:field="*{links}"></textarea>
+                    <textarea id="linksField" class="span5" rows="3"
+                              th:field="*{links}"></textarea>
                 </div>
             </div>
             <div class="form-actions">
-                <button id="createButton" class="btn btn-primary" type="submit">Create</button>
+                <button id="createButton" class="btn btn-primary" type="submit">
+                    Create
+                </button>
                 <a class="btn" href="/courses">Cancel</a>
             </div>
-            <input id="userField" class="span5" type="hidden" th:name="user" th:value="${username}"/>
+            <input id="userField" class="span5" type="hidden" th:name="user"
+                   th:value="${username}"/>
         </fieldset>
     </form>
 </div>
