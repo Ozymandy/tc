@@ -9,15 +9,7 @@ public class CourseDTO {
     private boolean isSubscribed;
     private boolean isAttendee;
     private boolean isEvaluated;
-    private int subscribers;
-
-    public int getSubscribers() {
-        return subscribers;
-    }
-
-    public void setSubscribers(int subscribers) {
-        this.subscribers = subscribers;
-    }
+    private String attendeeSubscriber;
 
     public boolean isEvaluated() {
         return isEvaluated;
@@ -25,6 +17,14 @@ public class CourseDTO {
 
     public void setEvaluated(boolean evaluated) {
         isEvaluated = evaluated;
+    }
+
+    public String getAttendeeSubscriber() {
+        return attendeeSubscriber;
+    }
+
+    public void setAttendeeSubscriber(String attendeeSubscriber) {
+        this.attendeeSubscriber = attendeeSubscriber;
     }
 
     public boolean isAttendee() {

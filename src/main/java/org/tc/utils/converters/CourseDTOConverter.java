@@ -33,8 +33,11 @@ public class CourseDTOConverter implements Converter<Course, CourseDTO> {
                 (auth.getName(), source.getId()));
         dto.setEvaluated(courseService.isEvaluated(auth.getName(),
                 source.getId()));
-        dto.setSubscribers(source.getSubscribers().size());
         dto.setIsOwner(courseService.isOwner(auth.getName(), source.getId()));
+        //is it bad?
+        String attendeeSubscriber =source.getSubscribers().size() +
+                (source.getAttendee().size()>0?"\\"+source.getAttendee().size():"");
+        dto.setAttendeeSubscriber(attendeeSubscriber);
         return dto;
     }
 
