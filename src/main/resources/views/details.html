@@ -32,13 +32,17 @@
         </div>
         <div class="control-group" th:if="${course.getSubscribers().size() &gt; 0}">
             <div class="control-label">Subscribers</div>
-            <div id="subscribersField" class="controls text"
-                 th:text="${course.getSubscribers().size()}"></div>
+            <div id="subscribersField" class="controls text">
+                <a th:href="@{'/courses/'+${course.getId()}+ '/participants'}"
+                   th:text="${course.getSubscribers().size()}"></a>
+            </div>
         </div>
         <div class="control-group" th:if="${course.getAttendee().size() &gt; 0}">
             <div class="control-label">Attendee</div>
-            <div id="attendeeField" class="controls text"
-                 th:text="${course.getSubscribers().size()}"></div>
+            <div id="attendeeField" class="controls text">
+                <a th:href="@{'/courses/'+${course.getId()}+ '/participants'}"
+                   th:text="${course.getAttendee().size()}"></a>
+            </div>
         </div>
         <div class="control-group" th:if="${mark &gt; 0}">
             <div class="control-label">Grade</div>

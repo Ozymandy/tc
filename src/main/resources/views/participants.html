@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/resources/css/style.css}"/>
+</head>
+<body>
+<div class="container">
+    <header th:replace="header :: header"></header>
+    <div class="form-horizontal">
+        <div class="control-group">
+            <div class="control-label">Name</div>
+            <div id="titleField" class="controls text" th:text="${course.getName()}"></div>
+        </div>
+        <div class="control-group">
+            <div class="control-label">Lecturer</div>
+            <div id="ownerField" class="controls text" th:text="${course.getUser().getEmail()}"></div>
+        </div>
+        <div class="form-actions">
+            <a class="btn" href="/courses">Back</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

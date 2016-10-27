@@ -229,4 +229,15 @@ public class CourseController {
             return new ModelAndView(new RedirectView("/courses"));
         }
     }
+    @RequestMapping(value = {"/courses/{courseId}/participants"},
+            method = RequestMethod.GET)
+    public ModelAndView participants(@PathVariable("courseId") int id) {
+        Course course = courseService.getById(id);
+        Authentication auth = SecurityContextHolder
+                .getContext().getAuthentication();
+        ModelAndView mav = new ModelAndView("classpath:views/participants");
+        mav.addObject("h1","Course Participants");
+        mav.addObject("course",course);
+        return mav;
+    }
 }

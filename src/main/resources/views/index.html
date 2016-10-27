@@ -27,8 +27,11 @@
             <td th:text="${course.getId()}"></td>
             <td><a th:href="@{'/courses/'+${course.getId()}}"
                    th:text="${course.getCourseName()}"></a></td>
-            <td  th:text="${course.getAttendeeSubscriber()}"></td>
-            <td  th:text="${course.getAverageMark()>0?course.getAverageMark():''}"></td>
+            <td>
+                <a th:href="@{'/courses/'+${course.getId()}+ '/participants'}"
+                   th:text="${course.getAttendeeSubscriber()}"></a>
+            </td>
+            <td th:text="${course.getAverageMark()>0?course.getAverageMark():''}"></td>
             <td sec:authorize="hasAuthority('user')">
                 <a class="btn btn-mini"
                    th:unless="${course.isSubscribed()}"
