@@ -9,6 +9,15 @@ public class CourseDTO {
     private boolean isSubscribed;
     private boolean isAttendee;
     private boolean isEvaluated;
+    private int subscribers;
+
+    public int getSubscribers() {
+        return subscribers;
+    }
+
+    public void setSubscribers(int subscribers) {
+        this.subscribers = subscribers;
+    }
 
     public boolean isEvaluated() {
         return isEvaluated;

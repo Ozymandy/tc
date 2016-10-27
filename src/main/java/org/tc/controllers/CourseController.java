@@ -68,14 +68,10 @@ public class CourseController {
     @RequestMapping(value = {"/courses/{id}"}, method = RequestMethod.GET)
     public ModelAndView details(@PathVariable("id") int id) {
         Course course = courseService.getById(id);
-        if (course != null) {
-            ModelAndView mav = new ModelAndView("classpath:views/details");
-            mav.addObject("h1", "Course details");
-            mav.addObject("course", course);
-            return mav;
-        } else {
-            throw new CourseNotFoundException("Update course");
-        }
+        ModelAndView mav = new ModelAndView("classpath:views/details");
+        mav.addObject("h1", "Course details");
+        mav.addObject("course", course);
+        return mav;
     }
 
     @Secured("Lecturer")
@@ -196,7 +192,10 @@ public class CourseController {
         Course course = courseService.getById(id);
         Authentication auth = SecurityContextHolder
                 .getContext().getAuthentication();
-        if (courseService.isAttendee(auth.getName(), id)) {
+        boolean isAttendee = courseService.isAttendee(auth.getName(), id);
+        boolean state = courseService.isEvaluated(auth.getName(), id);
+        if (courseService.isAttendee(auth.getName(), id) &&
+                !courseService.isEvaluated(auth.getName(), id)) {
             ModelAndView mav = new ModelAndView("classpath:views/evaluate");
             mav.addObject("h1", "Evaluate");
             mav.addObject("course", course);

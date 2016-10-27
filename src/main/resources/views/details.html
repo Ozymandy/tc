@@ -2,28 +2,38 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/style.css}"/>
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/resources/css/style.css}"/>
     <title>Details</title>
 </head>
 <body>
 <div class="container">
-    <header th:replace="header :: header" ></header>
+    <header th:replace="header :: header"></header>
     <div class="form-horizontal">
         <div class="control-group">
             <div class="control-label">Name</div>
-            <div id="titleField" class="controls text" th:text="${course.getName()}"></div>
+            <div id="titleField" class="controls text"
+                 th:text="${course.getName()}"></div>
         </div>
         <div class="control-group">
             <div class="control-label">Lecturer</div>
-            <div id="ownerField" class="controls text" th:text="${course.getUser().getEmail()}"></div>
+            <div id="ownerField" class="controls text"
+                 th:text="${course.getUser().getEmail()}"></div>
         </div>
         <div class="control-group">
             <div class="control-label">Description</div>
-            <div id="descriptionField" class="controls text" th:text="${course.getDescription()}"></div>
+            <div id="descriptionField" class="controls text"
+                 th:text="${course.getDescription()}"></div>
         </div>
         <div class="control-group">
             <div class="control-label">Links</div>
-            <div id="linksField" class="controls text" th:text="${course.getLinks()}"></div>
+            <div id="linksField" class="controls text"
+                 th:text="${course.getLinks()}"></div>
+        </div>
+        <div class="control-group" th:if="${course.getSubscribers().size() &gt; 0}">
+            <div class="control-label">Subscribers</div>
+            <div id="subscribersField" class="controls text"
+                 th:text="${course.getSubscribers().size()}"></div>
         </div>
         <div class="form-actions">
             <a class="btn" href="/courses">Back</a>
