@@ -8,6 +8,14 @@
 <body>
 <div class="container">
     <header th:replace="header :: header"></header>
+    <div class="alert alert-error" th:if="${errors}">
+        <div>
+            <strong>Okay, Houston, we've had a problem here.</strong>
+        </div>
+        <ul>
+            <li th:each="error, iterationStatus : ${errors}"  th:text="${#messages.msg(error.getCodes()[0])}">.</li>
+        </ul>
+    </div>
     <form class="form-horizontal"
           th:action="@{'/courses/'+${course.getId()}+'/evaluate'}"
           th:object="${evaluation}" method="POST">

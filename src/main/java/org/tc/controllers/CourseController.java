@@ -6,6 +6,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.DefaultMessageCodesResolver;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +47,12 @@ public class CourseController {
     private UserCourseServiceInterface userCourseService;
     @Autowired
     private EvaluationServiceInterface evaluationService;
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        DefaultMessageCodesResolver defaultMessageCodesResolver = new DefaultMessageCodesResolver();
+        binder.setMessageCodesResolver(defaultMessageCodesResolver);
+    }
 
     @RequestMapping(value = {"/courses"}, method = RequestMethod.GET)
     public ModelAndView index() {
@@ -203,12 +212,20 @@ public class CourseController {
                                  @Valid @ModelAttribute("evaluation") Evaluation evaluation,
                                  BindingResult results) {
         Course course = courseService.getById(id);
-        Authentication auth = SecurityContextHolder
-                .getContext().getAuthentication();
-        User user = userService.getByName(auth.getName());
-        evaluation.setUser(user);
-        evaluation.setCourse(course);
-        evaluationService.create(evaluation);
-        return new ModelAndView(new RedirectView("/courses"));
+        if (results.hasErrors()) {
+            ModelAndView mav = new ModelAndView("classpath:views/evaluate");
+            mav.addObject("h1", "Evaluate");
+            mav.addObject("course", course);
+            mav.addObject("errors", results.getAllErrors());
+            return mav;
+        } else {
+            Authentication auth = SecurityContextHolder
+                    .getContext().getAuthentication();
+            User user = userService.getByName(auth.getName());
+            evaluation.setUser(user);
+            evaluation.setCourse(course);
+            evaluationService.create(evaluation);
+            return new ModelAndView(new RedirectView("/courses"));
+        }
     }
 }

@@ -25,9 +25,9 @@ public class Evaluation {
     @ManyToOne
     @JoinColumn(name = "courseid")
     private Course course;
-    @Min(value = 1, message = "Grade.Mark")
-    @Max(value = 5, message = "Grade.Mark")
-    @NotNull(message = "Grade.Mark")
+    @Min(1)
+    @Max(5)
+    @NotNull
     private int mark;
 
     public int getId() {
