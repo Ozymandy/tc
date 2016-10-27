@@ -238,6 +238,7 @@ public class CourseController {
         ModelAndView mav = new ModelAndView("classpath:views/participants");
         mav.addObject("h1","Course Participants");
         mav.addObject("course",course);
+        mav.addObject("subscribers",courseService.getSubscribers(course));
         return mav;
     }
 }

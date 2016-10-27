@@ -1,6 +1,7 @@
 package org.tc.services.course;
 
 import org.tc.models.Course;
+import org.tc.models.usercourse.Subscribers;
 
 import java.util.List;
 
@@ -24,4 +25,6 @@ public interface CourseServiceInterface {
     boolean isEvaluated(String username, int courseId);
 
     double getAverageGrade(int courseId);
+
+    List<Subscribers> getSubscribers(Course course);
 }

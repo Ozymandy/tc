@@ -7,8 +7,10 @@ import org.tc.dao.user.UserDaoInterface;
 import org.tc.exceptions.CourseNotFoundException;
 import org.tc.models.Course;
 import org.tc.models.User;
+import org.tc.models.usercourse.Subscribers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service("courseService")
 public class CourseService implements CourseServiceInterface {
@@ -88,6 +90,15 @@ public class CourseService implements CourseServiceInterface {
         return course.getEvaluations().stream()
                 .mapToDouble(evaluation -> evaluation.getMark())
                 .average().orElse(0);
+    }
+
+    @Override
+    public List<Subscribers> getSubscribers(Course course) {
+        //not sure that this is good idea to place this method here
+        return course.getSubscribers().stream().filter(
+                subscribers -> course.getAttendee().stream().noneMatch(
+                        subscribers2 -> subscribers.getUser().getId() == subscribers2.getUser().getId()))
+                .collect(Collectors.toList());
     }
 
 }

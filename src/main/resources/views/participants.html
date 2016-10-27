@@ -17,6 +17,22 @@
             <div class="control-label">Lecturer</div>
             <div id="ownerField" class="controls text" th:text="${course.getUser().getEmail()}"></div>
         </div>
+        <div class="control-group">
+            <div class="control-label">Subscribers</div>
+            <div id="subscribersList" class="controls text">
+                <ul class="unstyled">
+                    <li th:each="subscriber : ${subscribers}" th:text="${subscriber.getUser().getEmail()}"></li>
+                </ul>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="control-label">Attendee</div>
+            <div id="attendeeList" class="controls text">
+                <ul class="unstyled">
+                    <li th:each="attend : ${course.getAttendee()}" th:text="${attend.getUser().getEmail()}"></li>
+                </ul>
+            </div>
+        </div>
         <div class="form-actions">
             <a class="btn" href="/courses">Back</a>
         </div>
