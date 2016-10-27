@@ -10,6 +10,15 @@ public class CourseDTO {
     private boolean isAttendee;
     private boolean isEvaluated;
     private String attendeeSubscriber;
+    private double averageMark;
+
+    public double getAverageMark() {
+        return averageMark;
+    }
+
+    public void setAverageMark(double averageMark) {
+        this.averageMark = averageMark;
+    }
 
     public boolean isEvaluated() {
         return isEvaluated;

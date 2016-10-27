@@ -70,6 +70,8 @@ public class CourseController {
         Course course = courseService.getById(id);
         ModelAndView mav = new ModelAndView("classpath:views/details");
         mav.addObject("h1", "Course details");
+        //may be the best way to send object instead of id
+        mav.addObject("mark",courseService.getAverageGrade(id));
         mav.addObject("course", course);
         return mav;
     }

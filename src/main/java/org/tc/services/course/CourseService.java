@@ -81,4 +81,13 @@ public class CourseService implements CourseServiceInterface {
         return course.getEvaluations().stream().anyMatch(evaluation ->
                 evaluation.getUser().getId() == user.getId());
     }
+
+    @Override
+    public double getAverageGrade(int courseId) {
+        Course course = courseDao.getById(courseId);
+        return course.getEvaluations().stream()
+                .mapToDouble(evaluation -> evaluation.getMark())
+                .average().orElse(0);
+    }
+
 }

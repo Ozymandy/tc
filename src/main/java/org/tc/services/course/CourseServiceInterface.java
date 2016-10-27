@@ -22,4 +22,6 @@ public interface CourseServiceInterface {
     boolean isAttendee(String username, int courseId);
 
     boolean isEvaluated(String username, int courseId);
+
+    double getAverageGrade(int courseId);
 }

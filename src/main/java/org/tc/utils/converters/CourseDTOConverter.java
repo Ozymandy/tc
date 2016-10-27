@@ -38,6 +38,7 @@ public class CourseDTOConverter implements Converter<Course, CourseDTO> {
         String attendeeSubscriber =source.getSubscribers().size() +
                 (source.getAttendee().size()>0?"\\"+source.getAttendee().size():"");
         dto.setAttendeeSubscriber(attendeeSubscriber);
+        dto.setAverageMark(courseService.getAverageGrade(source.getId()));
         return dto;
     }
 
