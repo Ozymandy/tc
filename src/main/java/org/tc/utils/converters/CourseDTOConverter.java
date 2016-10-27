@@ -31,6 +31,8 @@ public class CourseDTOConverter implements Converter<Course, CourseDTO> {
                 isSubscribed(auth.getName(), source.getId()));
         dto.setAttendee(courseService.isAttendee
                 (auth.getName(), source.getId()));
+        dto.setEvaluated(courseService.isEvaluated(auth.getName(),
+                source.getId()));
         dto.setIsOwner(courseService.isOwner(auth.getName(), source.getId()));
         return dto;
     }

@@ -32,7 +32,7 @@
                 <a class="btn btn-mini"
                    th:if="${course.isSubscribed() and  not course.isAttendee()}"
                    th:href="'/courses/'+${course.getId()}+ '/attend'">Attend</a>
-                <a class="btn btn-mini" th:if="${course.isAttendee()}"
+                <a class="btn btn-mini" th:if="${course.isAttendee() and not course.isEvaluated()}"
                    th:href="'/courses/'+${course.getId()}+ '/evaluate'">Evaluate</a>
             </td>
             <td sec:authorize="hasAuthority('Lecturer')"><a

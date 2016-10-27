@@ -73,4 +73,12 @@ public class CourseService implements CourseServiceInterface {
         return user.getCoursesAttend().stream().anyMatch(usercourse ->
                 usercourse.getCourse().getId() == course.getId());
     }
+
+    @Override
+    public boolean isEvaluated(String username, int courseId) {
+        User user = userDao.getByName(username);
+        Course course = courseDao.getById(courseId);
+        return course.getEvaluations().stream().anyMatch(evaluation ->
+                evaluation.getUser().getId() == user.getId());
+    }
 }

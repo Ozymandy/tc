@@ -20,4 +20,6 @@ public interface CourseServiceInterface {
     boolean isSubscribed(String username, int courseId);
 
     boolean isAttendee(String username, int courseId);
+
+    boolean isEvaluated(String username, int courseId);
 }

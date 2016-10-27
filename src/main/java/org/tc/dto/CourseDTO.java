@@ -8,6 +8,16 @@ public class CourseDTO {
     private boolean isOwner;
     private boolean isSubscribed;
     private boolean isAttendee;
+    private boolean isEvaluated;
+
+    public boolean isEvaluated() {
+        return isEvaluated;
+    }
+
+    public void setEvaluated(boolean evaluated) {
+        isEvaluated = evaluated;
+    }
+
     public boolean isAttendee() {
         return isAttendee;
     }
