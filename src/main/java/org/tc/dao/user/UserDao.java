@@ -1,67 +1,21 @@
 package org.tc.dao.user;
 
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import org.tc.models.User;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Repository(value = "userDao")
-@Transactional
-//@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class UserDao implements UserDaoInterface {
+public interface UserDao {
+    void create(User newUser);
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    void delete(User user);
 
-    @Override
-    public void create(User newUser) {
-        entityManager.persist(newUser);
-    }
+    List<User> getAll();
 
-    @Override
-    public void delete(User user) {
-        if (entityManager.contains(user)) {
-            entityManager.remove(user);
-        } else {
-            entityManager.remove(entityManager.merge(user));
-        }
-    }
+    User getById(int id);
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public List<User> getAll() {
-        return entityManager.createQuery("from User").getResultList();
-    }
+    User getByEmail(String email);
 
-    @Override
-    public User getById(int id) {
-        return entityManager.find(User.class, id);
-    }
+    User getByName(String username);
 
-    @Override
-    public User getByEmail(String email) {
-        return (User) entityManager
-                .createQuery("from User where user.email=:email")
-                .setParameter("email", email).getSingleResult();
-    }
-
-    @Override
-    public User getByName(String username) {
-        try {
-            return (User) entityManager
-                    .createQuery("from User where username=:username")
-                    .setParameter("username", username).getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
-    }
-
-    @Override
-    public void update(User changedUser) {
-        entityManager.merge(changedUser);
-    }
+    void update(User changedUser);
 }

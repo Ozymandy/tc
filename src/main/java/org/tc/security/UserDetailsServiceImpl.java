@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tc.models.User;
-import org.tc.services.user.UserServiceInterface;
+import org.tc.services.user.UserService;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +17,7 @@ import java.util.Set;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private UserServiceInterface userService;
+    private UserService userService;
 
     @Override
     @Transactional(readOnly = true)

@@ -5,12 +5,12 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.tc.models.User;
 import org.tc.models.forms.RegistrationForm;
-import org.tc.services.role.RoleServiceInterface;
+import org.tc.services.role.RoleService;
 
 @Component
 public class UserConverter implements Converter<RegistrationForm,User> {
     @Autowired
-    private RoleServiceInterface roleService;
+    private RoleService roleService;
     @Override
     public User convert(RegistrationForm source) {
         User user = new User();

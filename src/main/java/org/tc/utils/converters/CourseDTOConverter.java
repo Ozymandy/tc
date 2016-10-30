@@ -7,7 +7,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.tc.dto.CourseDTO;
 import org.tc.models.Course;
-import org.tc.services.course.CourseServiceInterface;
+import org.tc.models.User;
+import org.tc.services.course.CourseService;
+import org.tc.services.user.UserService;
+import org.tc.utils.UserCourseUtilit;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,29 +19,29 @@ import java.util.stream.Stream;
 @Component
 public class CourseDTOConverter implements Converter<Course, CourseDTO> {
     @Autowired
-    private CourseServiceInterface courseService;
-
+    private CourseService courseService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private UserCourseUtilit userCourseUtil;
     @Override
     public CourseDTO convert(Course source) {
-        Authentication auth = SecurityContextHolder
-                .getContext().getAuthentication();
         CourseDTO dto = new CourseDTO();
         dto.setDescription(source.getDescription());
         dto.setId(source.getId());
         dto.setCourseName(source.getName());
         dto.setLinks(source.getLinks());
-        dto.setSubscribed(courseService.
-                isSubscribed(auth.getName(), source.getId()));
-        dto.setAttendee(courseService.isAttendee
-                (auth.getName(), source.getId()));
-        dto.setEvaluated(courseService.isEvaluated(auth.getName(),
-                source.getId()));
-        dto.setIsOwner(courseService.isOwner(auth.getName(), source.getId()));
+        User currentUser = userService.getCurrentUser();
+        dto.setSubscribed(userCourseUtil
+                .isSubscribed(currentUser,source));
+        dto.setAttendee(userCourseUtil.isAttendee(currentUser,source));
+        dto.setEvaluated(userCourseUtil.isEvaluated(currentUser,source));
+        dto.setIsOwner(courseService.isOwner(source));
         //is it bad?
         String attendeeSubscriber =source.getSubscribers().size() +
-                (source.getAttendee().size()>0?"\\"+source.getAttendee().size():"");
+                (source.getAttendeeCourse().size()>0?"\\"+source.getAttendeeCourse().size():"");
         dto.setAttendeeSubscriber(attendeeSubscriber);
-        dto.setAverageMark(courseService.getAverageGrade(source.getId()));
+        dto.setAverageMark(userCourseUtil.getAverageGrade(source));
         return dto;
     }
 

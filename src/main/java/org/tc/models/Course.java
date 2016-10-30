@@ -1,7 +1,7 @@
 package org.tc.models;
 
-import org.tc.models.usercourse.Attendee;
-import org.tc.models.usercourse.Subscribers;
+import org.tc.models.usercourse.AttendeeCourse;
+import org.tc.models.usercourse.SubscribersCourse;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,10 +31,10 @@ public class Course {
     private User user;
     @OneToMany
     @JoinColumn(name = "courseid")
-    private List<Subscribers> subscribers;
+    private List<SubscribersCourse> subscribers;
     @OneToMany
     @JoinColumn(name = "courseid")
-    private List<Attendee> attendee;
+    private List<AttendeeCourse> attendeeCourse;
     @OneToMany
     @JoinColumn(name = "courseid")
     private List<Evaluation> evaluations;
@@ -63,19 +63,19 @@ public class Course {
         this.evaluations = evaluations;
     }
 
-    public List<Attendee> getAttendee() {
-        return attendee;
+    public List<AttendeeCourse> getAttendeeCourse() {
+        return attendeeCourse;
     }
 
-    public void setAttendee(List<Attendee> attendee) {
-        this.attendee = attendee;
+    public void setAttendeeCourse(List<AttendeeCourse> attendeeCourse) {
+        this.attendeeCourse = attendeeCourse;
     }
 
-    public List<Subscribers> getSubscribers() {
+    public List<SubscribersCourse> getSubscribers() {
         return subscribers;
     }
 
-    public void setSubscribers(List<Subscribers> subscribers) {
+    public void setSubscribers(List<SubscribersCourse> subscribers) {
         this.subscribers = subscribers;
     }
 

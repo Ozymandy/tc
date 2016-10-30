@@ -1,44 +1,17 @@
 package org.tc.services.usercourse;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.tc.dao.usercourse.UserCourseDaoInterface;
+import org.tc.models.Course;
 import org.tc.models.usercourse.UserCourse;
 
-import java.util.List;
+public interface UserCourseService {
+    void create(UserCourse newUserCourse);
 
-@Service
-public class UserCourseService implements UserCourseServiceInterface {
-    @Autowired
-    private UserCourseDaoInterface userCourseDao;
+    void delete(UserCourse userCourse);
 
-    @Override
-    public void create(UserCourse newUserCourse) {
-        userCourseDao.create(newUserCourse);
-    }
+    void update(UserCourse changedUserCourse);
 
-    @Override
-    public void delete(UserCourse userCourse) {
-        userCourseDao.delete(userCourse);
-    }
+    void subscribe(Course course);
 
-    @Override
-    public List<UserCourse> getAll() {
-        return userCourseDao.getAll();
-    }
+    void attend(Course course);
 
-    @Override
-    public List<UserCourse> getByUserId(int id) {
-        return userCourseDao.getByUserId(id);
-    }
-
-    @Override
-    public List<UserCourse> getByCourseId(int id) {
-        return userCourseDao.getByCourseId(id);
-    }
-
-    @Override
-    public void update(UserCourse changedUserCourse) {
-        userCourseDao.update(changedUserCourse);
-    }
 }

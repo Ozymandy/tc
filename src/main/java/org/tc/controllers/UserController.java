@@ -17,10 +17,10 @@ import org.tc.models.User;
 import org.tc.models.forms.RegistrationForm;
 import org.tc.utils.converters.UserConverter;
 import org.tc.validators.RegistrationValidator;
-import org.tc.security.SecurityServiceInterface;
+import org.tc.security.SecurityService;
 import org.tc.security.filterUtils.AuthValidationException;
-import org.tc.services.role.RoleServiceInterface;
-import org.tc.services.user.UserServiceInterface;
+import org.tc.services.role.RoleService;
+import org.tc.services.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -31,11 +31,11 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private SecurityServiceInterface securityService;
+    private SecurityService securityService;
     @Autowired
-    private RoleServiceInterface roleService;
+    private RoleService roleService;
     @Autowired
-    private UserServiceInterface userService;
+    private UserService userService;
     @Autowired
     private RegistrationValidator userValidator;
     @Autowired

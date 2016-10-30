@@ -1,53 +1,19 @@
 package org.tc.dao.role;
 
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import org.tc.models.Role;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Repository
-@Transactional
-public class RoleDao implements RoleDaoInterface {
-    @PersistenceContext
-    private EntityManager entityManager;
+public interface RoleDao {
+    void create(Role newRole);
 
-    @Override
-    public void create(Role newRole) {
-        entityManager.persist(newRole);
-    }
+    void delete(Role role);
 
-    @Override
-    public void delete(Role role) {
-        if (entityManager.contains(role)) {
-            entityManager.remove(role);
-        } else {
-            entityManager.remove(entityManager.merge(role));
-        }
-    }
+    List<Role> getAll();
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public List<Role> getAll() {
-        return entityManager.createQuery("from Role").getResultList();
-    }
+    Role getById(int id);
 
-    @Override
-    public Role getById(int id) {
-        return entityManager.find(Role.class, id);
-    }
+    Role getByName(String roleNme);
 
-    @Override
-    public Role getByName(String roleName) {
-        return (Role) entityManager
-                .createQuery("from Role where name=:name")
-                .setParameter("name", roleName).getSingleResult();
-    }
-
-    @Override
-    public void update(Role changedRole) {
-        entityManager.merge(changedRole);
-    }
+    void update(Role changedRole);
 }

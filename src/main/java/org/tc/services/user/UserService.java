@@ -1,53 +1,21 @@
 package org.tc.services.user;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.tc.dao.user.UserDaoInterface;
 import org.tc.models.User;
 
 import java.util.List;
 
-@Service
-public class UserService implements UserServiceInterface {
+public interface UserService {
+    void create(User newUser);
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-    @Autowired
-    private UserDaoInterface userDao;
+    void delete(User user);
 
-    @Override
-    public void create(User newUser) {
-        String password=bCryptPasswordEncoder
-                .encode(newUser.getPassword());
-        newUser.setPassword(password);
-        userDao.create(newUser);
-    }
+    List<User> getAll();
 
-    @Override
-    public void delete(User user) {
-        userDao.delete(user);
-    }
+    User getById(int id);
 
-    @Override
-    public List<User> getAll() {
-        return userDao.getAll();
-    }
+    User getCurrentUser();
 
-    @Override
-    public User getById(int id) {
-        return userDao.getById(id);
-    }
+    User getByName(String username);
 
-    @Override
-    public User getByName(String username) {
-        return userDao.getByName(username);
-    }
-
-    @Override
-    public void update(User changedUser) {
-        changedUser.setPassword(bCryptPasswordEncoder
-                .encode(changedUser.getPassword()));
-        userDao.update(changedUser);
-    }
+    void update(User changedUser);
 }

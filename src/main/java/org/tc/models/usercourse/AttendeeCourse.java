@@ -6,6 +6,6 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "usercourse")
-@DiscriminatorValue("subscriber")
-public class Subscribers extends UserCourse {
+@DiscriminatorValue("attendee")
+public class AttendeeCourse extends UserCourse {
 }

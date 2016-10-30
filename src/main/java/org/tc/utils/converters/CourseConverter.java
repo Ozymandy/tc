@@ -5,13 +5,13 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.tc.models.Course;
 import org.tc.models.forms.CourseForm;
-import org.tc.services.user.UserServiceInterface;
+import org.tc.services.user.UserService;
 
 @Component
 public class CourseConverter implements Converter<CourseForm, Course> {
 
     @Autowired
-    private UserServiceInterface userService;
+    private UserService userService;
 
     @Override
     public Course convert(CourseForm source) {

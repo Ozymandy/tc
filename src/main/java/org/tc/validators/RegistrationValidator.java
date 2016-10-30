@@ -7,13 +7,13 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 import org.tc.models.User;
 import org.tc.models.forms.RegistrationForm;
-import org.tc.services.user.UserServiceInterface;
+import org.tc.services.user.UserService;
 
 @Component
 public class RegistrationValidator implements Validator {
 
     @Autowired
-    private UserServiceInterface userService;
+    private UserService userService;
     @Override
     public boolean supports(Class<?> aClass) {
         return User.class.equals(aClass);

@@ -1,8 +1,8 @@
 package org.tc.models;
 
 import org.hibernate.validator.constraints.NotEmpty;
-import org.tc.models.usercourse.Attendee;
-import org.tc.models.usercourse.Subscribers;
+import org.tc.models.usercourse.AttendeeCourse;
+import org.tc.models.usercourse.SubscribersCourse;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,11 +35,11 @@ public class User {
     private Role role;
     @OneToMany
     @JoinColumn(name = "userid")
-    private List<Subscribers> coursesSubscribe;
+    private List<SubscribersCourse> coursesSubscribe;
     @OneToMany
     @JoinColumn(name = "userid")
 
-    private List<Attendee> coursesAttend;
+    private List<AttendeeCourse> coursesAttend;
 
     public User(int id, String password, String username, String email,
                 Role role) {
@@ -57,19 +57,19 @@ public class User {
     public User() {
     }
 
-    public List<Attendee> getCoursesAttend() {
+    public List<AttendeeCourse> getCoursesAttend() {
         return coursesAttend;
     }
 
-    public void setCoursesAttend(List<Attendee> coursesAttend) {
+    public void setCoursesAttend(List<AttendeeCourse> coursesAttend) {
         this.coursesAttend = coursesAttend;
     }
 
-    public List<Subscribers> getCoursesSubscribe() {
+    public List<SubscribersCourse> getCoursesSubscribe() {
         return coursesSubscribe;
     }
 
-    public void setCoursesSubscribe(List<Subscribers> coursesSubscribe) {
+    public void setCoursesSubscribe(List<SubscribersCourse> coursesSubscribe) {
         this.coursesSubscribe = coursesSubscribe;
     }
 
