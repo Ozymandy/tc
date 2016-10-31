@@ -19,7 +19,7 @@ public class CourseConverter implements Converter<CourseForm, Course> {
         course.setName(source.getName());
         course.setDescription(source.getDescription());
         course.setLinks(source.getLinks());
-        course.setUser(userService.getByName(source.getUser()));
+        course.setOwner(userService.getByName(source.getUser()));
         return course;
     }
 }

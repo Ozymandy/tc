@@ -28,7 +28,7 @@ public class Course {
     private Date date;
     @ManyToOne
     @JoinColumn(name = "UserId")
-    private User user;
+    private User owner;
     @OneToMany
     @JoinColumn(name = "courseid")
     private List<SubscribersCourse> subscribers;
@@ -119,12 +119,12 @@ public class Course {
         this.date = date;
     }
 
-    public User getUser() {
-        return user;
+    public User getOwner() {
+        return owner;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setOwner(User user) {
+        this.owner = user;
     }
 
 }

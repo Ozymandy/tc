@@ -13,12 +13,12 @@
         <div class="control-group">
             <div class="control-label">Name</div>
             <div id="titleField" class="controls text"
-                 th:text="${course.getName()}"></div>
+                 th:text="${course.getCourseName()}"></div>
         </div>
         <div class="control-group">
             <div class="control-label">Lecturer</div>
             <div id="ownerField" class="controls text"
-                 th:text="${course.getUser().getEmail()}"></div>
+                 th:text="${course.getOwnerEmail()}"></div>
         </div>
         <div class="control-group">
             <div class="control-label">Description</div>
@@ -30,18 +30,18 @@
             <div id="linksField" class="controls text"
                  th:text="${course.getLinks()}"></div>
         </div>
-        <div class="control-group" th:if="${course.getSubscribers().size() &gt; 0}">
+        <div class="control-group" th:if="${course.getSubscribersCount() &gt; 0}">
             <div class="control-label">Subscribers</div>
             <div id="subscribersField" class="controls text">
                 <a th:href="@{'/courses/'+${course.getId()}+ '/participants'}"
-                   th:text="${course.getSubscribers().size()}"></a>
+                   th:text="${course.getSubscribersCount()}"></a>
             </div>
         </div>
-        <div class="control-group" th:if="${course.getAttendee().size() &gt; 0}">
+        <div class="control-group" th:if="${course.getAttendeeCount() &gt; 0}">
             <div class="control-label">Attendee</div>
             <div id="attendeeField" class="controls text">
                 <a th:href="@{'/courses/'+${course.getId()}+ '/participants'}"
-                   th:text="${course.getAttendee().size()}"></a>
+                   th:text="${course.getAttendeeCount()}"></a>
             </div>
         </div>
         <div class="control-group" th:if="${mark &gt; 0}">

@@ -2988,4 +2988,10 @@ header .logout {
 }
 .courses-top-control {
   margin-bottom: 12px;
+  position: relative;
+}
+.courses-top-control .form-search {
+  position: absolute;
+  right: 0;
+  top: 0;
 }
