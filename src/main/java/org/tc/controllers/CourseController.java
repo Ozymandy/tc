@@ -33,6 +33,8 @@ import java.util.List;
 public class CourseController {
     private static final String HEADER_TITLE = "headerTitle";
     private static final String UPDATE_VIEW_NAME = "update";
+    private static final String COURSES_OBJECT_NAME = "courses";
+    private static final String ONE_COURSE_OBJECT_NAME = "course";
     @Autowired
     private CourseService courseService;
     @Autowired
@@ -55,7 +57,7 @@ public class CourseController {
         List<Course> course = courseService.getAll();
         List<CourseDTO> courses = courseDTOConverter
                 .convertAll(courseService.getAll());
-        mav.addObject("courses", courses);
+        mav.addObject(COURSES_OBJECT_NAME, courses);
         return mav;
     }
 
@@ -64,7 +66,7 @@ public class CourseController {
         Course course = courseService.getById(id);
         ModelAndView mav = new ModelAndView("classpath:views/details");
         mav.addObject(HEADER_TITLE, "Course details");
-        mav.addObject("course", courseDetailsDTOConverter.convert(course));
+        mav.addObject(ONE_COURSE_OBJECT_NAME, courseDetailsDTOConverter.convert(course));
         return mav;
     }
 
@@ -73,7 +75,7 @@ public class CourseController {
     public ModelAndView create() {
         ModelAndView mav = new ModelAndView("classpath:views/create");
         mav.addObject(HEADER_TITLE, "Create course");
-        mav.addObject("course", new CourseForm());
+        mav.addObject(ONE_COURSE_OBJECT_NAME, new CourseForm());
         return mav;
     }
 
@@ -100,7 +102,7 @@ public class CourseController {
             ModelAndView mav = new ModelAndView("classpath:views/"
                     + UPDATE_VIEW_NAME);
             mav.addObject(HEADER_TITLE, "Update course");
-            mav.addObject("course", course);
+            mav.addObject(ONE_COURSE_OBJECT_NAME, course);
             return mav;
         } else {
             throw new CourseNotFoundException("Update course");
@@ -115,7 +117,7 @@ public class CourseController {
                                    BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             ModelAndView mav = new ModelAndView("classpath:views/" + UPDATE_VIEW_NAME);
-            mav.addObject("course", course);
+            mav.addObject(ONE_COURSE_OBJECT_NAME, course);
             mav.addObject(HEADER_TITLE, "Update course");
             mav.addObject("errors", bindingResult.getAllErrors());
             return mav;
@@ -130,7 +132,7 @@ public class CourseController {
         Course course = courseService.getById(id);
         ModelAndView mav = new ModelAndView("classpath:views/subscribe");
         mav.addObject(HEADER_TITLE, "Subscribe");
-        mav.addObject("course", course);
+        mav.addObject(ONE_COURSE_OBJECT_NAME, course);
         return mav;
     }
 
@@ -148,7 +150,7 @@ public class CourseController {
         if (isCurrentUserSubscriber) {
             ModelAndView mav = new ModelAndView("classpath:views/attend");
             mav.addObject(HEADER_TITLE, "Attend");
-            mav.addObject("course", course);
+            mav.addObject(ONE_COURSE_OBJECT_NAME, course);
             return mav;
         } else {
             return new ModelAndView(new RedirectView("/403"));
@@ -174,7 +176,7 @@ public class CourseController {
                 !isCurrentUserEvaluated) {
             ModelAndView mav = new ModelAndView("classpath:views/evaluate");
             mav.addObject(HEADER_TITLE, "Evaluate");
-            mav.addObject("course", course);
+            mav.addObject(ONE_COURSE_OBJECT_NAME, course);
             mav.addObject("evaluation", new Evaluation());
             return mav;
         } else {
@@ -191,7 +193,7 @@ public class CourseController {
         if (results.hasErrors()) {
             ModelAndView mav = new ModelAndView("classpath:views/evaluate");
             mav.addObject(HEADER_TITLE, "Evaluate");
-            mav.addObject("course", course);
+            mav.addObject(ONE_COURSE_OBJECT_NAME, course);
             mav.addObject("errors", results.getAllErrors());
             return mav;
         } else {
@@ -208,8 +210,16 @@ public class CourseController {
                 .getContext().getAuthentication();
         ModelAndView mav = new ModelAndView("classpath:views/participants");
         mav.addObject(HEADER_TITLE, "Course Participants");
-        mav.addObject("course", course);
+        mav.addObject(ONE_COURSE_OBJECT_NAME, course);
         mav.addObject("subscribers", courseService.getSubscribers(course));
+        return mav;
+    }
+    @RequestMapping(value={"/mycourses"},method = RequestMethod.GET)
+    public ModelAndView myCourses(){
+        ModelAndView mav = new ModelAndView("classpath:views/mycourses");
+        mav.addObject(HEADER_TITLE, "My courses");
+        List<Course> myCourses = userService.getMyCourseList();
+        mav.addObject(COURSES_OBJECT_NAME,courseDTOConverter.convertAll(myCourses));
         return mav;
     }
 }

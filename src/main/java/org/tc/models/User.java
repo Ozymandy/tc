@@ -35,12 +35,13 @@ public class User {
     private Role role;
     @OneToMany
     @JoinColumn(name = "userid")
+    private List<Course> ownerCourses;
+    @OneToMany
+    @JoinColumn(name = "userid")
     private List<SubscribersCourse> coursesSubscribe;
     @OneToMany
     @JoinColumn(name = "userid")
-
     private List<AttendeeCourse> coursesAttend;
-
     public User(int id, String password, String username, String email,
                 Role role) {
         this.id = id;
@@ -49,12 +50,19 @@ public class User {
         this.email = email;
         this.role = role;
     }
-
     public User(int id) {
         this.id = id;
     }
 
     public User() {
+    }
+
+    public List<Course> getOwnerCourses() {
+        return ownerCourses;
+    }
+
+    public void setOwnerCourses(List<Course> ownerCourses) {
+        this.ownerCourses = ownerCourses;
     }
 
     public List<AttendeeCourse> getCoursesAttend() {

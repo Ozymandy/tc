@@ -10,6 +10,8 @@ import org.tc.models.Course;
 import org.tc.models.User;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -80,5 +82,16 @@ public class UserServiceImpl implements UserService {
         User user = this.getCurrentUser();
         return course.getEvaluations().stream().anyMatch(evaluation ->
                 evaluation.getUser().getId() == user.getId());
+    }
+
+    @Override
+    public List<Course> getMyCourseList() {
+        User user = getCurrentUser();
+        List<Course> myCourses = Stream.concat(user.getCoursesAttend().stream(),
+                user.getCoursesSubscribe().stream())
+                .map(course -> course.getCourse()).distinct().collect(Collectors.toList());
+        myCourses=Stream.concat(myCourses.stream(),
+                user.getOwnerCourses().stream()).collect(Collectors.toList());
+        return myCourses;
     }
 }

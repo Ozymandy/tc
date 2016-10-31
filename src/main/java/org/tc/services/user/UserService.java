@@ -26,4 +26,6 @@ public interface UserService {
     boolean isSubscribed(Course course);
 
     boolean isEvaluated(Course course);
+
+    List<Course> getMyCourseList();
 }
