@@ -110,7 +110,10 @@ public class CourseController {
             ModelAndView mav = new ModelAndView("classpath:views/"
                     + UPDATE_VIEW_NAME);
             mav.addObject(HEADER_TITLE, "Update course");
-            mav.addObject(ONE_COURSE_OBJECT_NAME, course);
+            List<Category> categories = categoryService.getAll();
+            mav.addObject("categories",categories);
+            mav.addObject(ONE_COURSE_OBJECT_NAME, courseConverter
+                    .reverseConvert(course));
             return mav;
         } else {
             throw new CourseNotFoundException("Update course");
@@ -121,17 +124,18 @@ public class CourseController {
             method = RequestMethod.POST)
     public ModelAndView updatePost(@PathVariable("id") int id,
                                    @Valid
-                                   @ModelAttribute("course") Course course,
+                                   @ModelAttribute("course") CourseForm course,
                                    BindingResult bindingResult) {
+        ModelAndView mav = new ModelAndView("classpath:views/" + UPDATE_VIEW_NAME);
+        List<Category> categories = categoryService.getAll();
+        mav.addObject("categories",categories);
+        mav.addObject(ONE_COURSE_OBJECT_NAME, course);
+        mav.addObject(HEADER_TITLE, "Update course");
         if (bindingResult.hasErrors()) {
-            ModelAndView mav = new ModelAndView("classpath:views/" + UPDATE_VIEW_NAME);
-            mav.addObject(ONE_COURSE_OBJECT_NAME, course);
-            mav.addObject(HEADER_TITLE, "Update course");
             mav.addObject("errors", bindingResult.getAllErrors());
             return mav;
         }
-        ModelAndView mav = new ModelAndView("classpath:views/" + UPDATE_VIEW_NAME);
-        courseService.update(course);
+        courseService.update(courseConverter.convert(course));
         return mav;
     }
 

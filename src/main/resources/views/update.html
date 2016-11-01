@@ -25,6 +25,16 @@
                 </div>
             </div>
             <div class="control-group">
+                <label class="control-label">Category</label>
+                <div class="controls">
+                    <select id="categoryField" name="optionsListId" class="span5" th:field="*{category}">
+                        <option th:each="category : ${categories}" th:value="${category.getCategoryName()}"
+                                th:text="${category.getCategoryName()}"
+                                th:selected="${categories.contains(category.getCategoryName())}">Options</option>
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
                 <label class="control-label">Description</label>
                 <div class="controls">
                     <textarea id="descriptionField" class="span5" rows="3" th:field="*{description}" th:inline="text">

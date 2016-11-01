@@ -46,7 +46,12 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public void update(Course changedCourse) {
-        courseDao.update(changedCourse);
+        Course changedCourseWithoutDelta = getById(changedCourse.getId());
+        changedCourseWithoutDelta.setCategory(changedCourse.getCategory());
+        changedCourseWithoutDelta.setDescription(changedCourse.getDescription());
+        changedCourseWithoutDelta.setLinks(changedCourse.getLinks());
+        changedCourseWithoutDelta.setName(changedCourse.getName());
+        courseDao.update(changedCourseWithoutDelta);
     }
 
     @Override
