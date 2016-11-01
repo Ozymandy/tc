@@ -9,13 +9,14 @@
 <div class="container">
     <header th:replace="header :: header"></header>
     <div class="courses-top-control">
-        <a class="btn" href="/mycourses">Courses</a>
+        <a class="btn" href="/courses">Courses</a>
     </div>
     <table class="table table-striped table-bordered">
         <thead>
         <tr>
             <th class="span1">Id</th>
             <th>Course</th>
+            <th class="span3">Category</th>
             <th class="span1">S/A</th>
             <th class="span1">Grade</th>
             <th class="span2">Action</th>
@@ -26,8 +27,8 @@
             <td th:text="${course.getId()}"></td>
             <td><a th:href="@{'/courses/'+${course.getId()}}"
                    th:text="${course.getCourseName()}"></a></td>
-            <td>
-                <a th:href="@{'/courses/'+${course.getId()}+ '/participants'}"
+            <td th:text="${course.getCategoryName()}"></td>
+            <td>    <a th:href="@{'/courses/'+${course.getId()}+ '/participants'}"
                    th:text="${course.getAttendeeSubscriber()}"></a>
             </td>
             <td th:text="${course.getAverageGrade()>0?course.getAverageGrade():''}"></td>

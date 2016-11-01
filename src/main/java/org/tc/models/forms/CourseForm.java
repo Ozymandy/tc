@@ -17,7 +17,17 @@ public class CourseForm {
     private String description;
     @NotEmpty(message = "Blank.Course.Link")
     private String links;
+    @NotEmpty(message="Blank.Course.Category")
+    private String category;
     private String user;
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
     public String getName() {
         return name;

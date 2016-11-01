@@ -18,6 +18,7 @@
         <tr>
             <th class="span1">Id</th>
             <th>Course</th>
+            <th class="span3">Category</th>
             <th class="span1">S/A</th>
             <th class="span1">Grade</th>
             <th class="span2">Action</th>
@@ -28,6 +29,7 @@
             <td th:text="${course.getId()}"></td>
             <td><a th:href="@{'/courses/'+${course.getId()}}"
                    th:text="${course.getCourseName()}"></a></td>
+            <td th:text="${course.getCategoryName()}"></td>
             <td>
                 <a th:href="@{'/courses/'+${course.getId()}+ '/participants'}"
                    th:text="${course.getAttendeeSubscriber()}"></a>

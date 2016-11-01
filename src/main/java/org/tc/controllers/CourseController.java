@@ -14,10 +14,12 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 import org.tc.dto.course.CourseDTO;
 import org.tc.exceptions.CourseNotFoundException;
+import org.tc.models.Category;
 import org.tc.models.Course;
 import org.tc.models.Evaluation;
 import org.tc.models.User;
 import org.tc.models.forms.CourseForm;
+import org.tc.services.category.CategoryService;
 import org.tc.services.course.CourseService;
 import org.tc.services.evaluation.EvaluationService;
 import org.tc.services.user.UserService;
@@ -37,6 +39,8 @@ public class CourseController {
     private static final String ONE_COURSE_OBJECT_NAME = "course";
     @Autowired
     private CourseService courseService;
+    @Autowired
+    private CategoryService categoryService;
     @Autowired
     private UserService userService;
     @Autowired
@@ -74,7 +78,9 @@ public class CourseController {
     @RequestMapping(value = {"/courses/create"}, method = RequestMethod.GET)
     public ModelAndView create() {
         ModelAndView mav = new ModelAndView("classpath:views/create");
+        List<Category> categories = categoryService.getAll();
         mav.addObject(HEADER_TITLE, "Create course");
+        mav.addObject("categories",categories);
         mav.addObject(ONE_COURSE_OBJECT_NAME, new CourseForm());
         return mav;
     }
@@ -84,8 +90,10 @@ public class CourseController {
     public ModelAndView create(@Valid @ModelAttribute("course") CourseForm courseForm,
                                BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
+            List<Category> categories = categoryService.getAll();
             ModelAndView mav = new ModelAndView("classpath:views/create");
             mav.addObject(HEADER_TITLE, "Create course");
+            mav.addObject("categories",categories);
             mav.addObject("errors", bindingResult.getAllErrors());
             return mav;
         }
