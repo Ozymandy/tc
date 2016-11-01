@@ -27,6 +27,7 @@ public class CourseDTOConverter implements Converter<Course, CourseDTO> {
         dto.setAverageGrade(courseService.getAverageGrade(source));
         dto.setAttendeeCount(source.getAttendeeCourse().size());
         dto.setSubscribersCount(source.getSubscribers().size());
+        dto.setCategoryName(source.getCategory().getCategoryName());
         dto.setSubscribed(userService.isSubscribed(source));
         dto.setAttendee(userService.isAttendee(source));
         dto.setEvaluated(userService.isEvaluated(source));

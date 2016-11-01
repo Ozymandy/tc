@@ -6,6 +6,15 @@ public abstract class AbstractCourseDTO {
     private double averageGrade;
     private int subscribersCount;
     private int attendeeCount;
+    private String categoryName;
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
 
     public int getSubscribersCount() {
         return subscribersCount;

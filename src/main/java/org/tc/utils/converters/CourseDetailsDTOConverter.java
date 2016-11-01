@@ -28,6 +28,7 @@ public class CourseDetailsDTOConverter implements Converter<Course, CourseDetail
         dto.setLinks(source.getLinks());
         dto.setAttendeeCount(source.getAttendeeCourse().size());
         dto.setSubscribersCount(source.getSubscribers().size());
+        dto.setCategoryName(source.getCategory().getCategoryName());
         dto.setOwnerEmail(source.getOwner().getEmail());
         dto.setSubscribersCourse(courseService.getSubscribersEmails(source));
         dto.setAverageGrade(courseService.getAverageGrade(source));

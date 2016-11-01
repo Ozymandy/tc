@@ -29,6 +29,9 @@ public class Course {
     @ManyToOne
     @JoinColumn(name = "UserId")
     private User owner;
+    @ManyToOne
+    @JoinColumn(name = "CategoryId")
+    private Category category;
     @OneToMany
     @JoinColumn(name = "courseid")
     private List<SubscribersCourse> subscribers;
@@ -38,7 +41,6 @@ public class Course {
     @OneToMany
     @JoinColumn(name = "courseid")
     private List<Evaluation> evaluations;
-
     public Course(int id, String name, String description, String links,
                   Date date) {
         this.id = id;
@@ -47,12 +49,19 @@ public class Course {
         this.links = links;
         this.date = date;
     }
-
     public Course() {
     }
 
     public Course(int id) {
         this.id = id;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public List<Evaluation> getEvaluations() {
