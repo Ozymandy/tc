@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 import org.tc.dto.course.CourseDTO;
@@ -28,8 +29,10 @@ import org.tc.utils.converters.CourseConverter;
 import org.tc.utils.converters.CourseDTOConverter;
 import org.tc.utils.converters.CourseDetailsDTOConverter;
 
+import javax.enterprise.inject.Model;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class CourseController {
@@ -37,6 +40,7 @@ public class CourseController {
     private static final String UPDATE_VIEW_NAME = "update";
     private static final String COURSES_OBJECT_NAME = "courses";
     private static final String ONE_COURSE_OBJECT_NAME = "course";
+    private static final String CATEGORIES_OBJECT_NAME = "categories";
     @Autowired
     private CourseService courseService;
     @Autowired
@@ -55,12 +59,20 @@ public class CourseController {
     private EvaluationService evaluationService;
 
     @RequestMapping(value = {"/courses"}, method = RequestMethod.GET)
-    public ModelAndView index() {
+    public ModelAndView index(@ModelAttribute("category") Category category) {
         ModelAndView mav = new ModelAndView("classpath:views/index");
         mav.addObject(HEADER_TITLE, "Courses");
-        List<Course> course = courseService.getAll();
+        List<Course> course;
+        if (category.getCategoryName() == null ||
+                category.getCategoryName().equals("All")) {
+            course = courseService.getAll();
+        } else {
+            category = categoryService.getCategoryByName(category.getCategoryName());
+            course = category.getCourses();
+        }
+        mav.addObject(CATEGORIES_OBJECT_NAME, categoryService.getAll());
         List<CourseDTO> courses = courseDTOConverter
-                .convertAll(courseService.getAll());
+                .convertAll(course);
         mav.addObject(COURSES_OBJECT_NAME, courses);
         return mav;
     }
@@ -80,7 +92,7 @@ public class CourseController {
         ModelAndView mav = new ModelAndView("classpath:views/create");
         List<Category> categories = categoryService.getAll();
         mav.addObject(HEADER_TITLE, "Create course");
-        mav.addObject("categories",categories);
+        mav.addObject(CATEGORIES_OBJECT_NAME, categories);
         mav.addObject(ONE_COURSE_OBJECT_NAME, new CourseForm());
         return mav;
     }
@@ -93,7 +105,7 @@ public class CourseController {
             List<Category> categories = categoryService.getAll();
             ModelAndView mav = new ModelAndView("classpath:views/create");
             mav.addObject(HEADER_TITLE, "Create course");
-            mav.addObject("categories",categories);
+            mav.addObject(CATEGORIES_OBJECT_NAME, categories);
             mav.addObject("errors", bindingResult.getAllErrors());
             return mav;
         }
@@ -111,7 +123,7 @@ public class CourseController {
                     + UPDATE_VIEW_NAME);
             mav.addObject(HEADER_TITLE, "Update course");
             List<Category> categories = categoryService.getAll();
-            mav.addObject("categories",categories);
+            mav.addObject(CATEGORIES_OBJECT_NAME, categories);
             mav.addObject(ONE_COURSE_OBJECT_NAME, courseConverter
                     .reverseConvert(course));
             return mav;
@@ -128,7 +140,7 @@ public class CourseController {
                                    BindingResult bindingResult) {
         ModelAndView mav = new ModelAndView("classpath:views/" + UPDATE_VIEW_NAME);
         List<Category> categories = categoryService.getAll();
-        mav.addObject("categories",categories);
+        mav.addObject(CATEGORIES_OBJECT_NAME, categories);
         mav.addObject(ONE_COURSE_OBJECT_NAME, course);
         mav.addObject(HEADER_TITLE, "Update course");
         if (bindingResult.hasErrors()) {
@@ -182,7 +194,7 @@ public class CourseController {
     public ModelAndView evaluate(@PathVariable("courseId") int id) {
         Course course = courseService.getById(id);
         User currentUser = userService.getCurrentUser();
-        boolean isCurrentUserAttendee= userService.isAttendee(course);
+        boolean isCurrentUserAttendee = userService.isAttendee(course);
         boolean isCurrentUserEvaluated = userService.isEvaluated(course);
         if (isCurrentUserAttendee &&
                 !isCurrentUserEvaluated) {
@@ -226,12 +238,20 @@ public class CourseController {
         mav.addObject("subscribers", courseService.getSubscribers(course));
         return mav;
     }
-    @RequestMapping(value={"/mycourses"},method = RequestMethod.GET)
-    public ModelAndView myCourses(){
+
+    @RequestMapping(value = {"/mycourses"}, method = RequestMethod.GET)
+    public ModelAndView myCourses(@ModelAttribute("category") Category category) {
         ModelAndView mav = new ModelAndView("classpath:views/mycourses");
         mav.addObject(HEADER_TITLE, "My courses");
         List<Course> myCourses = userService.getMyCourseList();
-        mav.addObject(COURSES_OBJECT_NAME,courseDTOConverter.convertAll(myCourses));
+        if (category.getCategoryName() != null &&
+                !category.getCategoryName().equals("All")) {
+            myCourses = myCourses.stream().filter(course -> course.getCategory()
+                    .getCategoryName().equals(category.getCategoryName()))
+                    .collect(Collectors.toList());
+        }
+        mav.addObject(CATEGORIES_OBJECT_NAME, categoryService.getAll());
+        mav.addObject(COURSES_OBJECT_NAME, courseDTOConverter.convertAll(myCourses));
         return mav;
     }
 }

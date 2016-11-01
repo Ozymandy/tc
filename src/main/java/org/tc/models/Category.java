@@ -16,11 +16,10 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CategoryId")
-    private int CategoryId;
-    private String CategoryName;
+    private int categoryId;
+    private String categoryName;
     @OneToMany
     @JoinColumn(name = "CategoryId")
-
     private List<Course> courses;
 
     public List<Course> getCourses() {
@@ -32,18 +31,18 @@ public class Category {
     }
 
     public int getCategoryId() {
-        return CategoryId;
+        return categoryId;
     }
 
     public void setCategoryId(int categoryId) {
-        CategoryId = categoryId;
+        this.categoryId = categoryId;
     }
 
     public String getCategoryName() {
-        return CategoryName;
+        return categoryName;
     }
 
     public void setCategoryName(String categoryName) {
-        CategoryName = categoryName;
+        this.categoryName = categoryName;
     }
 }

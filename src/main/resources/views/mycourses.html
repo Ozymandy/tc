@@ -10,6 +10,16 @@
     <header th:replace="header :: header"></header>
     <div class="courses-top-control">
         <a class="btn" href="/courses">Courses</a>
+        <div class="search-box">
+            <form class="form-search" th:action="@{/mycourses}" th:object="${category}" method="GET">
+                <select id="categoryField" name="optionsListId" class="span5" th:field="*{categoryName}">
+                    <option th:value="All" th:text="All"></option>
+                    <option th:each="category : ${categories}" th:value="${category.getCategoryName()}"
+                            th:text="${category.getCategoryName()}">Options</option>
+                </select>
+                <button class="btn" type="submit">Apply</button>
+            </form>
+        </div>
     </div>
     <table class="table table-striped table-bordered">
         <thead>
