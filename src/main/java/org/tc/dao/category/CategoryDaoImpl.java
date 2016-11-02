@@ -14,11 +14,6 @@ public class CategoryDaoImpl implements CategoryDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Override
-    public void create(Category newCategory) {
-        entityManager.persist(newCategory);
-    }
-
     @SuppressWarnings("unchecked")
     @Override
     public List<Category> getAll() {
@@ -30,19 +25,5 @@ public class CategoryDaoImpl implements CategoryDao {
         return (Category) entityManager
                 .createQuery("from Category where CategoryName=:name")
                 .setParameter("name", categoryName).getSingleResult();
-    }
-
-    @Override
-    public Category getByCategoryId(int id) {
-        return entityManager.find(Category.class, id);
-    }
-
-    @Override
-    public void delete(Category category) {
-        if (entityManager.contains(category)) {
-            entityManager.remove(category);
-        } else {
-            entityManager.remove(entityManager.merge(category));
-        }
     }
 }

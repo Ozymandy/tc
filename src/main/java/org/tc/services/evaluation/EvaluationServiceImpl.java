@@ -17,35 +17,12 @@ public class EvaluationServiceImpl implements EvaluationService {
     @Autowired
     private EvaluationDao evaluationDao;
 
-    @Override
-    public void create(Evaluation newEvaluation) {
-        evaluationDao.create(newEvaluation);
-    }
-
-    @Override
-    public void delete(Evaluation evaluation) {
-        evaluationDao.delete(evaluation);
-    }
 
     @Override
     public List<Evaluation> getAll() {
         return evaluationDao.getAll();
     }
 
-    @Override
-    public List<Evaluation> getByUserId(int id) {
-        return evaluationDao.getByUserId(id);
-    }
-
-    @Override
-    public List<Evaluation> getByCourseId(int id) {
-        return evaluationDao.getByCourseId(id);
-    }
-
-    @Override
-    public void update(Evaluation changedEvaluation) {
-        evaluationDao.update(changedEvaluation);
-    }
 
     @Override
     public void evaluate(Course course, Evaluation evaluation) {

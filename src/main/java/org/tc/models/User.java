@@ -34,14 +34,15 @@ public class User {
     @JoinColumn(name = "RoleId")
     private Role role;
     @OneToMany
-    @JoinColumn(name = "userid")
-    private List<Course> ownerCourses;
+    @JoinColumn(name = "ownerid")
+    private List<Course> ownedCourses;
     @OneToMany
-    @JoinColumn(name = "userid")
+    @JoinColumn(name = "participantid")
     private List<SubscribersCourse> coursesSubscribe;
     @OneToMany
-    @JoinColumn(name = "userid")
+    @JoinColumn(name = "participantid")
     private List<AttendeeCourse> coursesAttend;
+
     public User(int id, String password, String username, String email,
                 Role role) {
         this.id = id;
@@ -50,6 +51,7 @@ public class User {
         this.email = email;
         this.role = role;
     }
+
     public User(int id) {
         this.id = id;
     }
@@ -57,12 +59,12 @@ public class User {
     public User() {
     }
 
-    public List<Course> getOwnerCourses() {
-        return ownerCourses;
+    public List<Course> getOwnedCourses() {
+        return ownedCourses;
     }
 
-    public void setOwnerCourses(List<Course> ownerCourses) {
-        this.ownerCourses = ownerCourses;
+    public void setOwnedCourses(List<Course> ownedCourses) {
+        this.ownedCourses = ownedCourses;
     }
 
     public List<AttendeeCourse> getCoursesAttend() {

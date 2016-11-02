@@ -26,7 +26,7 @@ public abstract class UserCourse {
 
     private int id;
     @ManyToOne
-    @JoinColumn(name = "userid")
+    @JoinColumn(name = "participantid")
     private User user;
     @ManyToOne
     @JoinColumn(name = "courseid")

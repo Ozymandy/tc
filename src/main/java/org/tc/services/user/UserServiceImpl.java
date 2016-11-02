@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.tc.dao.user.UserDao;
+import org.tc.models.Category;
 import org.tc.models.Course;
 import org.tc.models.User;
 
@@ -30,19 +31,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete(User user) {
-        userDao.delete(user);
-    }
-
-    @Override
     public List<User> getAll() {
         return userDao.getAll();
     }
 
-    @Override
-    public User getById(int id) {
-        return userDao.getById(id);
-    }
 
     @Override
     public User getCurrentUser() {
@@ -90,8 +82,15 @@ public class UserServiceImpl implements UserService {
         List<Course> myCourses = Stream.concat(user.getCoursesAttend().stream(),
                 user.getCoursesSubscribe().stream())
                 .map(course -> course.getCourse()).distinct().collect(Collectors.toList());
-        myCourses=Stream.concat(myCourses.stream(),
-                user.getOwnerCourses().stream()).collect(Collectors.toList());
+        myCourses = Stream.concat(myCourses.stream(),
+                user.getOwnedCourses().stream()).collect(Collectors.toList());
         return myCourses;
+    }
+
+    @Override
+    public List<Course> getMyCourseListByCategory(Category category) {
+        return getMyCourseList().stream().filter(course -> course.getCategory()
+                .getCategoryName().equals(category.getCategoryName()))
+                .collect(Collectors.toList());
     }
 }

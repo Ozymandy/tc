@@ -20,29 +20,8 @@ public class EvaluationDaoImpl implements EvaluationDao {
     }
 
     @Override
-    public void delete(Evaluation evaluation) {
-        if (entityManager.contains(evaluation)) {
-            entityManager.remove(evaluation);
-        } else {
-            entityManager.remove(entityManager.merge(evaluation));
-        }
-    }
-
-    @Override
     public List<Evaluation> getAll() {
         return entityManager.createQuery("from evaluation").getResultList();
-    }
-
-    @Override
-    public List<Evaluation> getByUserId(int id) {
-        return entityManager.createQuery("from evaluation where userid=:id")
-                .setParameter("id", id).getResultList();
-    }
-
-    @Override
-    public List<Evaluation> getByCourseId(int id) {
-        return entityManager.createQuery("from evaluation where courseid=:id")
-                .setParameter("id", id).getResultList();
     }
 
     @Override

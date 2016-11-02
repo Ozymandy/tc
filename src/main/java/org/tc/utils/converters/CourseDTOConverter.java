@@ -13,13 +13,12 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Component
-public class CourseDTOConverter implements Converter<Course, CourseDTO> {
+public class CourseDTOConverter{
     @Autowired
     private CourseService courseService;
     @Autowired
     private UserService userService;
 
-    @Override
     public CourseDTO convert(Course source) {
         CourseDTO dto = new CourseDTO();
         dto.setId(source.getId());

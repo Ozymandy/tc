@@ -9,16 +9,24 @@
 <div class="container">
     <header th:replace="header :: header"></header>
     <div class="courses-top-control">
-        <a class="btn" href="/mycourses">My Courses</a>
-        <a id="createCourseButton" class="btn btn-primary"
+        <a class="btn"
+           th:href="${#httpServletRequest.getRequestURI()=='/courses'?'/mycourses':'/courses'}"
+           th:text="${#httpServletRequest.getRequestURI()=='/courses'?'My courses':'Courses'}"></a>
+        <a th:if="${#httpServletRequest.getRequestURI()=='/courses'}"
+           id="createCourseButton" class="btn btn-primary"
            href="/courses/create" sec:authorize="hasAuthority('Lecturer')">Create</a>
         <div class="search-box">
-            <form class="form-search" th:action="@{/courses}" th:object="${category}" method="GET">
-                <select id="categoryField" name="optionsListId" class="span5" th:field="*{categoryName}">
+            <form class="form-search"
+                  th:action="${#httpServletRequest.getRequestURI()}"
+                  th:object="${category}" method="GET">
+                <select id="categoryField" name="optionsListId" class="span5"
+                        th:field="*{categoryName}">
                     <option th:value="All" th:text="All"></option>
-                    <option th:each="category : ${categories}" th:value="${category.getCategoryName()}"
+                    <option th:each="category : ${categories}"
+                            th:value="${category.getCategoryName()}"
                             th:text="${category.getCategoryName()}"
-                            >Options</option>
+                    >
+                    </option>
                 </select>
                 <button class="btn" type="submit">Apply</button>
             </form>
@@ -53,7 +61,8 @@
                 <a class="btn btn-mini"
                    th:if="${course.isSubscribed() and  not course.isAttendee()}"
                    th:href="'/courses/'+${course.getId()}+ '/attend'">Attend</a>
-                <a class="btn btn-mini" th:if="${course.isAttendee() and not course.isEvaluated()}"
+                <a class="btn btn-mini"
+                   th:if="${course.isAttendee() and not course.isEvaluated()}"
                    th:href="'/courses/'+${course.getId()}+ '/evaluate'">Evaluate</a>
             </td>
             <td sec:authorize="hasAuthority('Lecturer')"><a

@@ -12,10 +12,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryDao categoryDao;
 
-    @Override
-    public void create(Category newCategory) {
-        categoryDao.create(newCategory);
-    }
 
     @Override
     public List<Category> getAll() {
@@ -27,13 +23,4 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryDao.getCategoryByName(categoryName);
     }
 
-    @Override
-    public Category getCategoryById(int id) {
-        return categoryDao.getByCategoryId(id);
-    }
-
-    @Override
-    public void delete(Category category) {
-        categoryDao.delete(category);
-    }
 }

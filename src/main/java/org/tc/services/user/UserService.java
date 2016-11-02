@@ -1,5 +1,6 @@
 package org.tc.services.user;
 
+import org.tc.models.Category;
 import org.tc.models.Course;
 import org.tc.models.User;
 
@@ -9,11 +10,7 @@ public interface UserService {
 
     void create(User newUser);
 
-    void delete(User user);
-
     List<User> getAll();
-
-    User getById(int id);
 
     User getCurrentUser();
 
@@ -28,4 +25,6 @@ public interface UserService {
     boolean isEvaluated(Course course);
 
     List<Course> getMyCourseList();
+
+    List<Course> getMyCourseListByCategory(Category category);
 }

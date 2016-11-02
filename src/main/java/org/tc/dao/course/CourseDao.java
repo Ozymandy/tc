@@ -13,7 +13,5 @@ public interface CourseDao {
 
     Course getById(int id);
 
-    Course getByName(String courseName);
-
     void update(Course changedCourse);
 }

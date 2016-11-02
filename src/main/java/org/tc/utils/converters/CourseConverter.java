@@ -10,15 +10,15 @@ import org.tc.services.course.CourseService;
 import org.tc.services.user.UserService;
 
 @Component
-public class CourseConverter implements Converter<CourseForm, Course> {
+public class CourseConverter {
     @Autowired
     private CategoryService categoryService;
     @Autowired
     private UserService userService;
     @Autowired
     private CourseService courseService;
-    @Override
-    public Course convert(CourseForm source) {
+
+    public Course convertToCourse(CourseForm source) {
         Course course = new Course();
         course.setName(source.getName());
         course.setDescription(source.getDescription());
@@ -29,7 +29,8 @@ public class CourseConverter implements Converter<CourseForm, Course> {
         course.setOwner(userService.getByName(source.getUser()));
         return course;
     }
-    public CourseForm reverseConvert(Course course){
+
+    public CourseForm convertToCourseForm(Course course) {
         CourseForm courseForm = new CourseForm();
         courseForm.setDescription(course.getDescription());
         courseForm.setLinks(course.getLinks());

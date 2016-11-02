@@ -2,8 +2,6 @@ package org.tc.controllers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -29,7 +27,10 @@ import java.util.List;
 
 @Controller
 public class UserController {
-
+    private static final String REGISTRATION_VIEW_NAME = "registration";
+    private static final String LOGOUT_VIEW_NAME = "logout";
+    private static final String LOGIN_VIEW_NAME = "login";
+    private static final String ERRORS_OBJECT_NAME = "errors";
     @Autowired
     private SecurityService securityService;
     @Autowired
@@ -44,7 +45,7 @@ public class UserController {
     @RequestMapping(value = {"/login"}, method = RequestMethod.GET)
     public ModelAndView login(@ModelAttribute("user") User user,
                               HttpServletRequest req) {
-        ModelAndView mav = new ModelAndView("classpath:views/login");
+        ModelAndView mav = new ModelAndView(LOGIN_VIEW_NAME);
         try {
             AuthValidationException validationException =
                     (AuthValidationException) req.getSession()
@@ -64,7 +65,7 @@ public class UserController {
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public ModelAndView registration(@ModelAttribute("newUser") RegistrationForm form) {
         List<Role> roles = roleService.getAll();
-        ModelAndView mav = new ModelAndView("classpath:views/registration");
+        ModelAndView mav = new ModelAndView(REGISTRATION_VIEW_NAME);
         mav.addObject("roles", roles);
         return mav;
     }
@@ -74,11 +75,11 @@ public class UserController {
             (@ModelAttribute("newUser") RegistrationForm form,
              BindingResult bindingResult) {
         userValidator.validate(form, bindingResult);
-        ModelAndView mav = new ModelAndView("classpath:views/registration");
+        ModelAndView mav = new ModelAndView(REGISTRATION_VIEW_NAME);
         if (bindingResult.hasErrors()) {
             List<Role> roles = roleService.getAll();
             mav.addObject("roles", roles);
-            mav.addObject("errors",bindingResult.getAllErrors());
+            mav.addObject(ERRORS_OBJECT_NAME, bindingResult.getAllErrors());
             return mav;
         }
         User newUser = userConverter.convert(form);
@@ -86,12 +87,11 @@ public class UserController {
         securityService.autologin(form.getUsername(), form.getPassword());
         return new ModelAndView(new RedirectView("/courses"));
     }
+
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public ModelAndView logoutGet(HttpServletRequest req) {
-        ModelAndView mav = new ModelAndView("classpath:views/logout");
-        Authentication auth = SecurityContextHolder
-                .getContext().getAuthentication();
-        String username = auth.getName();
+        ModelAndView mav = new ModelAndView(LOGOUT_VIEW_NAME);
+        String username = userService.getCurrentUser().getUsername();
         String back = req.getHeader("referer");
         mav.addObject("back", back);
         mav.addObject("username", username);

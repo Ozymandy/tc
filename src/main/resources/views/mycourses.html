@@ -21,43 +21,8 @@
             </form>
         </div>
     </div>
-    <table class="table table-striped table-bordered">
-        <thead>
-        <tr>
-            <th class="span1">Id</th>
-            <th>Course</th>
-            <th class="span3">Category</th>
-            <th class="span1">S/A</th>
-            <th class="span1">Grade</th>
-            <th class="span2">Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="course : ${courses}">
-            <td th:text="${course.getId()}"></td>
-            <td><a th:href="@{'/courses/'+${course.getId()}}"
-                   th:text="${course.getCourseName()}"></a></td>
-            <td th:text="${course.getCategoryName()}"></td>
-            <td>    <a th:href="@{'/courses/'+${course.getId()}+ '/participants'}"
-                   th:text="${course.getAttendeeSubscriber()}"></a>
-            </td>
-            <td th:text="${course.getAverageGrade()>0?course.getAverageGrade():''}"></td>
-            <td sec:authorize="hasAuthority('user')">
-                <a class="btn btn-mini"
-                   th:unless="${course.isSubscribed()}"
-                   th:href="'/courses/'+${course.getId()}+ '/subscribe'">Subscribe</a>
-                <a class="btn btn-mini"
-                   th:if="${course.isSubscribed() and  not course.isAttendee()}"
-                   th:href="'/courses/'+${course.getId()}+ '/attend'">Attend</a>
-                <a class="btn btn-mini" th:if="${course.isAttendee() and not course.isEvaluated()}"
-                   th:href="'/courses/'+${course.getId()}+ '/evaluate'">Evaluate</a>
-            </td>
-            <td sec:authorize="hasAuthority('Lecturer')"><a
-                    th:if="${course.getIsOwner()}" class="btn btn-mini"
-                    th:href="@{'/courses/'+${course.getId()}+'/update'}">Update</a>
-            </td>
-        </tr>
-        </tbody>
+    <table class="table table-striped table-bordered"
+           th:replace="course_list_table :: course_list_table">
     </table>
 </div>
 </body>

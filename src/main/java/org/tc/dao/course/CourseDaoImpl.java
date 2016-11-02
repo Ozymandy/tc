@@ -40,11 +40,6 @@ public class CourseDaoImpl implements CourseDao {
     }
 
     @Override
-    public Course getByName(String courseName) {
-        return null;
-    }
-
-    @Override
     public void update(Course changedCourse) {
         entityManager.merge(changedCourse);
     }

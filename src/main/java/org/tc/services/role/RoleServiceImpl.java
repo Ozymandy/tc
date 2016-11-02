@@ -12,15 +12,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Autowired
     private RoleDao roleDao;
-    @Override
-    public void create(Role newRole) {
-        roleDao.create(newRole);
-    }
 
-    @Override
-    public void delete(Role role) {
-        roleDao.delete(role);
-    }
 
     @Override
     public List<Role> getAll() {
@@ -28,18 +20,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Role getById(int id) {
-        return roleDao.getById(id);
-    }
-
-    @Override
     public Role getByName(String name) {
         return roleDao.getByName(name);
     }
 
-    @Override
-    public void update(Role changedRole) {
-        roleDao.update(changedRole);
-
-    }
 }

@@ -8,10 +8,10 @@ import org.tc.models.forms.RegistrationForm;
 import org.tc.services.role.RoleService;
 
 @Component
-public class UserConverter implements Converter<RegistrationForm,User> {
+public class UserConverter {
     @Autowired
     private RoleService roleService;
-    @Override
+
     public User convert(RegistrationForm source) {
         User user = new User();
         user.setPassword(source.getPassword());

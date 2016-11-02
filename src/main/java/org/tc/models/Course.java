@@ -27,7 +27,7 @@ public class Course {
     private String links;
     private Date date;
     @ManyToOne
-    @JoinColumn(name = "UserId")
+    @JoinColumn(name = "OwnerId")
     private User owner;
     @ManyToOne
     @JoinColumn(name = "CategoryId")

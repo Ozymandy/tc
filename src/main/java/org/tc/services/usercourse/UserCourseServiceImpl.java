@@ -21,35 +21,20 @@ public class UserCourseServiceImpl implements UserCourseService {
     private UserService userService;
 
     @Override
-    public void create(UserCourse newUserCourse) {
-        userCourseDao.create(newUserCourse);
-    }
-
-    @Override
-    public void delete(UserCourse userCourse) {
-        userCourseDao.delete(userCourse);
-    }
-
-    @Override
-    public void update(UserCourse changedUserCourse) {
-        userCourseDao.update(changedUserCourse);
-    }
-
-    @Override
     public void subscribe(Course course) {
         User user = userService.getCurrentUser();
         SubscribersCourse subscriber = new SubscribersCourse();
         subscriber.setUser(user);
         subscriber.setCourse(course);
-        this.create(subscriber);
+        userCourseDao.create(subscriber);
     }
 
     @Override
     public void attend(Course course) {
-        User  user = userService.getCurrentUser();
+        User user = userService.getCurrentUser();
         AttendeeCourse attendee = new AttendeeCourse();
         attendee.setCourse(course);
         attendee.setUser(user);
-        this.create(attendee);
+        userCourseDao.create(attendee);
     }
 }

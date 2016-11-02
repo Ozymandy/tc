@@ -22,32 +22,12 @@ public class UserDaoImpl implements UserDao {
         entityManager.persist(newUser);
     }
 
-    @Override
-    public void delete(User user) {
-        if (entityManager.contains(user)) {
-            entityManager.remove(user);
-        } else {
-            entityManager.remove(entityManager.merge(user));
-        }
-    }
-
     @SuppressWarnings("unchecked")
     @Override
     public List<User> getAll() {
         return entityManager.createQuery("from User").getResultList();
     }
 
-    @Override
-    public User getById(int id) {
-        return entityManager.find(User.class, id);
-    }
-
-    @Override
-    public User getByEmail(String email) {
-        return (User) entityManager
-                .createQuery("from User where user.email=:email")
-                .setParameter("email", email).getSingleResult();
-    }
 
     @Override
     public User getByName(String username) {
