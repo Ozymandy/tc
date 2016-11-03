@@ -48,9 +48,12 @@
             <td th:text="${course.getId()}"></td>
             <td><a th:href="@{'/courses/'+${course.getId()}}"
                    th:text="${course.getCourseName()}"></a>
-                <span sec:authorize="hasAuthority('Lecturer')" class="label"
-                      th:unless="${course.getState()==null}"
-                      th:text="${course.getState()}"></span></td>
+                <span sec:authorize="hasAnyAuthority('Lecturer','Manager')" class="label"
+                      th:if="${course.isDrafted()}">Draft</span>
+                <span sec:authorize="hasAnyAuthority('Lecturer','Manager')"
+                      class="label label-warning"
+                      th:if="${course.isProposal()}">Proposal</span>
+            </td>
             <td th:text="${course.getCategoryName()}"></td>
             <td>
                 <a th:href="@{'/courses/'+${course.getId()}+ '/participants'}"
@@ -69,7 +72,7 @@
                    th:href="'/courses/'+${course.getId()}+ '/evaluate'">Evaluate</a>
             </td>
             <td sec:authorize="hasAuthority('Lecturer')">
-                <div class="btn-group">
+                <div class="btn-group" th:unless="${course.isProposal()}">
                     <a th:if="${course.getIsOwner()}" class="btn btn-mini"
                        th:href="@{'/courses/'+${course.getId()}+'/update'}">Update</a>
                     <a th:if="${course.getIsOwner()}"

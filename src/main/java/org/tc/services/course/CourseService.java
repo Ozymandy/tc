@@ -31,4 +31,6 @@ public interface CourseService {
     boolean canViewCourse(Course course);
 
     void setProposal(Course course);
+
+    boolean isProposal(Course course);
 }

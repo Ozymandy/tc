@@ -130,7 +130,7 @@ public class CourseController {
             method = RequestMethod.GET)
     public ModelAndView updateGet(@PathVariable("id") int id) {
         Course course = courseService.getById(id);
-        if (courseService.isOwner(course)) {
+        if (courseService.isOwner(course)&&!courseService.isProposal(course)) {
             ModelAndView mav = new ModelAndView(UPDATE_VIEW_NAME);
             mav.addObject(HEADER_TITLE, "Update course");
             List<Category> categories = categoryService.getAll();
@@ -138,8 +138,9 @@ public class CourseController {
             mav.addObject(ONE_COURSE_OBJECT_NAME, courseConverter
                     .convertToCourseForm(course));
             return mav;
-        } else {
-            throw new CourseNotFoundException("Update course");
+        }
+        else {
+            return new ModelAndView(new RedirectView(ACCESS_DENIED_PAGE));
         }
     }
 

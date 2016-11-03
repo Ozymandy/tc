@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Component
-public class CourseDTOConverter{
+public class CourseDTOConverter {
     @Autowired
     private CourseService courseService;
     @Autowired
@@ -32,12 +32,14 @@ public class CourseDTOConverter{
         dto.setEvaluated(userService.isEvaluated(source));
         dto.setIsOwner(courseService.isOwner(source));
         dto.setState(source.getState());
+        dto.setProposal(courseService.isProposal(source));
+        dto.setDrafted(courseService.isDrafted(source));
         return dto;
     }
 
     public List<CourseDTO> convertAll(List<Course> courses) {
         Stream<Course> stream = courses.stream();
-        return stream.map(course -> {
+        return stream.filter(course -> courseService.canViewCourse(course)).map(course -> {
             return this.convert(course);
         })
                 .collect(Collectors.toList());

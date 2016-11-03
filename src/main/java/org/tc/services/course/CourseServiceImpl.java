@@ -64,7 +64,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public boolean canViewCourse(Course course) {
-        return isOwner(course) || !isDrafted(course);
+        return isOwner(course) || !(isDrafted(course) || isProposal(course));
     }
 
     @Override
@@ -72,6 +72,11 @@ public class CourseServiceImpl implements CourseService {
         Course courseForReview = courseDao.getById(course.getId());
         courseForReview.setState(PROPOSAL_COURSE);
         courseDao.update(courseForReview);
+    }
+
+    @Override
+    public boolean isProposal(Course course) {
+        return course.getState().equals(PROPOSAL_COURSE);
     }
 
     @Override
