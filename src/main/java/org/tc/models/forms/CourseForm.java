@@ -20,14 +20,14 @@ public class CourseForm {
     @NotEmpty(message = "Blank.Course.Category")
     private String category;
     private String user;
-    private int id;
+    private int courseId;
 
-    public int getId() {
-        return id;
+    public int getCourseId() {
+        return courseId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCourseId(int id) {
+        this.courseId = id;
     }
 
     public String getCategory() {

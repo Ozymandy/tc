@@ -68,13 +68,27 @@
                    th:if="${course.isAttendee() and not course.isEvaluated()}"
                    th:href="'/courses/'+${course.getId()}+ '/evaluate'">Evaluate</a>
             </td>
-            <td sec:authorize="hasAuthority('Lecturer')"><a
-                    th:if="${course.getIsOwner()}" class="btn btn-mini"
-                    th:href="@{'/courses/'+${course.getId()}+'/update'}">Update</a>
+            <td sec:authorize="hasAuthority('Lecturer')">
+                <div class="btn-group">
+                    <a th:if="${course.getIsOwner()}" class="btn btn-mini"
+                       th:href="@{'/courses/'+${course.getId()}+'/update'}">Update</a>
+                    <a th:if="${course.getIsOwner()}"
+                       class="btn dropdown-toggle btn-mini"
+                       data-toggle="dropdown" href="#"><span
+                            class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a th:href="@{'/courses/'+${course.getId()}+'/update'}">Send
+                                to Review</a>
+                        </li>
+                    </ul>
+                </div>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
+<script th:src="@{/resources/js/jquery-1.8.1.min.js}"></script>
+<script th:src="@{/resources/js/bootstrap-2.2.2.min.js}"></script>
 </body>
 </html>

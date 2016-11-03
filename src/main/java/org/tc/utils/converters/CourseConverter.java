@@ -23,7 +23,7 @@ public class CourseConverter {
         course.setName(source.getName());
         course.setDescription(source.getDescription());
         course.setLinks(source.getLinks());
-        course.setId(source.getId());
+        course.setId(source.getCourseId());
         course.setCategory(categoryService
                 .getCategoryByName(source.getCategory()));
         course.setOwner(userService.getByName(source.getUser()));
@@ -35,7 +35,7 @@ public class CourseConverter {
         courseForm.setDescription(course.getDescription());
         courseForm.setLinks(course.getLinks());
         courseForm.setName(course.getName());
-        courseForm.setId(course.getId());
+        courseForm.setCourseId(course.getId());
         return courseForm;
     }
 }

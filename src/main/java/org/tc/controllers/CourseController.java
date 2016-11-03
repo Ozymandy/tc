@@ -41,12 +41,12 @@ public class CourseController {
     private static final String ATTEND_VIEW_NAME = "attend";
     private static final String EVALUATE_VIEW_NAME = "evaluate";
     private static final String PARTICIPANTS_VIEW_NAME = "participants";
-    private static final String MYCOURSES_VIEW_NAME = "mycourses";
     private static final String COURSES_OBJECT_NAME = "courses";
     private static final String ONE_COURSE_OBJECT_NAME = "course";
     private static final String CATEGORIES_OBJECT_NAME = "categories";
     private static final String ERRORS_OBJECT_NAME = "errors";
     private static final String EVALUATION_OBJECT_NAME = "evaluation";
+    private static final String ACCESS_DENIED_PAGE = "/403";
     @Autowired
     private CourseService courseService;
     @Autowired
@@ -94,7 +94,7 @@ public class CourseController {
             mav.addObject(ONE_COURSE_OBJECT_NAME, courseDetailsDTOConverter.convert(course));
             return mav;
         } else {
-            return new ModelAndView(new RedirectView("/403"));
+            return new ModelAndView(new RedirectView(ACCESS_DENIED_PAGE));
         }
     }
 
@@ -172,7 +172,7 @@ public class CourseController {
             mav.addObject(ONE_COURSE_OBJECT_NAME, course);
             return mav;
         } else {
-            return new ModelAndView(new RedirectView("/403"));
+            return new ModelAndView(new RedirectView(ACCESS_DENIED_PAGE));
         }
     }
 
@@ -194,7 +194,7 @@ public class CourseController {
             mav.addObject(ONE_COURSE_OBJECT_NAME, course);
             return mav;
         } else {
-            return new ModelAndView(new RedirectView("/403"));
+            return new ModelAndView(new RedirectView(ACCESS_DENIED_PAGE));
         }
     }
 
@@ -222,7 +222,7 @@ public class CourseController {
             mav.addObject(EVALUATION_OBJECT_NAME, new Evaluation());
             return mav;
         } else {
-            return new ModelAndView(new RedirectView("/403"));
+            return new ModelAndView(new RedirectView(ACCESS_DENIED_PAGE));
         }
     }
 
@@ -255,7 +255,7 @@ public class CourseController {
             mav.addObject(ONE_COURSE_OBJECT_NAME, course);
             return mav;
         } else {
-            return new ModelAndView(new RedirectView("/403"));
+            return new ModelAndView(new RedirectView(ACCESS_DENIED_PAGE));
         }
     }
 
@@ -271,5 +271,13 @@ public class CourseController {
         mav.addObject(CATEGORIES_OBJECT_NAME, categoryService.getAll());
         mav.addObject(COURSES_OBJECT_NAME, courseDTOConverter.convertAll(myCourses));
         return mav;
+    }
+
+    @RequestMapping(value = "/send_to_review/{id}", method = RequestMethod.GET)
+    public ModelAndView sendToReview(@PathVariable("id") int id) {
+        Course course = new Course();
+        course.setId(id);
+        courseService.setProposal(course);
+        return new ModelAndView(new RedirectView("/courses"));
     }
 }

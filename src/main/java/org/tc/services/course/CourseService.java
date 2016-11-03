@@ -29,4 +29,6 @@ public interface CourseService {
     boolean isDrafted(Course course);
 
     boolean canViewCourse(Course course);
+
+    void setProposal(Course course);
 }

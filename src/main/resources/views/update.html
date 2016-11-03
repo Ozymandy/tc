@@ -2,42 +2,53 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/style.css}"/>
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/resources/css/style.css}"/>
     <title>Update course</title>
 </head>
 <body>
 <div class="container">
-    <header th:replace="header :: header" ></header>
+    <header th:replace="header :: header"></header>
     <div class="alert alert-error" th:if="${errors}">
         <div>
             <strong>Okay, Houston, we've had a problem here.</strong>
         </div>
         <ul>
-            <li th:each="error, iterationStatus : ${errors}"  th:text="${#messages.msg(error.getDefaultMessage())}">.</li>
+            <li th:each="error, iterationStatus : ${errors}"
+                th:text="${#messages.msg(error.getDefaultMessage())}">.
+            </li>
         </ul>
     </div>
-    <form class="form-horizontal" th:action="@{'/courses/'+${course.getId()}+'/update'}" th:object="${course}" method="POST">
+    <form class="form-horizontal"
+          th:action="@{'/courses/'+${course.getCourseId()}+'/update'}"
+          th:object="${course}" method="POST">
         <fieldset>
             <div class="control-group">
                 <label class="control-label">Name</label>
                 <div class="controls">
-                    <input id="titleField" class="span5" type="text" th:field="*{name}" th:value="${course.getName()}"/>
+                    <input id="titleField" class="span5" type="text"
+                           th:field="*{name}" th:value="${course.getName()}"/>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label">Category</label>
                 <div class="controls">
-                    <select id="categoryField" name="optionsListId" class="span5" th:field="*{category}">
-                        <option th:each="category : ${categories}" th:value="${category.getCategoryName()}"
+                    <select id="categoryField" name="optionsListId"
+                            class="span5" th:field="*{category}">
+                        <option th:each="category : ${categories}"
+                                th:value="${category.getCategoryName()}"
                                 th:text="${category.getCategoryName()}"
-                                th:selected="${categories.contains(category.getCategoryName())}">Options</option>
+                                th:selected="${categories.contains(category.getCategoryName())}">
+                            Options
+                        </option>
                     </select>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label">Description</label>
                 <div class="controls">
-                    <textarea id="descriptionField" class="span5" rows="3" th:field="*{description}" th:inline="text">
+                    <textarea id="descriptionField" class="span5" rows="3"
+                              th:field="*{description}" th:inline="text">
                         [[${course.getDescription()}]]
                     </textarea>
                 </div>
@@ -45,13 +56,20 @@
             <div class="control-group">
                 <label class="control-label">Links</label>
                 <div class="controls">
-                    <textarea id="linksField" class="span5" rows="3" th:field="*{links}" th:inline="text" >
+                    <textarea id="linksField" class="span5" rows="3"
+                              th:field="*{links}" th:inline="text">
                         [[${course.getLinks()}]]
                     </textarea>
                 </div>
             </div>
             <div class="form-actions">
-                <button id="updateButton" class="btn btn-primary" type="submit">Update</button>
+                <button id="updateButton" class="btn btn-primary" type="submit">
+                    Update
+                </button>
+                <a th:href="@{'/send_to_review/'+${course.getCourseId()}}" th:object="${course}"
+                        id="reviewButton" class="btn btn-warning">
+                    Review
+                </a>
                 <a class="btn" href="/courses">Cancel</a>
             </div>
         </fieldset>
