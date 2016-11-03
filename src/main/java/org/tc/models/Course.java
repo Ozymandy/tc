@@ -41,6 +41,9 @@ public class Course {
     @OneToMany
     @JoinColumn(name = "courseid")
     private List<Evaluation> evaluations;
+    @Column(name = "State")
+    private String state;
+
     public Course(int id, String name, String description, String links,
                   Date date) {
         this.id = id;
@@ -49,11 +52,20 @@ public class Course {
         this.links = links;
         this.date = date;
     }
+
     public Course() {
     }
 
     public Course(int id) {
         this.id = id;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 
     public Category getCategory() {

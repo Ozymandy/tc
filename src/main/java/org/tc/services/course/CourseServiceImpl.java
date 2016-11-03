@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 @Service("courseService")
 public class CourseServiceImpl implements CourseService {
+    private static final String DRAFT_COURSE = "Draft";
     @Autowired
     private CourseDao courseDao;
     @Autowired
@@ -21,6 +22,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public void create(Course newCourse) {
+        newCourse.setState(DRAFT_COURSE);
         courseDao.create(newCourse);
     }
 
@@ -52,6 +54,16 @@ public class CourseServiceImpl implements CourseService {
         changedCourseWithoutDelta.setLinks(changedCourse.getLinks());
         changedCourseWithoutDelta.setName(changedCourse.getName());
         courseDao.update(changedCourseWithoutDelta);
+    }
+
+    @Override
+    public boolean isDrafted(Course course) {
+        return course.getState().equals(DRAFT_COURSE);
+    }
+
+    @Override
+    public boolean canViewCourse(Course course) {
+        return isOwner(course) || !isDrafted(course);
     }
 
     @Override

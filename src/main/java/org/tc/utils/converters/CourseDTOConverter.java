@@ -31,6 +31,7 @@ public class CourseDTOConverter{
         dto.setAttendee(userService.isAttendee(source));
         dto.setEvaluated(userService.isEvaluated(source));
         dto.setIsOwner(courseService.isOwner(source));
+        dto.setState(source.getState());
         return dto;
     }
 

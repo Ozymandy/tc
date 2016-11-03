@@ -47,7 +47,10 @@
         <tr th:each="course : ${courses}">
             <td th:text="${course.getId()}"></td>
             <td><a th:href="@{'/courses/'+${course.getId()}}"
-                   th:text="${course.getCourseName()}"></a></td>
+                   th:text="${course.getCourseName()}"></a>
+                <span sec:authorize="hasAuthority('Lecturer')" class="label"
+                      th:unless="${course.getState()==null}"
+                      th:text="${course.getState()}"></span></td>
             <td th:text="${course.getCategoryName()}"></td>
             <td>
                 <a th:href="@{'/courses/'+${course.getId()}+ '/participants'}"

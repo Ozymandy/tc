@@ -25,4 +25,8 @@ public interface CourseService {
     List<String> getSubscribersEmails(Course course);
 
     List<String> getAttendeeEmails(Course course);
+
+    boolean isDrafted(Course course);
+
+    boolean canViewCourse(Course course);
 }

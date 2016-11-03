@@ -7,6 +7,15 @@ public abstract class AbstractCourseDTO {
     private int subscribersCount;
     private int attendeeCount;
     private String categoryName;
+    private String state;
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
 
     public String getCategoryName() {
         return categoryName;
