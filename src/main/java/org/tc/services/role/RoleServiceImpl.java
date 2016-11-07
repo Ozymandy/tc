@@ -4,11 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.tc.dao.role.RoleDao;
 import org.tc.models.Role;
+import org.tc.models.User;
 
 import java.util.List;
 
 @Service
 public class RoleServiceImpl implements RoleService {
+    //maybe better to get by id?
+    private static final String KNOWLEDGE_MANAGER_ROLE_NAME ="Knowledge Manager";
+    private static final String DEPARTMENT_MANAGER_ROLE_NAME = "Department Manager";
+
 
     @Autowired
     private RoleDao roleDao;
@@ -22,6 +27,16 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Role getByName(String name) {
         return roleDao.getByName(name);
+    }
+
+    @Override
+    public User getKnowledgeManager() {
+        return getByName(KNOWLEDGE_MANAGER_ROLE_NAME).getUserListByRole().get(0);
+    }
+
+    @Override
+    public User getDepartmentManager() {
+        return getByName(DEPARTMENT_MANAGER_ROLE_NAME).getUserListByRole().get(0);
     }
 
 }

@@ -27,4 +27,6 @@ public interface UserService {
     List<Course> getMyCourseList();
 
     List<Course> getMyCourseListByCategory(Category category);
+
+    boolean isManager();
 }

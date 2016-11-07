@@ -48,9 +48,10 @@
             <td th:text="${course.getId()}"></td>
             <td><a th:href="@{'/courses/'+${course.getId()}}"
                    th:text="${course.getCourseName()}"></a>
-                <span sec:authorize="hasAnyAuthority('Lecturer','Manager')" class="label"
+                <span sec:authorize="hasAnyAuthority('Lecturer','Knowledge Manager', 'Department Manager')"
+                      class="label"
                       th:if="${course.isDrafted()}">Draft</span>
-                <span sec:authorize="hasAnyAuthority('Lecturer','Manager')"
+                <span sec:authorize="hasAnyAuthority('Lecturer','Knowledge Manager', 'Department Manager')"
                       class="label label-warning"
                       th:if="${course.isProposal()}">Proposal</span>
             </td>
@@ -86,6 +87,11 @@
                         </li>
                     </ul>
                 </div>
+            </td>
+            <td sec:authorize="hasAnyAuthority('Knowledge Manager','Department Manager')">
+                <a class="btn btn-mini"
+                   th:if="${course.isProposal()}"
+                   th:href="'/courses/'+${course.getId()}+ '/approve'">Approve</a>
             </td>
         </tr>
         </tbody>

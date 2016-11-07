@@ -66,8 +66,9 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public boolean canViewCourse(Course course) {
-        return isOwner(course) || !(isDrafted(course) || isProposal(course));
+    public boolean canBeViewedCourse(Course course) {
+        return isOwner(course) || !(isDrafted(course) || isProposal(course))
+                ||userService.isManager();
     }
 
     @Override

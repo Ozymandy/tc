@@ -93,4 +93,11 @@ public class UserServiceImpl implements UserService {
                 .getCategoryName().equals(category.getCategoryName()))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public boolean isManager() {
+        User user = getCurrentUser();
+        return user.getRole().getName().equals("Knowledge Manager") ||
+                user.getRole().getName().equals("Department Manager");
+    }
 }

@@ -1,7 +1,6 @@
 package org.tc.utils.converters;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 import org.tc.dto.course.CourseDTO;
 import org.tc.models.Course;
@@ -39,7 +38,7 @@ public class CourseDTOConverter {
 
     public List<CourseDTO> convertAll(List<Course> courses) {
         Stream<Course> stream = courses.stream();
-        return stream.filter(course -> courseService.canViewCourse(course)).map(course -> {
+        return stream.filter(course -> courseService.canBeViewedCourse(course)).map(course -> {
             return this.convert(course);
         })
                 .collect(Collectors.toList());
