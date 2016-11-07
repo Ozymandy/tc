@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.tc.dao.course.CourseDao;
 import org.tc.exceptions.CourseNotFoundException;
+import org.tc.mail.MailSenderImpl;
 import org.tc.models.Course;
 import org.tc.models.User;
 import org.tc.models.usercourse.SubscribersCourse;
@@ -16,6 +17,8 @@ import java.util.stream.Collectors;
 public class CourseServiceImpl implements CourseService {
     private static final String DRAFT_COURSE = "Draft";
     private static final String PROPOSAL_COURSE = "Proposal";
+    @Autowired
+    private MailSenderImpl mailSender;
     @Autowired
     private CourseDao courseDao;
     @Autowired
@@ -71,6 +74,7 @@ public class CourseServiceImpl implements CourseService {
     public void setProposal(Course course) {
         Course courseForReview = courseDao.getById(course.getId());
         courseForReview.setState(PROPOSAL_COURSE);
+        //mailSender.send(course);
         courseDao.update(courseForReview);
     }
 

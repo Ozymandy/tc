@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+</head>
+<body>
+<p><span th:text="${course.getOwnerEmail()}"></span> had created a new course.
+</p>
+--------------------------
+<div class="control-group">
+    <div class="control-label">Name</div>
+    <div class="controls text"
+         th:text="${course.getCourseName()}"></div>
+</div>
+<div class="control-group">
+    <div class="control-label">Category</div>
+    <div class="controls text"
+         th:text="${course.getCategoryName()}"></div>
+</div>
+<div class="control-group">
+    <div class="control-label">Description</div>
+    <div class="controls text"
+         th:text="${course.getDescription()}"></div>
+</div>
+<div class="control-group">
+    <div class="control-label">Links</div>
+    <div class="controls text"
+         th:text="${course.getLinks()}"></div>
+</div>
+--------------------------
+<p>Please, review this course at <a href="#">link</a></p>
+</body>
+</html>

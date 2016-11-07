@@ -1,6 +1,7 @@
 package org.tc.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 import org.tc.dto.course.CourseDTO;
 import org.tc.exceptions.CourseNotFoundException;
+import org.tc.mail.MailSenderImpl;
 import org.tc.models.Category;
 import org.tc.models.Course;
 import org.tc.models.Evaluation;
