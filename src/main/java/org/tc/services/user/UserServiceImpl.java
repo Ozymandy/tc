@@ -17,6 +17,8 @@ import java.util.stream.Stream;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private static final String KNOWLEDGE_MANAGER_ROLE_NAME = "Knowledge Manager";
+    private static final String DEPARTMENT_MANAGER_ROLE_NAME = "Department Manager";
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
@@ -96,8 +98,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isManager() {
-        User user = getCurrentUser();
-        return user.getRole().getName().equals("Knowledge Manager") ||
-                user.getRole().getName().equals("Department Manager");
+        return isDepartmentManager() || isKnowLedgeManager();
     }
+
+    @Override
+    public boolean isKnowLedgeManager() {
+        User user = getCurrentUser();
+        return user.getRole().getName().equals(KNOWLEDGE_MANAGER_ROLE_NAME);
+    }
+
+    @Override
+    public boolean isDepartmentManager() {
+        User user = getCurrentUser();
+        return user.getRole().getName().equals(DEPARTMENT_MANAGER_ROLE_NAME);
+    }
+
 }

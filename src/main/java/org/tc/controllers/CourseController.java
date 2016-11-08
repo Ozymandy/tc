@@ -13,11 +13,14 @@ import org.springframework.web.servlet.view.RedirectView;
 import org.tc.dto.course.CourseDTO;
 import org.tc.models.Category;
 import org.tc.models.Course;
+import org.tc.models.Decision;
 import org.tc.models.Evaluation;
 import org.tc.models.User;
 import org.tc.models.forms.CourseForm;
+import org.tc.models.forms.DecisionForm;
 import org.tc.services.category.CategoryService;
 import org.tc.services.course.CourseService;
+import org.tc.services.decision.DecisionService;
 import org.tc.services.evaluation.EvaluationService;
 import org.tc.services.role.RoleService;
 import org.tc.services.user.UserService;
@@ -25,6 +28,7 @@ import org.tc.services.usercourse.UserCourseService;
 import org.tc.utils.converters.CourseConverter;
 import org.tc.utils.converters.CourseDTOConverter;
 import org.tc.utils.converters.CourseDetailsDTOConverter;
+import org.tc.utils.converters.DecisionConverter;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -48,6 +52,8 @@ public class CourseController {
     private static final String APPROVE_VIEW_NAME = "approve";
     private static final String KNOWLEDGE_MANAGER_OBJECT_NAME = "km";
     private static final String DEPARTMENT_MANAGER_OBJECT_NAME = "dm";
+    private static final String IS_KNOWLEDGE_MANAGER_OBJECT_NAME = "isKnowledgeManager";
+    private static final String IS_DEPARTMENT_MANAGER_OBJECT_NAME = "isDepartmentManager";
     private static final String ACCESS_DENIED_PAGE = "/403";
     @Autowired
     private CourseService courseService;
@@ -55,6 +61,8 @@ public class CourseController {
     private RoleService roleService;
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private DecisionConverter decisionConverter;
     @Autowired
     private UserService userService;
     @Autowired
@@ -67,6 +75,8 @@ public class CourseController {
     private UserCourseService userCourseService;
     @Autowired
     private EvaluationService evaluationService;
+    @Autowired
+    private DecisionService decisionService;
 
     @RequestMapping(value = {"/courses"}, method = RequestMethod.GET)
     public ModelAndView index(@ModelAttribute("category") Category category) {
@@ -290,9 +300,13 @@ public class CourseController {
         Course course = courseService.getById(id);
         if (courseService.isProposal(course) && userService.isManager()) {
             ModelAndView mav = new ModelAndView(APPROVE_VIEW_NAME);
+            //maybe better to implement this by constructor DecisionForm(Course course)
+            mav.addObject("decision",decisionConverter.createForm(course));
             mav.addObject(HEADER_TITLE, "Approve Course");
             mav.addObject(KNOWLEDGE_MANAGER_OBJECT_NAME, roleService.getKnowledgeManager().getUsername());
             mav.addObject(DEPARTMENT_MANAGER_OBJECT_NAME, roleService.getDepartmentManager().getUsername());
+            mav.addObject(IS_KNOWLEDGE_MANAGER_OBJECT_NAME,userService.isKnowLedgeManager());
+            mav.addObject(IS_DEPARTMENT_MANAGER_OBJECT_NAME,userService.isDepartmentManager());
             mav.addObject(ONE_COURSE_OBJECT_NAME, courseDetailsDTOConverter.convert(course));
             return mav;
         } else {

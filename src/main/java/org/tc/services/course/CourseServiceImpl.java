@@ -75,7 +75,7 @@ public class CourseServiceImpl implements CourseService {
     public void setProposal(Course course) {
         Course courseForReview = courseDao.getById(course.getId());
         courseForReview.setState(PROPOSAL_COURSE);
-        //mailSender.send(course);
+        mailSender.send(course);
         courseDao.update(courseForReview);
     }
 

@@ -44,6 +44,18 @@ public class Course {
     @Column(name = "State")
     private String state;
 
+    public List<Decision> getDecisions() {
+        return decisions;
+    }
+
+    public void setDecisions(List<Decision> decisions) {
+        this.decisions = decisions;
+    }
+
+    @OneToMany
+    @JoinColumn(name="courseid")
+    private List<Decision> decisions;
+
     public Course(int id, String name, String description, String links,
                   Date date) {
         this.id = id;

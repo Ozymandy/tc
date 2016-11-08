@@ -2,31 +2,39 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/style.css}"/>
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/resources/css/style.css}"/>
 </head>
 <body>
 <div class="container">
     <header th:replace="header :: header"></header>
-    <form class="form-horizontal">
+    <form class="form-horizontal"
+          th:action="@{'/courses/'+${course.getId()}+'/approve'}"
+          th:object="${decision}" method="POST">
         <div class="control-group">
             <div class="control-label">Name</div>
-            <div id="titleField" class="controls text" th:text="${course.getCourseName()}"></div>
+            <div id="titleField" class="controls text"
+                 th:text="${course.getCourseName()}"></div>
         </div>
         <div class="control-group">
             <div class="control-label">Lecturer</div>
-            <div id="ownerField" class="controls text" th:text="${course.getOwnerEmail()}"></div>
+            <div id="ownerField" class="controls text"
+                 th:text="${course.getOwnerEmail()}"></div>
         </div>
         <div class="control-group">
             <div class="control-label">Category</div>
-            <div id="categoryField" class="controls text" th:text="${course.getCategoryName()}"></div>
+            <div id="categoryField" class="controls text"
+                 th:text="${course.getCategoryName()}"></div>
         </div>
         <div class="control-group">
             <div class="control-label">Description</div>
-            <div id="descriptionField" class="controls text" th:text="${course.getDescription()}"></div>
+            <div id="descriptionField" class="controls text"
+                 th:text="${course.getDescription()}"></div>
         </div>
         <div class="control-group">
             <div class="control-label">Links</div>
-            <div id="linksField" class="controls text" th:text="${course.getLinks()}"></div>
+            <div id="linksField" class="controls text"
+                 th:text="${course.getLinks()}"></div>
         </div>
         <div class="control-group">
             <div class="control-label">Department Manager</div>
@@ -35,17 +43,20 @@
         <div class="control-group">
             <label class="control-label">Decision</label>
             <div class="controls">
-                <select class="span5">
-                    <option>Select one</option>
-                    <option>Appove</option>
-                    <option>Reject</option>
+                <select class="span5" th:field="*{decision}"
+                        th:disabled="${isKnowledgeManager}">
+                    <option th:value="''">Select one</option>
+                    <option th:value="Approve">Appove</option>
+                    <option th:value="Reject">Reject</option>
                 </select>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">Reason</label>
             <div class="controls">
-                <textarea class="span5" rows="3"></textarea>
+                <textarea class="span5" rows="3"
+                          th:field="*{reason}"
+                          th:disabled="${isKnowledgeManager}"></textarea>
             </div>
         </div>
         <div class="control-group">
@@ -55,22 +66,24 @@
         <div class="control-group">
             <label class="control-label">Decision</label>
             <div class="controls">
-                <select class="span5">
-                    <option>Select one</option>
-                    <option>Appove</option>
-                    <option>Reject</option>
+                <select class="span5" th:field="*{decision}"
+                        th:disabled="${isDepartmentManager}">
+                    <option th:value="''">Select one</option>
+                    <option th:value="Approve">Appove</option>
+                    <option th:value="Reject">Reject</option>
                 </select>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label">Reason</label>
             <div class="controls">
-                <textarea class="span5"></textarea>
+                <textarea class="span5" th:field="*{reason}"
+                          th:disabled="${isDepartmentManager}"></textarea>
             </div>
         </div>
         <div class="form-actions actions-without-form">
-            <button class="btn btn-primary">Save</button>
-            <a class="btn" href="courses.html">Back</a>
+            <button class="btn btn-primary" type="submit">Save</button>
+            <a class="btn" href="/courses">Back</a>
         </div>
     </form>
 </div>

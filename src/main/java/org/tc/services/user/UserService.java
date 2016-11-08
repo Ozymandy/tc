@@ -29,4 +29,8 @@ public interface UserService {
     List<Course> getMyCourseListByCategory(Category category);
 
     boolean isManager();
+
+    boolean isKnowLedgeManager();
+
+    boolean isDepartmentManager();
 }

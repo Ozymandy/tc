@@ -42,6 +42,9 @@ public class User {
     @OneToMany
     @JoinColumn(name = "participantid")
     private List<AttendeeCourse> coursesAttend;
+    @OneToMany
+    @JoinColumn(name = "UserId")
+    private List<Decision> madeDecisions;
 
     public User(int id, String password, String username, String email,
                 Role role) {
@@ -57,6 +60,14 @@ public class User {
     }
 
     public User() {
+    }
+
+    public List<Decision> getMadeDecisions() {
+        return madeDecisions;
+    }
+
+    public void setMadeDecisions(List<Decision> madeDecisions) {
+        this.madeDecisions = madeDecisions;
     }
 
     public List<Course> getOwnedCourses() {
