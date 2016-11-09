@@ -108,6 +108,7 @@ public class CourseServiceImpl implements CourseService {
                 mailSender.sendNewCourseNotification(reviewdCourse);
                 setNew(reviewdCourse);
             } else {
+                mailSender.sendRejectedCourseNotification(course);
                 setRejected(reviewdCourse);
             }
         }

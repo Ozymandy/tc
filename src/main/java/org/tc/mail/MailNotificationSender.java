@@ -3,10 +3,6 @@ package org.tc.mail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.format.datetime.standard.DateTimeContext;
-import org.springframework.format.datetime.standard.DateTimeContextHolder;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -25,7 +21,8 @@ public class MailNotificationSender {
             "Course Announcement";
     private static final String COURSE_APPROVAL_UPDATE_SUBJECT =
             "Course Approval Update";
-    private static final String NEW_COURSE_NOTIFICATION = "New Course Added";
+    private static final String NEW_COURSE_NOTIFICATION_SUBJECT = "New Course Added";
+    private static final String REJECTED_COURSE_NOTIFICATION_SUBJECT = "Course rejected";
     @Autowired
     private JavaMailSender javaMailSender;
     @Autowired
@@ -58,9 +55,9 @@ public class MailNotificationSender {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setSubject(COURSE_APPROVAL_UPDATE_SUBJECT);
             helper.setTo(decision.getCourseForReview().getOwner().getEmail());
-            String[] emailsTo = {roleService.getDepartmentManager().getEmail(),
+            String[] emailsCc = {roleService.getDepartmentManager().getEmail(),
                     roleService.getKnowledgeManager().getEmail()};
-            helper.setCc(emailsTo);
+            helper.setCc(emailsCc);
             helper.setText(contentBuilder.buildCourseApprovalUpdate(decision), true);
         } catch (MessagingException e) {
             LOG.warn("Message didn't send on courseId {0}", decision.getCourseForReview().getId());
@@ -72,12 +69,29 @@ public class MailNotificationSender {
         MimeMessage message = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setSubject(NEW_COURSE_NOTIFICATION);
-            String[] emailsTo = {roleService.getDepartmentManager().getEmail(),
+            helper.setSubject(NEW_COURSE_NOTIFICATION_SUBJECT);
+            String[] emailsCc = {roleService.getDepartmentManager().getEmail(),
                     roleService.getKnowledgeManager().getEmail()};
             helper.setTo(userService.getAllEmails());
-            helper.setCc("ozymandy.k@gmail.com");
+            helper.setCc(emailsCc);
             helper.setText(contentBuilder.buildNewCourseNotification(course), true);
+        } catch (MessagingException e) {
+            LOG.warn("Message didn't send on courseId {0}", course.getId());
+        }
+        javaMailSender.send(message);
+
+    }
+
+    public void sendRejectedCourseNotification(Course course) {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setSubject(REJECTED_COURSE_NOTIFICATION_SUBJECT);
+            helper.setTo(course.getOwner().getEmail());
+            String[] emailsCc = {roleService.getDepartmentManager().getEmail(),
+                    roleService.getKnowledgeManager().getEmail()};
+            helper.setCc(emailsCc);
+            helper.setText(contentBuilder.buildRejectedCourseNotification(course), true);
         } catch (MessagingException e) {
             LOG.warn("Message didn't send on courseId {0}", course.getId());
         }

@@ -32,7 +32,6 @@ import org.tc.utils.converters.CourseDTOConverter;
 import org.tc.utils.converters.CourseDetailsDTOConverter;
 import org.tc.utils.converters.DecisionConverter;
 
-import javax.enterprise.inject.Model;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -147,7 +146,6 @@ public class CourseController {
             method = RequestMethod.GET)
     public ModelAndView updateGet(@PathVariable("id") int id) {
         Course course = courseService.getById(id);
-        mailSender.sendNewCourseNotification(course);
         if (courseService.isOwner(course) && !courseService.isProposal(course)) {
             ModelAndView mav = new ModelAndView(UPDATE_VIEW_NAME);
             mav.addObject(HEADER_TITLE, "Update course");
