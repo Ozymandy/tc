@@ -33,4 +33,6 @@ public interface UserService {
     boolean isKnowLedgeManager();
 
     boolean isDepartmentManager();
+
+    boolean isVoted(Course course);
 }

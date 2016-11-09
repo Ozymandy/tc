@@ -1,50 +1,25 @@
 package org.tc.models.forms;
 
+import org.hibernate.validator.constraints.NotEmpty;
+import org.tc.models.Course;
+import org.tc.models.enums.DecisionEnum;
+
+import javax.validation.constraints.NotNull;
+
 public class DecisionForm {
-    private String manager;
-    private String decision;
+    @NotNull
+    private DecisionEnum decision;
+    @NotEmpty
     private String reason;
-    private int CourseId;
-    private boolean isCurrentUserKM;
-    private boolean isCurrentUserDM;
 
-    public boolean isCurrentUserKM() {
-        return isCurrentUserKM;
+    public DecisionForm() {
     }
 
-    public void setCurrentUserKM(boolean currentUserKM) {
-        isCurrentUserKM = currentUserKM;
-    }
-
-    public boolean isCurrentUserDM() {
-        return isCurrentUserDM;
-    }
-
-    public void setCurrentUserDM(boolean currentUserDM) {
-        isCurrentUserDM = currentUserDM;
-    }
-
-    public int getCourseId() {
-        return CourseId;
-    }
-
-    public void setCourseId(int courseId) {
-        CourseId = courseId;
-    }
-
-    public String getManager() {
-        return manager;
-    }
-
-    public void setManager(String manager) {
-        this.manager = manager;
-    }
-
-    public String getDecision() {
+    public DecisionEnum getDecision() {
         return decision;
     }
 
-    public void setDecision(String decision) {
+    public void setDecision(DecisionEnum decision) {
         this.decision = decision;
     }
 

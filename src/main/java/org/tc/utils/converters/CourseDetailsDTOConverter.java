@@ -33,12 +33,4 @@ public class CourseDetailsDTOConverter{
         dto.setAttendeeCourse(courseService.getAttendeeEmails(source));
         return dto;
     }
-
-    public List<CourseDetailsDTO> convertAll(List<Course> courses) {
-        Stream<Course> stream = courses.stream();
-        return stream.map(course -> {
-            return this.convert(course);
-        })
-                .collect(Collectors.toList());
-    }
 }

@@ -113,4 +113,12 @@ public class UserServiceImpl implements UserService {
         return user.getRole().getName().equals(DEPARTMENT_MANAGER_ROLE_NAME);
     }
 
+    @Override
+    public boolean isVoted(Course course) {
+        User currentUser = getCurrentUser();
+        return course.getDecisions().stream()
+                .anyMatch(decision ->
+                        decision.getManager().getId() == currentUser.getId());
+    }
+
 }

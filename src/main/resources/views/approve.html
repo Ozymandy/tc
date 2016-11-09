@@ -8,9 +8,19 @@
 <body>
 <div class="container">
     <header th:replace="header :: header"></header>
+    <div class="alert alert-error" th:if="${errors}">
+        <div>
+            <strong>Okay, Houston, we've had a problem here.</strong>
+        </div>
+        <ul>
+            <li th:each="error, iterationStatus : ${errors}"
+                th:text="${#messages.msg(error.getCodes()[0])}">.
+            </li>
+        </ul>
+    </div>
     <form class="form-horizontal"
           th:action="@{'/courses/'+${course.getId()}+'/approve'}"
-          th:object="${decision}" method="POST">
+          th:object="${decisionForm}" method="POST">
         <div class="control-group">
             <div class="control-label">Name</div>
             <div id="titleField" class="controls text"
@@ -38,16 +48,25 @@
         </div>
         <div class="control-group">
             <div class="control-label">Department Manager</div>
-            <div id="dmField" class="controls text" th:text="${dm}"></div>
+            <div id="dmField" class="controls text"
+                 th:text="${course.getDepartmentManager()}"></div>
+        </div>
+        <div class="control-group"
+             th:if="${course.getDepartmentManagerDecision()!=null}">
+            <div class="control-label">Department Manager's Decision</div>
+            <div class="controls text"
+                 th:text="${course.getDepartmentManagerDecision()}"></div>
         </div>
         <div class="control-group">
             <label class="control-label">Decision</label>
             <div class="controls">
                 <select class="span5" th:field="*{decision}"
-                        th:disabled="${isKnowledgeManager}">
+                        th:disabled="${course.isKnowledgeManager() or course.isVoted()}">
                     <option th:value="''">Select one</option>
-                    <option th:value="Approve">Appove</option>
-                    <option th:value="Reject">Reject</option>
+                    <option th:each="decision: ${T(org.tc.models.enums.DecisionEnum).values()}"
+                            th:value="${decision}"
+                            th:text="${decision.getValue()}"></option>
+                    >
                 </select>
             </div>
         </div>
@@ -56,21 +75,30 @@
             <div class="controls">
                 <textarea class="span5" rows="3"
                           th:field="*{reason}"
-                          th:disabled="${isKnowledgeManager}"></textarea>
+                          th:disabled="${course.isKnowledgeManager() or course.isVoted()}"></textarea>
             </div>
         </div>
         <div class="control-group">
             <div class="control-label">Knowledge Manager</div>
-            <div id="kmField" class="controls text" th:text="${km}"></div>
+            <div id="kmField" class="controls text"
+                 th:text="${course.getKnowledgeManager()}"></div>
+        </div>
+        <div class="control-group"
+             th:if="${course.getKnowledgeManagerDecision()!=null}">
+            <div class="control-label">Knowledge Manager's Decision</div>
+            <div class="controls text"
+                 th:text="${course.getKnowledgeManagerDecision()}"></div>
         </div>
         <div class="control-group">
             <label class="control-label">Decision</label>
             <div class="controls">
                 <select class="span5" th:field="*{decision}"
-                        th:disabled="${isDepartmentManager}">
+                        th:disabled="${course.isDepartmentManager() or course.isVoted()}">
                     <option th:value="''">Select one</option>
-                    <option th:value="Approve">Appove</option>
-                    <option th:value="Reject">Reject</option>
+                    <option th:each="decision: ${T(org.tc.models.enums.DecisionEnum).values()}"
+                            th:value="${decision}"
+                            th:text="${decision.getValue()}"></option>
+                    >
                 </select>
             </div>
         </div>
@@ -78,7 +106,7 @@
             <label class="control-label">Reason</label>
             <div class="controls">
                 <textarea class="span5" th:field="*{reason}"
-                          th:disabled="${isDepartmentManager}"></textarea>
+                          th:disabled="${course.isDepartmentManager() or course.isVoted()}"></textarea>
             </div>
         </div>
         <div class="form-actions actions-without-form">

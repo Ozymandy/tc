@@ -25,11 +25,13 @@ import org.tc.services.evaluation.EvaluationService;
 import org.tc.services.role.RoleService;
 import org.tc.services.user.UserService;
 import org.tc.services.usercourse.UserCourseService;
+import org.tc.utils.converters.CourseApproveDTOConverter;
 import org.tc.utils.converters.CourseConverter;
 import org.tc.utils.converters.CourseDTOConverter;
 import org.tc.utils.converters.CourseDetailsDTOConverter;
 import org.tc.utils.converters.DecisionConverter;
 
+import javax.enterprise.inject.Model;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -50,10 +52,6 @@ public class CourseController {
     private static final String ERRORS_OBJECT_NAME = "errors";
     private static final String EVALUATION_OBJECT_NAME = "evaluation";
     private static final String APPROVE_VIEW_NAME = "approve";
-    private static final String KNOWLEDGE_MANAGER_OBJECT_NAME = "km";
-    private static final String DEPARTMENT_MANAGER_OBJECT_NAME = "dm";
-    private static final String IS_KNOWLEDGE_MANAGER_OBJECT_NAME = "isKnowledgeManager";
-    private static final String IS_DEPARTMENT_MANAGER_OBJECT_NAME = "isDepartmentManager";
     private static final String ACCESS_DENIED_PAGE = "/403";
     @Autowired
     private CourseService courseService;
@@ -69,6 +67,8 @@ public class CourseController {
     private CourseConverter courseConverter;
     @Autowired
     private CourseDetailsDTOConverter courseDetailsDTOConverter;
+    @Autowired
+    private CourseApproveDTOConverter courseApproveDTOConverter;
     @Autowired
     private CourseDTOConverter courseDTOConverter;
     @Autowired
@@ -266,7 +266,7 @@ public class CourseController {
         if (canViewCourse) {
             ModelAndView mav = new ModelAndView(PARTICIPANTS_VIEW_NAME);
             mav.addObject(HEADER_TITLE, "Course Participants");
-            mav.addObject(ONE_COURSE_OBJECT_NAME, course);
+            mav.addObject(ONE_COURSE_OBJECT_NAME, courseDetailsDTOConverter.convert(course));
             return mav;
         } else {
             return new ModelAndView(new RedirectView(ACCESS_DENIED_PAGE));
@@ -289,10 +289,13 @@ public class CourseController {
 
     @RequestMapping(value = "/send_to_review/{id}", method = RequestMethod.GET)
     public ModelAndView sendToReview(@PathVariable("id") int id) {
-        Course course = new Course();
-        course.setId(id);
-        courseService.setProposal(course);
-        return new ModelAndView(new RedirectView("/courses"));
+        Course course = courseService.getById(id);
+        if (!courseService.isProposal(course)&&courseService.isOwner(course)) {
+            courseService.setProposal(course);
+            return new ModelAndView(new RedirectView("/courses"));
+        } else {
+            return new ModelAndView(new RedirectView(ACCESS_DENIED_PAGE));
+        }
     }
 
     @RequestMapping(value = "/courses/{id}/approve", method = RequestMethod.GET)
@@ -300,17 +303,30 @@ public class CourseController {
         Course course = courseService.getById(id);
         if (courseService.isProposal(course) && userService.isManager()) {
             ModelAndView mav = new ModelAndView(APPROVE_VIEW_NAME);
-            //maybe better to implement this by constructor DecisionForm(Course course)
-            mav.addObject("decision",decisionConverter.createForm(course));
+            mav.addObject("decisionForm", new DecisionForm());
             mav.addObject(HEADER_TITLE, "Approve Course");
-            mav.addObject(KNOWLEDGE_MANAGER_OBJECT_NAME, roleService.getKnowledgeManager().getUsername());
-            mav.addObject(DEPARTMENT_MANAGER_OBJECT_NAME, roleService.getDepartmentManager().getUsername());
-            mav.addObject(IS_KNOWLEDGE_MANAGER_OBJECT_NAME,userService.isKnowLedgeManager());
-            mav.addObject(IS_DEPARTMENT_MANAGER_OBJECT_NAME,userService.isDepartmentManager());
-            mav.addObject(ONE_COURSE_OBJECT_NAME, courseDetailsDTOConverter.convert(course));
+            mav.addObject(ONE_COURSE_OBJECT_NAME, courseApproveDTOConverter.convert(course));
             return mav;
         } else {
             return new ModelAndView(new RedirectView(ACCESS_DENIED_PAGE));
+        }
+    }
+
+    @RequestMapping(value = "/courses/{id}/approve", method = RequestMethod.POST)
+    public ModelAndView approve(@PathVariable("id") int id,
+                                @Valid @ModelAttribute("decisionForm") DecisionForm decisionForm,
+                                BindingResult results) {
+        Course course = courseService.getById(id);
+        if (results.hasErrors()) {
+            ModelAndView mav = new ModelAndView(APPROVE_VIEW_NAME);
+            mav.addObject(HEADER_TITLE, "Approve Course");
+            mav.addObject(ERRORS_OBJECT_NAME, results.getAllErrors());
+            mav.addObject(ONE_COURSE_OBJECT_NAME, courseApproveDTOConverter.convert(course));
+            return mav;
+        } else {
+            Decision decision = decisionConverter.convert(decisionForm);
+            decisionService.makeDecision(decision, course);
+            return new ModelAndView(new RedirectView("/courses"));
         }
     }
 }

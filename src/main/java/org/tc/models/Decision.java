@@ -1,6 +1,8 @@
 package org.tc.models;
 
 
+import org.tc.models.enums.DecisionEnum;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -65,16 +67,4 @@ public class Decision {
         this.decisionId = decisionId;
     }
 
-    enum DecisionEnum {
-        APPROVE(true), REJECT(false);
-        private boolean value;
-
-        DecisionEnum(boolean value) {
-            this.value = value;
-        }
-
-        public boolean getValue() {
-            return value;
-        }
-    }
 }

@@ -1,12 +1,15 @@
 package org.tc.services.course;
 
+import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.tc.dao.course.CourseDao;
 import org.tc.exceptions.CourseNotFoundException;
 import org.tc.mail.MailSenderImpl;
 import org.tc.models.Course;
+import org.tc.models.Decision;
 import org.tc.models.User;
+import org.tc.models.enums.DecisionEnum;
 import org.tc.models.usercourse.SubscribersCourse;
 import org.tc.services.user.UserService;
 
@@ -17,6 +20,8 @@ import java.util.stream.Collectors;
 public class CourseServiceImpl implements CourseService {
     private static final String DRAFT_COURSE = "Draft";
     private static final String PROPOSAL_COURSE = "Proposal";
+    private static final String NEW_COURSE = "New";
+    private static final String REJECTED_COURSE = "Rejected";
     @Autowired
     private MailSenderImpl mailSender;
     @Autowired
@@ -68,15 +73,46 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public boolean canBeViewedCourse(Course course) {
         return isOwner(course) || !(isDrafted(course) || isProposal(course))
-                ||userService.isManager();
+                || userService.isManager();
     }
 
     @Override
     public void setProposal(Course course) {
         Course courseForReview = courseDao.getById(course.getId());
         courseForReview.setState(PROPOSAL_COURSE);
-        mailSender.send(course);
+        mailSender.send(courseForReview);
         courseDao.update(courseForReview);
+    }
+
+    @Override
+    public void setNew(Course course) {
+        Course newCourse = courseDao.getById(course.getId());
+        newCourse.setState(NEW_COURSE);
+        courseDao.update(newCourse);
+    }
+
+    @Override
+    public void setRejected(Course course) {
+        Course rejectedCourse = courseDao.getById(course.getId());
+        rejectedCourse.setState(REJECTED_COURSE);
+        courseDao.update(rejectedCourse);
+    }
+
+    @Override
+    public void setReviewDecision(Course course) {
+        Course reviewdCourse = courseDao.getById(course.getId());
+        List<Decision> decisions = reviewdCourse.getDecisions();
+        if (decisions.size() > 1) {
+
+
+            boolean isApprove = decisions.stream().allMatch(decision ->
+                    decision.getDecision() == DecisionEnum.APPROVE);
+            if (isApprove) {
+                setNew(reviewdCourse);
+            } else {
+                setRejected(reviewdCourse);
+            }
+        }
     }
 
     @Override

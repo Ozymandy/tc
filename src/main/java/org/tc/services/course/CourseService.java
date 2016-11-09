@@ -32,5 +32,11 @@ public interface CourseService {
 
     void setProposal(Course course);
 
+    void setNew(Course course);
+
+    void setRejected(Course course);
+
+    void setReviewDecision(Course course);
+
     boolean isProposal(Course course);
 }
