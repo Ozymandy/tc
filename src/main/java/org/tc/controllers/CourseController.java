@@ -52,6 +52,7 @@ public class CourseController {
     private static final String ERRORS_OBJECT_NAME = "errors";
     private static final String EVALUATION_OBJECT_NAME = "evaluation";
     private static final String APPROVE_VIEW_NAME = "approve";
+    private static final String DELETE_COURSE_VIEW_NAME = "delete";
     private static final String ACCESS_DENIED_PAGE = "/403";
     @Autowired
     private CourseService courseService;
@@ -73,8 +74,6 @@ public class CourseController {
     private CourseDTOConverter courseDTOConverter;
     @Autowired
     private UserCourseService userCourseService;
-    @Autowired
-    private MailNotificationSender mailSender;
     @Autowired
     private EvaluationService evaluationService;
     @Autowired
@@ -292,7 +291,7 @@ public class CourseController {
     @RequestMapping(value = "/send_to_review/{id}", method = RequestMethod.GET)
     public ModelAndView sendToReview(@PathVariable("id") int id) {
         Course course = courseService.getById(id);
-        if (!courseService.isProposal(course)&&courseService.isOwner(course)) {
+        if (!courseService.isProposal(course) && courseService.isOwner(course)) {
             courseService.setProposal(course);
             return new ModelAndView(new RedirectView("/courses"));
         } else {
@@ -329,6 +328,19 @@ public class CourseController {
             Decision decision = decisionConverter.convert(decisionForm);
             decisionService.makeDecision(decision, course);
             return new ModelAndView(new RedirectView("/courses"));
+        }
+    }
+
+    @RequestMapping(value = "/courses/{id}/delete", method = RequestMethod.GET)
+    public ModelAndView delete(@PathVariable("id") int id) {
+        Course course = courseService.getById(id);
+        if (courseService.canBeDeletedCourse(course)) {
+            ModelAndView mav = new ModelAndView(DELETE_COURSE_VIEW_NAME);
+            mav.addObject(HEADER_TITLE, "Delete Course");
+            mav.addObject(ONE_COURSE_OBJECT_NAME, courseDetailsDTOConverter.convert(course));
+            return mav;
+        } else {
+            return new ModelAndView(new RedirectView(ACCESS_DENIED_PAGE));
         }
     }
 }

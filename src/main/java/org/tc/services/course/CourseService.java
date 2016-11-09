@@ -42,4 +42,6 @@ public interface CourseService {
 
     boolean isRejected(Course course);
 
+    boolean canBeDeletedCourse(Course course);
+
 }

@@ -88,6 +88,9 @@
                             <a th:href="@{'/courses/'+${course.getId()}+'/update'}">Send
                                 to Review</a>
                         </li>
+                        <li th:if="${course.canBeDeleted()}">
+                            <a th:href="@{'/courses/'+${course.getId()}+'/delete'}">Delete</a>
+                        </li>
                     </ul>
                 </div>
             </td>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/resources/css/style.css}"/>
+</head>
+<body>
+<div class="container">
+    <header th:replace="header :: header"></header>
+    <form class="form-horizontal"
+          th:action="@{'/courses'+${course.getId()}+'/delete'}" method="POST">
+        <fieldset>
+            <div class="control-group">
+                <div class="control-label">Name</div>
+                <div id="titleField" class="controls text"
+                     th:text="${course.getCourseName()}"></div>
+            </div>
+            <div class="control-group">
+                <div class="control-label">Category</div>
+                <div id="categoryField" class="controls text"
+                     th:text="${course.getCategoryName()}"></div>
+            </div>
+            <div class="form-actions">
+                <button id="deleteButton" class="btn btn-danger" type="submit">
+                    Delete
+                </button>
+                <a class="btn" href="/courses">Cancel</a>
+            </div>
+        </fieldset>
+    </form>
+</div>
+</body>
+</html>

@@ -42,6 +42,10 @@ public class CourseDTO extends AbstractCourseDTO {
         isEvaluated = evaluated;
     }
 
+    public boolean canBeDeleted() {
+        return isOwner && (isDrafted || isRejected);
+    }
+
     public String getAttendeeSubscriber() {
         return getSubscribersCount() +
                 (getAttendeeCount() > 0 ? "\\" +

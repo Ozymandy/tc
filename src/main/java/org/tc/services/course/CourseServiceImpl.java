@@ -125,6 +125,11 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public boolean canBeDeletedCourse(Course course) {
+        return isOwner(course) && (isDrafted(course) || isRejected(course));
+    }
+
+    @Override
     public boolean isOwner(Course course) {
         User user = userService.getCurrentUser();
         if (course != null && (user.getId() == course.getOwner().getId())) {
