@@ -121,4 +121,9 @@ public class UserServiceImpl implements UserService {
                         decision.getManager().getId() == currentUser.getId());
     }
 
+    @Override
+    public String[] getAllEmails() {
+        return userDao.getAll().stream().map(user -> user.getEmail()).toArray(String[]::new);
+    }
+
 }

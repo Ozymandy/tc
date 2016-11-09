@@ -35,4 +35,6 @@ public interface UserService {
     boolean isDepartmentManager();
 
     boolean isVoted(Course course);
+
+    String[] getAllEmails();
 }

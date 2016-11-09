@@ -25,6 +25,7 @@ public class MailNotificationSender {
             "Course Announcement";
     private static final String COURSE_APPROVAL_UPDATE_SUBJECT =
             "Course Approval Update";
+    private static final String NEW_COURSE_NOTIFICATION = "New Course Added";
     @Autowired
     private JavaMailSender javaMailSender;
     @Autowired
@@ -65,5 +66,22 @@ public class MailNotificationSender {
             LOG.warn("Message didn't send on courseId {0}", decision.getCourseForReview().getId());
         }
         javaMailSender.send(message);
+    }
+
+    public void sendNewCourseNotification(Course course) {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setSubject(NEW_COURSE_NOTIFICATION);
+            String[] emailsTo = {roleService.getDepartmentManager().getEmail(),
+                    roleService.getKnowledgeManager().getEmail()};
+            helper.setTo(userService.getAllEmails());
+            helper.setCc("ozymandy.k@gmail.com");
+            helper.setText(contentBuilder.buildNewCourseNotification(course), true);
+        } catch (MessagingException e) {
+            LOG.warn("Message didn't send on courseId {0}", course.getId());
+        }
+        javaMailSender.send(message);
+
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 import org.tc.dto.course.CourseDTO;
+import org.tc.mail.MailNotificationSender;
 import org.tc.models.Category;
 import org.tc.models.Course;
 import org.tc.models.Decision;
@@ -73,6 +74,8 @@ public class CourseController {
     private CourseDTOConverter courseDTOConverter;
     @Autowired
     private UserCourseService userCourseService;
+    @Autowired
+    private MailNotificationSender mailSender;
     @Autowired
     private EvaluationService evaluationService;
     @Autowired
@@ -144,6 +147,7 @@ public class CourseController {
             method = RequestMethod.GET)
     public ModelAndView updateGet(@PathVariable("id") int id) {
         Course course = courseService.getById(id);
+        mailSender.sendNewCourseNotification(course);
         if (courseService.isOwner(course) && !courseService.isProposal(course)) {
             ModelAndView mav = new ModelAndView(UPDATE_VIEW_NAME);
             mav.addObject(HEADER_TITLE, "Update course");

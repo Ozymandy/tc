@@ -102,11 +102,10 @@ public class CourseServiceImpl implements CourseService {
         Course reviewdCourse = courseDao.getById(course.getId());
         List<Decision> decisions = reviewdCourse.getDecisions();
         if (decisions.size() > 1) {
-
-
             boolean isApprove = decisions.stream().allMatch(decision ->
                     decision.getDecision() == DecisionEnum.APPROVE);
             if (isApprove) {
+                mailSender.sendNewCourseNotification(reviewdCourse);
                 setNew(reviewdCourse);
             } else {
                 setRejected(reviewdCourse);
