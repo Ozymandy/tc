@@ -72,7 +72,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public boolean canBeViewedCourse(Course course) {
-        return isOwner(course) || !(isDrafted(course) || isProposal(course))
+        return isOwner(course) || !(isDrafted(course) || isProposal(course) || isRejected(course))
                 || userService.isManager();
     }
 
@@ -118,6 +118,11 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public boolean isProposal(Course course) {
         return course.getState().equals(PROPOSAL_COURSE);
+    }
+
+    @Override
+    public boolean isRejected(Course course) {
+        return course.getState().equals(REJECTED_COURSE);
     }
 
     @Override

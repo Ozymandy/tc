@@ -33,6 +33,7 @@ public class CourseDTOConverter {
         dto.setState(source.getState());
         dto.setProposal(courseService.isProposal(source));
         dto.setDrafted(courseService.isDrafted(source));
+        dto.setRejected(courseService.isRejected(source));
         return dto;
     }
 

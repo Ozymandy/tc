@@ -7,7 +7,16 @@ public class CourseDTO extends AbstractCourseDTO {
     private boolean isEvaluated;
     private boolean isDrafted;
     private boolean isProposal;
+    private boolean isRejected;
     private String attendeeSubscriber;
+
+    public boolean isRejected() {
+        return isRejected;
+    }
+
+    public void setRejected(boolean rejected) {
+        isRejected = rejected;
+    }
 
     public boolean isDrafted() {
         return isDrafted;

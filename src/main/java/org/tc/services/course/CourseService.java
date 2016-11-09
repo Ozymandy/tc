@@ -39,4 +39,7 @@ public interface CourseService {
     void setReviewDecision(Course course);
 
     boolean isProposal(Course course);
+
+    boolean isRejected(Course course);
+
 }

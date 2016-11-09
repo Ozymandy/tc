@@ -54,6 +54,9 @@
                 <span sec:authorize="hasAnyAuthority('Lecturer','Knowledge Manager', 'Department Manager')"
                       class="label label-warning"
                       th:if="${course.isProposal()}">Proposal</span>
+                <span sec:authorize="hasAnyAuthority('Lecturer','Knowledge Manager', 'Department Manager')"
+                      class="label label-important"
+                      th:if="${course.isRejected()}">Rejected</span>
             </td>
             <td th:text="${course.getCategoryName()}"></td>
             <td>
