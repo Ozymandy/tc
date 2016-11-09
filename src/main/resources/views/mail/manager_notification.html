@@ -7,27 +7,11 @@
 <p><span th:text="${course.getOwnerEmail()}"></span> had created a new course.
 </p>
 --------------------------
-<div class="control-group">
-    <div class="control-label">Name</div>
-    <div class="controls text"
-         th:text="${course.getCourseName()}"></div>
-</div>
-<div class="control-group">
-    <div class="control-label">Category</div>
-    <div class="controls text"
-         th:text="${course.getCategoryName()}"></div>
-</div>
-<div class="control-group">
-    <div class="control-label">Description</div>
-    <div class="controls text"
-         th:text="${course.getDescription()}"></div>
-</div>
-<div class="control-group">
-    <div class="control-label">Links</div>
-    <div class="controls text"
-         th:text="${course.getLinks()}"></div>
-</div>
+<span th:inline="text">Name: [[${course.getCourseName()}]]</span>
+<span th:inline="text">Category: [[${course.getCategoryName()}]]</span>
+<span th:inline="text">Description: [[${course.getDescription()}]]</span>
+<span th:inline="text">Links: [[${course.getLinks()}]]</span>
 --------------------------
-<p>Please, review this course at <a href="#">link</a></p>
+<p>Please, review this course at <a th:href="'http://localhost:8080/courses'+${course.getId()}+'/approve'">link</a></p>
 </body>
 </html>

@@ -3,6 +3,7 @@ package org.tc.services.decision;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.tc.dao.decision.DecisionDao;
+import org.tc.mail.MailNotificationSender;
 import org.tc.models.Course;
 import org.tc.models.Decision;
 import org.tc.services.course.CourseService;
@@ -21,12 +22,15 @@ public class DecisionServiceImpl implements DecisionService {
     private DecisionDao decisionDao;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private MailNotificationSender mailSender;
 
     @Override
     public void makeDecision(Decision decision, Course course) {
         decision.setCourseForReview(course);
         decisionDao.create(decision);
         courseService.setReviewDecision(course);
+        mailSender.sendApprovalUpdate(decision);
     }
 
     @Override

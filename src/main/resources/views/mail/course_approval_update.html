@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+</head>
+<body>
+<p><span th:text="${decision.getManager().getUsername()}"></span> had made
+    decision
+</p>
+--------------------------
+<span th:inline="text">Name: [[${decision.getCourseForReview().getName()}]]</span>
+<span th:inline="text">Lecturer: [[${decision.getCourseForReview().getOwner().getUsername()}]]</span>
+--------------------------
+<span th:inline="text">Decision: [[${decision.getDecision().getValue()}]]</span>
+<span th:inline="text">Reason: [[${decision.getReason()}]]</span>
+</body>
+</html>

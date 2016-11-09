@@ -1,11 +1,10 @@
 package org.tc.services.course;
 
-import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.tc.dao.course.CourseDao;
 import org.tc.exceptions.CourseNotFoundException;
-import org.tc.mail.MailSenderImpl;
+import org.tc.mail.MailNotificationSender;
 import org.tc.models.Course;
 import org.tc.models.Decision;
 import org.tc.models.User;
@@ -23,7 +22,7 @@ public class CourseServiceImpl implements CourseService {
     private static final String NEW_COURSE = "New";
     private static final String REJECTED_COURSE = "Rejected";
     @Autowired
-    private MailSenderImpl mailSender;
+    private MailNotificationSender mailSender;
     @Autowired
     private CourseDao courseDao;
     @Autowired
@@ -80,7 +79,7 @@ public class CourseServiceImpl implements CourseService {
     public void setProposal(Course course) {
         Course courseForReview = courseDao.getById(course.getId());
         courseForReview.setState(PROPOSAL_COURSE);
-        mailSender.send(courseForReview);
+        mailSender.sendManagerNotification(courseForReview);
         courseDao.update(courseForReview);
     }
 
