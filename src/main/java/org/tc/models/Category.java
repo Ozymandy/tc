@@ -1,5 +1,6 @@
 package org.tc.models;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,7 +19,7 @@ public class Category {
     @Column(name = "CategoryId")
     private int categoryId;
     private String categoryName;
-    @OneToMany
+    @OneToMany(cascade= CascadeType.REMOVE)
     @JoinColumn(name = "CategoryId")
     private List<Course> courses;
 

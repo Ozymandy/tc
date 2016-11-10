@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.tc.models.usercourse.AttendeeCourse;
 import org.tc.models.usercourse.SubscribersCourse;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

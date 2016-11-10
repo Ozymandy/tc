@@ -3,6 +3,7 @@ package org.tc.models;
 import org.tc.models.usercourse.AttendeeCourse;
 import org.tc.models.usercourse.SubscribersCourse;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,28 +33,19 @@ public class Course {
     @ManyToOne
     @JoinColumn(name = "CategoryId")
     private Category category;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "courseid")
     private List<SubscribersCourse> subscribers;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "courseid")
     private List<AttendeeCourse> attendeeCourse;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "courseid")
     private List<Evaluation> evaluations;
     @Column(name = "State")
     private String state;
-
-    public List<Decision> getDecisions() {
-        return decisions;
-    }
-
-    public void setDecisions(List<Decision> decisions) {
-        this.decisions = decisions;
-    }
-
-    @OneToMany
-    @JoinColumn(name="courseid")
+    @OneToMany(cascade= CascadeType.REMOVE)
+    @JoinColumn(name = "courseid")
     private List<Decision> decisions;
 
     public Course(int id, String name, String description, String links,
@@ -70,6 +62,14 @@ public class Course {
 
     public Course(int id) {
         this.id = id;
+    }
+
+    public List<Decision> getDecisions() {
+        return decisions;
+    }
+
+    public void setDecisions(List<Decision> decisions) {
+        this.decisions = decisions;
     }
 
     public String getState() {

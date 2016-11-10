@@ -54,6 +54,7 @@ public class CourseController {
     private static final String APPROVE_VIEW_NAME = "approve";
     private static final String DELETE_COURSE_VIEW_NAME = "delete";
     private static final String ACCESS_DENIED_PAGE = "/403";
+    private static final String COURSES_PAGE = "/courses";
     @Autowired
     private CourseService courseService;
     @Autowired
@@ -138,7 +139,7 @@ public class CourseController {
         }
         Course course = courseConverter.convertToCourse(courseForm);
         courseService.create(course);
-        return new ModelAndView(new RedirectView("/courses"));
+        return new ModelAndView(new RedirectView(COURSES_PAGE));
     }
 
     @RequestMapping(value = {"/courses/{id}/update"},
@@ -195,7 +196,7 @@ public class CourseController {
     public ModelAndView subscribePost(@PathVariable("id") int id) {
         Course course = courseService.getById(id);
         userCourseService.subscribe(course);
-        return new ModelAndView(new RedirectView("/courses"));
+        return new ModelAndView(new RedirectView(COURSES_PAGE));
     }
 
     @RequestMapping(value = {"/courses/{id}/attend"}, method = RequestMethod.GET)
@@ -255,7 +256,7 @@ public class CourseController {
             return mav;
         } else {
             evaluationService.evaluate(course, evaluation);
-            return new ModelAndView(new RedirectView("/courses"));
+            return new ModelAndView(new RedirectView(COURSES_PAGE));
         }
     }
 
@@ -293,7 +294,7 @@ public class CourseController {
         Course course = courseService.getById(id);
         if (!courseService.isProposal(course) && courseService.isOwner(course)) {
             courseService.setProposal(course);
-            return new ModelAndView(new RedirectView("/courses"));
+            return new ModelAndView(new RedirectView(COURSES_PAGE));
         } else {
             return new ModelAndView(new RedirectView(ACCESS_DENIED_PAGE));
         }
@@ -327,7 +328,7 @@ public class CourseController {
         } else {
             Decision decision = decisionConverter.convert(decisionForm);
             decisionService.makeDecision(decision, course);
-            return new ModelAndView(new RedirectView("/courses"));
+            return new ModelAndView(new RedirectView(COURSES_PAGE));
         }
     }
 
@@ -339,6 +340,17 @@ public class CourseController {
             mav.addObject(HEADER_TITLE, "Delete Course");
             mav.addObject(ONE_COURSE_OBJECT_NAME, courseDetailsDTOConverter.convert(course));
             return mav;
+        } else {
+            return new ModelAndView(new RedirectView(ACCESS_DENIED_PAGE));
+        }
+    }
+
+    @RequestMapping(value = "/courses/{id}/delete", method = RequestMethod.POST)
+    public ModelAndView deletePost(@PathVariable("id") int id) {
+        Course course = courseService.getById(id);
+        if (courseService.canBeDeletedCourse(course)) {
+            courseService.delete(course);
+            return new ModelAndView(new RedirectView(COURSES_PAGE));
         } else {
             return new ModelAndView(new RedirectView(ACCESS_DENIED_PAGE));
         }

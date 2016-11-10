@@ -3,6 +3,7 @@ package org.tc.models;
 
 import org.tc.models.enums.DecisionEnum;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;

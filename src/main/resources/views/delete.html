@@ -9,7 +9,7 @@
 <div class="container">
     <header th:replace="header :: header"></header>
     <form class="form-horizontal"
-          th:action="@{'/courses'+${course.getId()}+'/delete'}" method="POST">
+          th:action="@{'/courses/'+${course.getId()}+'/delete'}" method="POST">
         <fieldset>
             <div class="control-group">
                 <div class="control-label">Name</div>
