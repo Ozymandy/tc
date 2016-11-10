@@ -23,6 +23,7 @@ public class MailNotificationSender {
             "Course Approval Update";
     private static final String NEW_COURSE_NOTIFICATION_SUBJECT = "New Course Added";
     private static final String REJECTED_COURSE_NOTIFICATION_SUBJECT = "Course rejected";
+    private static final String DELETED_COURSE_NOTIFICATION_SUBJECT = "Course Deleted";
     @Autowired
     private JavaMailSender javaMailSender;
     @Autowired
@@ -79,7 +80,6 @@ public class MailNotificationSender {
             LOG.warn("Message didn't send on courseId {0}", course.getId());
         }
         javaMailSender.send(message);
-
     }
 
     public void sendRejectedCourseNotification(Course course) {
@@ -96,6 +96,21 @@ public class MailNotificationSender {
             LOG.warn("Message didn't send on courseId {0}", course.getId());
         }
         javaMailSender.send(message);
+    }
 
+    public void sendDeletedCourseNotification(Course course) {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setSubject(DELETED_COURSE_NOTIFICATION_SUBJECT);
+            String[] emailsTo = {roleService.getDepartmentManager().getEmail(),
+                    roleService.getKnowledgeManager().getEmail()};
+            helper.setTo(emailsTo);
+            helper.setCc(course.getOwner().getEmail());
+            helper.setText(contentBuilder.buildDeletedCourseNotification(course), true);
+        } catch (MessagingException e) {
+            LOG.warn("Message didn't send on courseId {0}", course.getId());
+        }
+        javaMailSender.send(message);
     }
 }

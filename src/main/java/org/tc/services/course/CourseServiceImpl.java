@@ -36,6 +36,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public void delete(Course course) {
+        mailSender.sendDeletedCourseNotification(course);
         courseDao.delete(course);
     }
 

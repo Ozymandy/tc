@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+</head>
+<body>
+<p>Course deleted by by <span
+        th:text="${course.getOwner().getEmail()}"></span>
+</p>
+--------------------------<br/>
+<span th:inline="text">Name: [[${course.getCourseName()}]]</span><br/>
+<span th:inline="text">Category: [[${course.getCategoryName()}]]</span><br/>
+<span th:inline="text">Description: [[${course.getDescription()}]]</span><br/>
+<span th:inline="text">Links: [[${course.getLinks()}]]</span><br/>
+<div th:each="decision:${course.getDecisions()}">
+    --------------------------<br/>
+    <span th:inline="text">Decision: [[${decision.getDecision().getValue()}]]</span><br/>
+    <span th:inline="text">Reason: [[${decision.getReason()}]]</span><br/>
+</div>
+</body>
+</html>
