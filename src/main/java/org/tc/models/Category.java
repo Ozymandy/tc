@@ -19,7 +19,7 @@ public class Category {
     @Column(name = "CategoryId")
     private int categoryId;
     private String categoryName;
-    @OneToMany(cascade= CascadeType.REMOVE)
+
     @JoinColumn(name = "CategoryId")
     private List<Course> courses;
 

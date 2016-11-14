@@ -23,26 +23,34 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "UserId")
     private int id;
+
     @Column
     @NotEmpty
     private String password;
-    @Column
+
+    @Column(unique=true)
     @NotEmpty
     private String username;
-    @Column
+
+    @Column(unique=true)
     private String email;
+
     @ManyToOne
     @JoinColumn(name = "RoleId")
     private Role role;
+
     @OneToMany
     @JoinColumn(name = "ownerid")
     private List<Course> ownedCourses;
+
     @OneToMany
     @JoinColumn(name = "participantid")
     private List<SubscribersCourse> coursesSubscribe;
+
     @OneToMany
     @JoinColumn(name = "participantid")
     private List<AttendeeCourse> coursesAttend;
+
     @OneToMany
     @JoinColumn(name = "UserId")
     private List<Decision> madeDecisions;

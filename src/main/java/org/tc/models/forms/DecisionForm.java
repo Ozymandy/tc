@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 public class DecisionForm {
     @NotNull
     private DecisionEnum decision;
+
     @NotEmpty
     private String reason;
 

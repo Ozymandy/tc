@@ -26,9 +26,9 @@ public interface CourseService {
 
     List<String> getAttendeeEmails(Course course);
 
-    boolean isDrafted(Course course);
+    boolean isDraft(Course course);
 
-    boolean canBeViewedCourse(Course course);
+    boolean canViewCourse(Course course);
 
     void setProposal(Course course);
 

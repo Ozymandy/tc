@@ -1,11 +1,14 @@
 package org.tc.models;
 
+import org.tc.models.enums.StateEnum;
 import org.tc.models.usercourse.AttendeeCourse;
 import org.tc.models.usercourse.SubscribersCourse;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -43,8 +46,9 @@ public class Course {
     @JoinColumn(name = "courseid")
     private List<Evaluation> evaluations;
     @Column(name = "State")
-    private String state;
-    @OneToMany(cascade= CascadeType.REMOVE)
+    @Enumerated(EnumType.STRING)
+    private StateEnum state;
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "courseid")
     private List<Decision> decisions;
 
@@ -72,11 +76,11 @@ public class Course {
         this.decisions = decisions;
     }
 
-    public String getState() {
+    public StateEnum getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(StateEnum state) {
         this.state = state;
     }
 

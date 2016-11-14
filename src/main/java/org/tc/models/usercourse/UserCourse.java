@@ -23,11 +23,12 @@ import javax.persistence.ManyToOne;
 public abstract class UserCourse {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private int id;
+
     @ManyToOne
     @JoinColumn(name = "participantid")
     private User user;
+
     @ManyToOne
     @JoinColumn(name = "courseid")
     private Course course;

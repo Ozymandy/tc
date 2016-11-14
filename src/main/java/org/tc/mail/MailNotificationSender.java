@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.tc.models.Course;
 import org.tc.models.Decision;
 import org.tc.services.role.RoleService;
@@ -14,7 +14,7 @@ import org.tc.services.user.UserService;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
-@Component
+@Service
 public class MailNotificationSender {
     private static final Logger LOG = LoggerFactory.getLogger(MailNotificationSender.class);
     private static final String COURSE_ANNOUNCEMENT_SUBJECT =
@@ -24,12 +24,16 @@ public class MailNotificationSender {
     private static final String NEW_COURSE_NOTIFICATION_SUBJECT = "New Course Added";
     private static final String REJECTED_COURSE_NOTIFICATION_SUBJECT = "Course rejected";
     private static final String DELETED_COURSE_NOTIFICATION_SUBJECT = "Course Deleted";
+
     @Autowired
     private JavaMailSender javaMailSender;
+
     @Autowired
     private MailContentBuilder contentBuilder;
+
     @Autowired
     private RoleService roleService;
+
     @Autowired
     private UserService userService;
 

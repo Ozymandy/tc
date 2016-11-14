@@ -20,9 +20,11 @@ public class Decision {
     private int decisionId;
     @Enumerated(EnumType.STRING)
     private DecisionEnum decision;
+
     @ManyToOne
     @JoinColumn(name = "CourseId")
     private Course courseForReview;
+
     @ManyToOne
     @JoinColumn(name = "UserId")
     private User manager;

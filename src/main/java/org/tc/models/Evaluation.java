@@ -20,12 +20,15 @@ public class Evaluation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @ManyToOne
     @JoinColumn(name = "evaluatinguserid")
     private User user;
+
     @ManyToOne
     @JoinColumn(name = "evaluatedcourseid")
     private Course course;
+
     @Min(1)
     @Max(5)
     @NotNull

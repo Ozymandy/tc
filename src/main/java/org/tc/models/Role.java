@@ -20,6 +20,7 @@ public class Role implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "RoleId")
     private int id;
+
     @OneToMany
     @JoinColumn(name = "RoleId")
     private List<User> userListByRole;

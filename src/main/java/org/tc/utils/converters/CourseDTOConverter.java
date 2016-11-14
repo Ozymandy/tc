@@ -32,14 +32,14 @@ public class CourseDTOConverter {
         dto.setIsOwner(courseService.isOwner(source));
         dto.setState(source.getState());
         dto.setProposal(courseService.isProposal(source));
-        dto.setDrafted(courseService.isDrafted(source));
+        dto.setDrafted(courseService.isDraft(source));
         dto.setRejected(courseService.isRejected(source));
         return dto;
     }
 
     public List<CourseDTO> convertAll(List<Course> courses) {
         Stream<Course> stream = courses.stream();
-        return stream.filter(course -> courseService.canBeViewedCourse(course)).map(course -> {
+        return stream.filter(course -> courseService.canViewCourse(course)).map(course -> {
             return this.convert(course);
         })
                 .collect(Collectors.toList());

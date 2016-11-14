@@ -21,8 +21,8 @@ public class MailContentBuilder {
             "mail/rejected_course_notification";
     private static final String DELETED_COURSE_NOTIFICATION_VIEW_NAME =
             "mail/deleted_course_notification";
-    private static final String ONE_COURSE_OBJECT_NAME = "course";
-    private static final String ONE_DECISION_OBJECT_NAME = "decision";
+    private static final String SINGLE_COURSE_OBJECT_NAME = "course";
+    private static final String SINGLE_DECISION_OBJECT_NAME = "decision";
     private static final String DECISIONS_OBJECT_NAME = "decisions";
     private static final String COUNT_VOTES_OBJECT_NAME = "votes";
     private static final String APP_URL_OBJECT_NAME = "url";
@@ -34,7 +34,7 @@ public class MailContentBuilder {
 
     public String buildManagerNotification(Course course) {
         Context context = new Context();
-        context.setVariable(ONE_COURSE_OBJECT_NAME,
+        context.setVariable(SINGLE_COURSE_OBJECT_NAME,
                 courseDetailsDTOConverter.convert(course));
         context.setVariable(APP_URL_OBJECT_NAME, APP_URL);
         return templateEngine.process(MANAGER_NOTIFICATION_VIEW_NAME, context);
@@ -42,29 +42,31 @@ public class MailContentBuilder {
 
     public String buildCourseApprovalUpdate(Decision decision) {
         Context context = new Context();
-        context.setVariable(ONE_DECISION_OBJECT_NAME, decision);
+        context.setVariable(SINGLE_DECISION_OBJECT_NAME, decision);
         return templateEngine.process(COURSE_APPROVAL_UPDATE_VIEW_NAME, context);
     }
 
     public String buildNewCourseNotification(Course course) {
         Context context = new Context();
         context.setVariable(APP_URL_OBJECT_NAME, APP_URL);
-        context.setVariable(ONE_COURSE_OBJECT_NAME, courseDetailsDTOConverter.convert(course));
+        context.setVariable(SINGLE_COURSE_OBJECT_NAME, courseDetailsDTOConverter.convert(course));
         return templateEngine.process(NEW_COURSE_NOTIFICATION_VIEW_NAME, context);
     }
+
     public String buildRejectedCourseNotification(Course course) {
         Context context = new Context();
         context.setVariable(APP_URL_OBJECT_NAME, APP_URL);
         //specific string for view
         String votes = course.getDecisions().stream().allMatch(decision ->
-                decision.getDecision().getValue().equals("Reject"))?"both votes":"one vote";
+                decision.getDecision().getValue().equals("Reject")) ? "both votes" : "one vote";
         context.setVariable(DECISIONS_OBJECT_NAME, course.getDecisions());
-        context.setVariable(COUNT_VOTES_OBJECT_NAME,votes);
+        context.setVariable(COUNT_VOTES_OBJECT_NAME, votes);
         return templateEngine.process(REJECTED_COURSE_NOTIFICATION_VIEW_NAME, context);
     }
+
     public String buildDeletedCourseNotification(Course course) {
         Context context = new Context();
-        context.setVariable(ONE_COURSE_OBJECT_NAME, course);
+        context.setVariable(SINGLE_COURSE_OBJECT_NAME, course);
         return templateEngine.process(DELETED_COURSE_NOTIFICATION_VIEW_NAME, context);
     }
 }

@@ -13,10 +13,13 @@ public class CourseForm {
     )
     @NotEmpty(message = "Blank.Course.Name")
     private String name;
+
     @NotEmpty(message = "Blank.Course.Desc")
     private String description;
+
     @NotEmpty(message = "Blank.Course.Link")
     private String links;
+
     @NotEmpty(message = "Blank.Course.Category")
     private String category;
     private String user;

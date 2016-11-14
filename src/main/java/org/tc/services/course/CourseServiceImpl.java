@@ -9,6 +9,7 @@ import org.tc.models.Course;
 import org.tc.models.Decision;
 import org.tc.models.User;
 import org.tc.models.enums.DecisionEnum;
+import org.tc.models.enums.StateEnum;
 import org.tc.models.usercourse.SubscribersCourse;
 import org.tc.services.user.UserService;
 
@@ -17,27 +18,25 @@ import java.util.stream.Collectors;
 
 @Service("courseService")
 public class CourseServiceImpl implements CourseService {
-    private static final String DRAFT_COURSE = "Draft";
-    private static final String PROPOSAL_COURSE = "Proposal";
-    private static final String NEW_COURSE = "New";
-    private static final String REJECTED_COURSE = "Rejected";
     @Autowired
     private MailNotificationSender mailSender;
+
     @Autowired
     private CourseDao courseDao;
+
     @Autowired
     private UserService userService;
 
     @Override
     public void create(Course newCourse) {
-        newCourse.setState(DRAFT_COURSE);
+        newCourse.setState(StateEnum.DRAFT);
         courseDao.create(newCourse);
     }
 
     @Override
     public void delete(Course course) {
-        mailSender.sendDeletedCourseNotification(course);
         courseDao.delete(course);
+        mailSender.sendDeletedCourseNotification(course);
     }
 
     @Override
@@ -66,36 +65,34 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public boolean isDrafted(Course course) {
-        return course.getState().equals(DRAFT_COURSE);
+    public boolean isDraft(Course course) {
+        return course.getState().equals(StateEnum.DRAFT);
     }
 
     @Override
-    public boolean canBeViewedCourse(Course course) {
-        return isOwner(course) || !(isDrafted(course) || isProposal(course) || isRejected(course))
+    public boolean canViewCourse(Course course) {
+        return isOwner(course) || !(isDraft(course) || isProposal(course) || isRejected(course))
                 || userService.isManager();
     }
 
     @Override
     public void setProposal(Course course) {
         Course courseForReview = courseDao.getById(course.getId());
-        courseForReview.setState(PROPOSAL_COURSE);
-        mailSender.sendManagerNotification(courseForReview);
+        courseForReview.setState(StateEnum.PROPOSAL);
         courseDao.update(courseForReview);
+        mailSender.sendManagerNotification(courseForReview);
     }
 
     @Override
     public void setNew(Course course) {
-        Course newCourse = courseDao.getById(course.getId());
-        newCourse.setState(NEW_COURSE);
-        courseDao.update(newCourse);
+        course.setState(StateEnum.NEW);
+        courseDao.update(course);
     }
 
     @Override
     public void setRejected(Course course) {
-        Course rejectedCourse = courseDao.getById(course.getId());
-        rejectedCourse.setState(REJECTED_COURSE);
-        courseDao.update(rejectedCourse);
+        course.setState(StateEnum.REJECTED);
+        courseDao.update(course);
     }
 
     @Override
@@ -103,9 +100,9 @@ public class CourseServiceImpl implements CourseService {
         Course reviewdCourse = courseDao.getById(course.getId());
         List<Decision> decisions = reviewdCourse.getDecisions();
         if (decisions.size() > 1) {
-            boolean isApprove = decisions.stream().allMatch(decision ->
+            boolean isApproved = decisions.stream().allMatch(decision ->
                     decision.getDecision() == DecisionEnum.APPROVE);
-            if (isApprove) {
+            if (isApproved) {
                 mailSender.sendNewCourseNotification(reviewdCourse);
                 setNew(reviewdCourse);
             } else {
@@ -117,17 +114,17 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public boolean isProposal(Course course) {
-        return course.getState().equals(PROPOSAL_COURSE);
+        return course.getState().equals(StateEnum.PROPOSAL);
     }
 
     @Override
     public boolean isRejected(Course course) {
-        return course.getState().equals(REJECTED_COURSE);
+        return course.getState().equals(StateEnum.PROPOSAL);
     }
 
     @Override
     public boolean canBeDeletedCourse(Course course) {
-        return isOwner(course) && (isDrafted(course) || isRejected(course));
+        return isOwner(course) && (isDraft(course) || isRejected(course));
     }
 
     @Override

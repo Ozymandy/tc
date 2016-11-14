@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 import org.tc.dto.course.CourseDTO;
-import org.tc.mail.MailNotificationSender;
 import org.tc.models.Category;
 import org.tc.models.Course;
 import org.tc.models.Decision;
@@ -47,7 +46,7 @@ public class CourseController {
     private static final String EVALUATE_VIEW_NAME = "evaluate";
     private static final String PARTICIPANTS_VIEW_NAME = "participants";
     private static final String COURSES_OBJECT_NAME = "courses";
-    private static final String ONE_COURSE_OBJECT_NAME = "course";
+    private static final String SINGLE_COURSE_OBJECT_NAME = "course";
     private static final String CATEGORIES_OBJECT_NAME = "categories";
     private static final String ERRORS_OBJECT_NAME = "errors";
     private static final String EVALUATION_OBJECT_NAME = "evaluation";
@@ -57,26 +56,37 @@ public class CourseController {
     private static final String COURSES_PAGE = "/courses";
     @Autowired
     private CourseService courseService;
+
     @Autowired
     private RoleService roleService;
+
     @Autowired
     private CategoryService categoryService;
+
     @Autowired
     private DecisionConverter decisionConverter;
+
     @Autowired
     private UserService userService;
+
     @Autowired
     private CourseConverter courseConverter;
+
     @Autowired
     private CourseDetailsDTOConverter courseDetailsDTOConverter;
+
     @Autowired
     private CourseApproveDTOConverter courseApproveDTOConverter;
+
     @Autowired
     private CourseDTOConverter courseDTOConverter;
+
     @Autowired
     private UserCourseService userCourseService;
+
     @Autowired
     private EvaluationService evaluationService;
+
     @Autowired
     private DecisionService decisionService;
 
@@ -102,12 +112,12 @@ public class CourseController {
     @RequestMapping(value = {"/courses/{id}"}, method = RequestMethod.GET)
     public ModelAndView details(@PathVariable("id") int id) {
         Course course = courseService.getById(id);
-        boolean canViewCourse = courseService.canBeViewedCourse(course);
+        boolean canViewCourse = courseService.canViewCourse(course);
         //not sure that it's good idea to handle this like I did
         if (canViewCourse) {
             ModelAndView mav = new ModelAndView(DETAILS_VIEW_NAME);
             mav.addObject(HEADER_TITLE, "Course details");
-            mav.addObject(ONE_COURSE_OBJECT_NAME, courseDetailsDTOConverter.convert(course));
+            mav.addObject(SINGLE_COURSE_OBJECT_NAME, courseDetailsDTOConverter.convert(course));
             return mav;
         } else {
             return new ModelAndView(new RedirectView(ACCESS_DENIED_PAGE));
@@ -121,7 +131,7 @@ public class CourseController {
         List<Category> categories = categoryService.getAll();
         mav.addObject(HEADER_TITLE, "Create course");
         mav.addObject(CATEGORIES_OBJECT_NAME, categories);
-        mav.addObject(ONE_COURSE_OBJECT_NAME, new CourseForm());
+        mav.addObject(SINGLE_COURSE_OBJECT_NAME, new CourseForm());
         return mav;
     }
 
@@ -151,7 +161,7 @@ public class CourseController {
             mav.addObject(HEADER_TITLE, "Update course");
             List<Category> categories = categoryService.getAll();
             mav.addObject(CATEGORIES_OBJECT_NAME, categories);
-            mav.addObject(ONE_COURSE_OBJECT_NAME, courseConverter
+            mav.addObject(SINGLE_COURSE_OBJECT_NAME, courseConverter
                     .convertToCourseForm(course));
             return mav;
         } else {
@@ -168,7 +178,7 @@ public class CourseController {
         ModelAndView mav = new ModelAndView(UPDATE_VIEW_NAME);
         List<Category> categories = categoryService.getAll();
         mav.addObject(CATEGORIES_OBJECT_NAME, categories);
-        mav.addObject(ONE_COURSE_OBJECT_NAME, course);
+        mav.addObject(SINGLE_COURSE_OBJECT_NAME, course);
         mav.addObject(HEADER_TITLE, "Update course");
         if (bindingResult.hasErrors()) {
             mav.addObject(ERRORS_OBJECT_NAME, bindingResult.getAllErrors());
@@ -181,11 +191,11 @@ public class CourseController {
     @RequestMapping(value = {"/courses/{id}/subscribe"}, method = RequestMethod.GET)
     public ModelAndView subscribe(@PathVariable("id") int id) {
         Course course = courseService.getById(id);
-        boolean canViewCourse = courseService.canBeViewedCourse(course);
+        boolean canViewCourse = courseService.canViewCourse(course);
         if (canViewCourse) {
             ModelAndView mav = new ModelAndView(SUBSCRIBE_VIEW_NAME);
             mav.addObject(HEADER_TITLE, "Subscribe");
-            mav.addObject(ONE_COURSE_OBJECT_NAME, course);
+            mav.addObject(SINGLE_COURSE_OBJECT_NAME, course);
             return mav;
         } else {
             return new ModelAndView(new RedirectView(ACCESS_DENIED_PAGE));
@@ -203,11 +213,11 @@ public class CourseController {
     public ModelAndView attend(@PathVariable("id") int id) {
         Course course = courseService.getById(id);
         boolean isCurrentUserSubscriber = userService.isSubscribed(course);
-        boolean canViewCourse = courseService.canBeViewedCourse(course);
+        boolean canViewCourse = courseService.canViewCourse(course);
         if (isCurrentUserSubscriber && canViewCourse) {
             ModelAndView mav = new ModelAndView(ATTEND_VIEW_NAME);
             mav.addObject(HEADER_TITLE, "Attend");
-            mav.addObject(ONE_COURSE_OBJECT_NAME, course);
+            mav.addObject(SINGLE_COURSE_OBJECT_NAME, course);
             return mav;
         } else {
             return new ModelAndView(new RedirectView(ACCESS_DENIED_PAGE));
@@ -229,12 +239,12 @@ public class CourseController {
         User currentUser = userService.getCurrentUser();
         boolean isCurrentUserAttendee = userService.isAttendee(course);
         boolean isCurrentUserEvaluated = userService.isEvaluated(course);
-        boolean canViewCourse = courseService.canBeViewedCourse(course);
+        boolean canViewCourse = courseService.canViewCourse(course);
         if (isCurrentUserAttendee &&
                 !isCurrentUserEvaluated && canViewCourse) {
             ModelAndView mav = new ModelAndView(EVALUATE_VIEW_NAME);
             mav.addObject(HEADER_TITLE, "Evaluate");
-            mav.addObject(ONE_COURSE_OBJECT_NAME, course);
+            mav.addObject(SINGLE_COURSE_OBJECT_NAME, course);
             mav.addObject(EVALUATION_OBJECT_NAME, new Evaluation());
             return mav;
         } else {
@@ -251,7 +261,7 @@ public class CourseController {
         if (results.hasErrors()) {
             ModelAndView mav = new ModelAndView(EVALUATE_VIEW_NAME);
             mav.addObject(HEADER_TITLE, "Evaluate");
-            mav.addObject(ONE_COURSE_OBJECT_NAME, course);
+            mav.addObject(SINGLE_COURSE_OBJECT_NAME, course);
             mav.addObject(ERRORS_OBJECT_NAME, results.getAllErrors());
             return mav;
         } else {
@@ -264,11 +274,11 @@ public class CourseController {
             method = RequestMethod.GET)
     public ModelAndView participants(@PathVariable("courseId") int id) {
         Course course = courseService.getById(id);
-        boolean canViewCourse = courseService.canBeViewedCourse(course);
+        boolean canViewCourse = courseService.canViewCourse(course);
         if (canViewCourse) {
             ModelAndView mav = new ModelAndView(PARTICIPANTS_VIEW_NAME);
             mav.addObject(HEADER_TITLE, "Course Participants");
-            mav.addObject(ONE_COURSE_OBJECT_NAME, courseDetailsDTOConverter.convert(course));
+            mav.addObject(SINGLE_COURSE_OBJECT_NAME, courseDetailsDTOConverter.convert(course));
             return mav;
         } else {
             return new ModelAndView(new RedirectView(ACCESS_DENIED_PAGE));
@@ -307,7 +317,7 @@ public class CourseController {
             ModelAndView mav = new ModelAndView(APPROVE_VIEW_NAME);
             mav.addObject("decisionForm", new DecisionForm());
             mav.addObject(HEADER_TITLE, "Approve Course");
-            mav.addObject(ONE_COURSE_OBJECT_NAME, courseApproveDTOConverter.convert(course));
+            mav.addObject(SINGLE_COURSE_OBJECT_NAME, courseApproveDTOConverter.convert(course));
             return mav;
         } else {
             return new ModelAndView(new RedirectView(ACCESS_DENIED_PAGE));
@@ -323,7 +333,7 @@ public class CourseController {
             ModelAndView mav = new ModelAndView(APPROVE_VIEW_NAME);
             mav.addObject(HEADER_TITLE, "Approve Course");
             mav.addObject(ERRORS_OBJECT_NAME, results.getAllErrors());
-            mav.addObject(ONE_COURSE_OBJECT_NAME, courseApproveDTOConverter.convert(course));
+            mav.addObject(SINGLE_COURSE_OBJECT_NAME, courseApproveDTOConverter.convert(course));
             return mav;
         } else {
             Decision decision = decisionConverter.convert(decisionForm);
@@ -338,7 +348,7 @@ public class CourseController {
         if (courseService.canBeDeletedCourse(course)) {
             ModelAndView mav = new ModelAndView(DELETE_COURSE_VIEW_NAME);
             mav.addObject(HEADER_TITLE, "Delete Course");
-            mav.addObject(ONE_COURSE_OBJECT_NAME, courseDetailsDTOConverter.convert(course));
+            mav.addObject(SINGLE_COURSE_OBJECT_NAME, courseDetailsDTOConverter.convert(course));
             return mav;
         } else {
             return new ModelAndView(new RedirectView(ACCESS_DENIED_PAGE));

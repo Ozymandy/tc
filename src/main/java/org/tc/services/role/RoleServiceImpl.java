@@ -10,14 +10,11 @@ import java.util.List;
 
 @Service
 public class RoleServiceImpl implements RoleService {
-    //maybe better to get by id?
-    private static final String KNOWLEDGE_MANAGER_ROLE_NAME ="Knowledge Manager";
+    private static final String KNOWLEDGE_MANAGER_ROLE_NAME = "Knowledge Manager";
     private static final String DEPARTMENT_MANAGER_ROLE_NAME = "Department Manager";
-
 
     @Autowired
     private RoleDao roleDao;
-
 
     @Override
     public List<Role> getAll() {
