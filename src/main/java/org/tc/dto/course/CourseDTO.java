@@ -8,6 +8,20 @@ public class CourseDTO extends AbstractCourseDTO {
     private boolean isDrafted;
     private boolean isProposal;
     private boolean isRejected;
+    private boolean canSubscribe;
+
+    public boolean canSubscribe() {
+        return canSubscribe;
+    }
+
+    public void setCanSubscribe(boolean canSubscribe) {
+        this.canSubscribe = canSubscribe;
+    }
+
+    public void setAttendeeSubscriber(String attendeeSubscriber) {
+        this.attendeeSubscriber = attendeeSubscriber;
+    }
+
     private String attendeeSubscriber;
 
     public boolean isRejected() {

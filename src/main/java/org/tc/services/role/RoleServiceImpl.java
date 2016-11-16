@@ -7,6 +7,7 @@ import org.tc.models.Role;
 import org.tc.models.User;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RoleServiceImpl implements RoleService {
@@ -27,13 +28,13 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public User getKnowledgeManager() {
-        return getByName(KNOWLEDGE_MANAGER_ROLE_NAME).getUserListByRole().get(0);
+    public Optional<User> getKnowledgeManager() {
+        return getByName(KNOWLEDGE_MANAGER_ROLE_NAME).getUserListByRole().stream().findFirst();
     }
 
     @Override
-    public User getDepartmentManager() {
-        return getByName(DEPARTMENT_MANAGER_ROLE_NAME).getUserListByRole().get(0);
+    public Optional<User> getDepartmentManager() {
+        return getByName(DEPARTMENT_MANAGER_ROLE_NAME).getUserListByRole().stream().findFirst();
     }
 
 }

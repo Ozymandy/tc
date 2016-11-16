@@ -103,11 +103,11 @@ public class CourseServiceImpl implements CourseService {
             boolean isApproved = decisions.stream().allMatch(decision ->
                     decision.getDecision() == DecisionEnum.APPROVE);
             if (isApproved) {
-                mailSender.sendNewCourseNotification(reviewdCourse);
                 setNew(reviewdCourse);
+                mailSender.sendNewCourseNotification(reviewdCourse);
             } else {
-                mailSender.sendRejectedCourseNotification(course);
                 setRejected(reviewdCourse);
+                mailSender.sendRejectedCourseNotification(reviewdCourse);
             }
         }
     }
@@ -119,7 +119,38 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public boolean isRejected(Course course) {
-        return course.getState().equals(StateEnum.PROPOSAL);
+        return course.getState().equals(StateEnum.REJECTED);
+    }
+
+    @Override
+    public boolean isNew(Course course) {
+        return course.getState().equals(StateEnum.NEW);
+    }
+
+    @Override
+    public boolean isOpen(Course course) {
+        return course.getState().equals(StateEnum.OPEN);
+    }
+
+    @Override
+    public boolean isReady(Course course) {
+        return course.getState().equals(StateEnum.READY);
+    }
+
+    @Override
+    public boolean isInProgress(Course course) {
+        return course.getState().equals(StateEnum.IN_PROGRESS);
+    }
+
+    @Override
+    public boolean isFinished(Course course) {
+        return course.getState().equals(StateEnum.FINISHED);
+    }
+
+    @Override
+    public boolean canSubscribe(Course course) {
+        return !userService.isSubscribed(course) && (isNew(course) ||
+                isOpen(course) || isReady(course));
     }
 
     @Override

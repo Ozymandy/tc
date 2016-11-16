@@ -191,8 +191,8 @@ public class CourseController {
     @RequestMapping(value = {"/courses/{id}/subscribe"}, method = RequestMethod.GET)
     public ModelAndView subscribe(@PathVariable("id") int id) {
         Course course = courseService.getById(id);
-        boolean canViewCourse = courseService.canViewCourse(course);
-        if (canViewCourse) {
+        boolean canSubscribe = courseService.canSubscribe(course);
+        if (canSubscribe) {
             ModelAndView mav = new ModelAndView(SUBSCRIBE_VIEW_NAME);
             mav.addObject(HEADER_TITLE, "Subscribe");
             mav.addObject(SINGLE_COURSE_OBJECT_NAME, course);

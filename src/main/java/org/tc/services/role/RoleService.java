@@ -4,13 +4,14 @@ import org.tc.models.Role;
 import org.tc.models.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface RoleService {
     List<Role> getAll();
 
     Role getByName(String name);
 
-    User getKnowledgeManager();
+    Optional<User> getKnowledgeManager();
 
-    User getDepartmentManager();
+    Optional<User> getDepartmentManager();
 }

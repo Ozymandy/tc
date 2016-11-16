@@ -31,8 +31,8 @@ public class CourseApproveDTOConverter {
         dto.setCategoryName(source.getCategory().getCategoryName());
         dto.setOwnerEmail(source.getOwner().getEmail());
         dto.setAverageGrade(courseService.getAverageGrade(source));
-        dto.setDepartmentManager(roleService.getDepartmentManager().getUsername());
-        dto.setKnowledgeManager(roleService.getKnowledgeManager().getUsername());
+        dto.setDepartmentManager(roleService.getDepartmentManager().get().getUsername());
+        dto.setKnowledgeManager(roleService.getKnowledgeManager().get().getUsername());
         dto.setDepartmentManager(userService.isDepartmentManager());
         dto.setVoted(userService.isVoted(source));
         dto.setDepartmentManagerDecision(decisionService.getDepartmentManagerDecision(source)

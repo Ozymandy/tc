@@ -20,6 +20,7 @@ public class Category {
     private int categoryId;
     private String categoryName;
 
+    @OneToMany
     @JoinColumn(name = "CategoryId")
     private List<Course> courses;
 

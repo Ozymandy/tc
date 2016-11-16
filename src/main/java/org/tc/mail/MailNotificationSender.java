@@ -42,8 +42,8 @@ public class MailNotificationSender {
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setSubject(COURSE_ANNOUNCEMENT_SUBJECT);
-            String[] emailsTo = {roleService.getDepartmentManager().getEmail(),
-                    roleService.getKnowledgeManager().getEmail()};
+            String[] emailsTo = {roleService.getDepartmentManager().get().getEmail(),
+                    roleService.getKnowledgeManager().get().getEmail()};
             helper.setTo(emailsTo);
             helper.setCc(course.getOwner().getEmail());
             helper.setText(contentBuilder.buildManagerNotification(course), true);
@@ -60,8 +60,8 @@ public class MailNotificationSender {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setSubject(COURSE_APPROVAL_UPDATE_SUBJECT);
             helper.setTo(decision.getCourseForReview().getOwner().getEmail());
-            String[] emailsCc = {roleService.getDepartmentManager().getEmail(),
-                    roleService.getKnowledgeManager().getEmail()};
+            String[] emailsCc = {roleService.getDepartmentManager().get().getEmail(),
+                    roleService.getKnowledgeManager().get().getEmail()};
             helper.setCc(emailsCc);
             helper.setText(contentBuilder.buildCourseApprovalUpdate(decision), true);
         } catch (MessagingException e) {
@@ -75,8 +75,8 @@ public class MailNotificationSender {
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setSubject(NEW_COURSE_NOTIFICATION_SUBJECT);
-            String[] emailsCc = {roleService.getDepartmentManager().getEmail(),
-                    roleService.getKnowledgeManager().getEmail()};
+            String[] emailsCc = {roleService.getDepartmentManager().get().getEmail(),
+                    roleService.getKnowledgeManager().get().getEmail()};
             helper.setTo(userService.getAllEmails());
             helper.setCc(emailsCc);
             helper.setText(contentBuilder.buildNewCourseNotification(course), true);
@@ -92,8 +92,8 @@ public class MailNotificationSender {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setSubject(REJECTED_COURSE_NOTIFICATION_SUBJECT);
             helper.setTo(course.getOwner().getEmail());
-            String[] emailsCc = {roleService.getDepartmentManager().getEmail(),
-                    roleService.getKnowledgeManager().getEmail()};
+            String[] emailsCc = {roleService.getDepartmentManager().get().getEmail(),
+                    roleService.getKnowledgeManager().get().getEmail()};
             helper.setCc(emailsCc);
             helper.setText(contentBuilder.buildRejectedCourseNotification(course), true);
         } catch (MessagingException e) {
@@ -107,8 +107,8 @@ public class MailNotificationSender {
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setSubject(DELETED_COURSE_NOTIFICATION_SUBJECT);
-            String[] emailsTo = {roleService.getDepartmentManager().getEmail(),
-                    roleService.getKnowledgeManager().getEmail()};
+            String[] emailsTo = {roleService.getDepartmentManager().get().getEmail(),
+                    roleService.getKnowledgeManager().get().getEmail()};
             helper.setTo(emailsTo);
             helper.setCc(course.getOwner().getEmail());
             helper.setText(contentBuilder.buildDeletedCourseNotification(course), true);

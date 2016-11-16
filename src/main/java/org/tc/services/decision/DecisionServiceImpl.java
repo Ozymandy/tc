@@ -36,14 +36,14 @@ public class DecisionServiceImpl implements DecisionService {
     @Override
     public Optional<Decision> getKnowledgeManagerDecision(Course course) {
         Optional<Decision> optionalDecision = course.getDecisions().stream().filter(decision ->
-                decision.getManager().getId() == roleService.getKnowledgeManager().getId()).findFirst();
+                decision.getManager().getId() == roleService.getKnowledgeManager().get().getId()).findFirst();
         return optionalDecision;
     }
 
     @Override
     public Optional<Decision> getDepartmentManagerDecision(Course course) {
         Optional<Decision> optionalDecision = course.getDecisions().stream().filter(decision ->
-                decision.getManager().getId() == roleService.getDepartmentManager().getId()).findFirst();
+                decision.getManager().getId() == roleService.getDepartmentManager().get().getId()).findFirst();
         return optionalDecision;
     }
 }

@@ -33,21 +33,27 @@ public class Course {
     @ManyToOne
     @JoinColumn(name = "OwnerId")
     private User owner;
+
     @ManyToOne
     @JoinColumn(name = "CategoryId")
     private Category category;
+
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "courseid")
     private List<SubscribersCourse> subscribers;
+
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "courseid")
     private List<AttendeeCourse> attendeeCourse;
+
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "courseid")
     private List<Evaluation> evaluations;
+
     @Column(name = "State")
     @Enumerated(EnumType.STRING)
     private StateEnum state;
+
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "courseid")
     private List<Decision> decisions;

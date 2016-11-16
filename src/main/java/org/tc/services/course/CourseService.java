@@ -42,6 +42,18 @@ public interface CourseService {
 
     boolean isRejected(Course course);
 
+    boolean isNew(Course course);
+
+    boolean isOpen(Course course);
+
+    boolean isReady(Course course);
+
+    boolean isInProgress(Course course);
+
+    boolean isFinished(Course course);
+
+    boolean canSubscribe(Course course);
+
     boolean canBeDeletedCourse(Course course);
 
 }
