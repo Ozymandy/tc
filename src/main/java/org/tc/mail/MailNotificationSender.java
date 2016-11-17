@@ -8,11 +8,13 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.tc.models.Course;
 import org.tc.models.Decision;
+import org.tc.services.course.CourseService;
 import org.tc.services.role.RoleService;
 import org.tc.services.user.UserService;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.util.List;
 
 @Service
 public class MailNotificationSender {
@@ -24,10 +26,12 @@ public class MailNotificationSender {
     private static final String NEW_COURSE_NOTIFICATION_SUBJECT = "New Course Added";
     private static final String REJECTED_COURSE_NOTIFICATION_SUBJECT = "Course rejected";
     private static final String DELETED_COURSE_NOTIFICATION_SUBJECT = "Course Deleted";
+    private static final String OPEN_COURSE_NOTIFICATION_SUBJECT = "Course opened";
 
     @Autowired
     private JavaMailSender javaMailSender;
-
+    @Autowired
+    private CourseService courseService;
     @Autowired
     private MailContentBuilder contentBuilder;
 
@@ -112,6 +116,22 @@ public class MailNotificationSender {
             helper.setTo(emailsTo);
             helper.setCc(course.getOwner().getEmail());
             helper.setText(contentBuilder.buildDeletedCourseNotification(course), true);
+        } catch (MessagingException e) {
+            LOG.debug(String.format("Message didn't send on courseId %1$d", course.getId()));
+        }
+        javaMailSender.send(message);
+    }
+
+    public void sendOpenCourseNotification(Course course) {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setSubject(OPEN_COURSE_NOTIFICATION_SUBJECT);
+            List<String> listEmails = courseService.getSubscribersEmails(course);
+            String[] emailsTo = listEmails.toArray(new String[listEmails.size()]);
+            helper.setTo(emailsTo);
+            helper.setCc(course.getOwner().getEmail());
+            helper.setText(contentBuilder.buildOpenCourseNotification(course), true);
         } catch (MessagingException e) {
             LOG.debug(String.format("Message didn't send on courseId %1$d", course.getId()));
         }

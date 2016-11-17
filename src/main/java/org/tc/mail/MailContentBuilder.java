@@ -21,6 +21,8 @@ public class MailContentBuilder {
             "mail/rejected_course_notification";
     private static final String DELETED_COURSE_NOTIFICATION_VIEW_NAME =
             "mail/deleted_course_notification";
+    private static final String OPEN_COURSE_NOTIFICATION_VIEW_NAME =
+            "mail/open_course_notification";
     private static final String SINGLE_COURSE_OBJECT_NAME = "course";
     private static final String SINGLE_DECISION_OBJECT_NAME = "decision";
     private static final String DECISIONS_OBJECT_NAME = "decisions";
@@ -68,5 +70,10 @@ public class MailContentBuilder {
         Context context = new Context();
         context.setVariable(SINGLE_COURSE_OBJECT_NAME, course);
         return templateEngine.process(DELETED_COURSE_NOTIFICATION_VIEW_NAME, context);
+    }
+    public String buildOpenCourseNotification(Course course) {
+        Context context = new Context();
+        context.setVariable(SINGLE_COURSE_OBJECT_NAME, courseDetailsDTOConverter.convert(course));
+        return templateEngine.process(OPEN_COURSE_NOTIFICATION_VIEW_NAME, context);
     }
 }

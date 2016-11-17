@@ -8,7 +8,26 @@ public class CourseDTO extends AbstractCourseDTO {
     private boolean isDrafted;
     private boolean isProposal;
     private boolean isRejected;
+    private boolean isNew;
+    private boolean isOpen;
     private boolean canSubscribe;
+    private String attendeeSubscriber;
+
+    public boolean isNew() {
+        return isNew;
+    }
+
+    public void setNew(boolean aNew) {
+        isNew = aNew;
+    }
+
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    public void setOpen(boolean open) {
+        isOpen = open;
+    }
 
     public boolean canSubscribe() {
         return canSubscribe;
@@ -17,12 +36,6 @@ public class CourseDTO extends AbstractCourseDTO {
     public void setCanSubscribe(boolean canSubscribe) {
         this.canSubscribe = canSubscribe;
     }
-
-    public void setAttendeeSubscriber(String attendeeSubscriber) {
-        this.attendeeSubscriber = attendeeSubscriber;
-    }
-
-    private String attendeeSubscriber;
 
     public boolean isRejected() {
         return isRejected;
@@ -64,6 +77,10 @@ public class CourseDTO extends AbstractCourseDTO {
         return getSubscribersCount() +
                 (getAttendeeCount() > 0 ? "\\" +
                         getAttendeeCount() : "");
+    }
+
+    public void setAttendeeSubscriber(String attendeeSubscriber) {
+        this.attendeeSubscriber = attendeeSubscriber;
     }
 
     public boolean isAttendee() {

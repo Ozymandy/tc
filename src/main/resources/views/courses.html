@@ -57,6 +57,10 @@
                 <span sec:authorize="hasAnyAuthority('Lecturer','Knowledge Manager', 'Department Manager')"
                       class="label label-important"
                       th:if="${course.isRejected()}">Rejected</span>
+                <span class="label label-success"
+                      th:if="${course.isNew()}">New</span>
+                <span class="label label-info"
+                      th:if="${course.isOpen()}">Open</span>
             </td>
             <td th:text="${course.getCategoryName()}"></td>
             <td>
@@ -66,7 +70,7 @@
             <td th:text="${course.getAverageGrade()>0?course.getAverageGrade():''}"></td>
             <td sec:authorize="hasAuthority('user')">
                 <a class="btn btn-mini"
-                   th:unless="${course.canSubscribe()}"
+                   th:if="${course.canSubscribe()}"
                    th:href="'/courses/'+${course.getId()}+ '/subscribe'">Subscribe</a>
                 <a class="btn btn-mini"
                    th:if="${course.isSubscribed() and  not course.isAttendee()}"

@@ -97,7 +97,14 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public void setReviewDecision(Course course) {
+    public void setOpen(Course course) {
+        course.setState(StateEnum.OPEN);
+        courseDao.update(course);
+        mailSender.sendOpenCourseNotification(course);
+    }
+
+    @Override
+    public void processReviewResult(Course course) {
         Course reviewdCourse = courseDao.getById(course.getId());
         List<Decision> decisions = reviewdCourse.getDecisions();
         if (decisions.size() > 1) {
@@ -157,6 +164,17 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public boolean canBeDeletedCourse(Course course) {
         return isOwner(course) && (isDraft(course) || isRejected(course));
+    }
+
+    @Override
+    public void processSubscriptionCount(Course course) {
+        //because we need updated course object with all subscribers
+        Course courseForProcessing = getById(course.getId());
+        boolean hasEnoughSubscribers = courseForProcessing.getSubscribers().size() >=
+                courseForProcessing.getMinSubscribers();
+        if (hasEnoughSubscribers) {
+            setOpen(course);
+        }
     }
 
     @Override

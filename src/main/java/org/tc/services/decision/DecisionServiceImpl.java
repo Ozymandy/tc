@@ -8,11 +8,8 @@ import org.tc.models.Course;
 import org.tc.models.Decision;
 import org.tc.services.course.CourseService;
 import org.tc.services.role.RoleService;
-import org.tc.services.user.UserService;
 
 import java.util.Optional;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 @Service
 public class DecisionServiceImpl implements DecisionService {
@@ -29,7 +26,7 @@ public class DecisionServiceImpl implements DecisionService {
     public void makeDecision(Decision decision, Course course) {
         decision.setCourseForReview(course);
         decisionDao.create(decision);
-        courseService.setReviewDecision(course);
+        courseService.processReviewResult(course);
         mailSender.sendApprovalUpdate(decision);
     }
 

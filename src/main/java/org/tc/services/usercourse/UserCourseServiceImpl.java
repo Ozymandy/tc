@@ -9,6 +9,7 @@ import org.tc.models.User;
 import org.tc.models.usercourse.AttendeeCourse;
 import org.tc.models.usercourse.SubscribersCourse;
 import org.tc.models.usercourse.UserCourse;
+import org.tc.services.course.CourseService;
 import org.tc.services.user.UserService;
 
 import java.util.List;
@@ -19,7 +20,8 @@ public class UserCourseServiceImpl implements UserCourseService {
     private UserCourseDao userCourseDao;
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private CourseService courseService;
     @Override
     public void subscribe(Course course) {
         User user = userService.getCurrentUser();
@@ -27,6 +29,7 @@ public class UserCourseServiceImpl implements UserCourseService {
         subscriber.setUser(user);
         subscriber.setCourse(course);
         userCourseDao.create(subscriber);
+        courseService.processSubscriptionCount(course);
     }
 
     @Override

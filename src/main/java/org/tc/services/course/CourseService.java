@@ -36,7 +36,9 @@ public interface CourseService {
 
     void setRejected(Course course);
 
-    void setReviewDecision(Course course);
+    void setOpen(Course course);
+
+    void processReviewResult(Course course);
 
     boolean isProposal(Course course);
 
@@ -55,5 +57,7 @@ public interface CourseService {
     boolean canSubscribe(Course course);
 
     boolean canBeDeletedCourse(Course course);
+
+    void processSubscriptionCount(Course course);
 
 }
