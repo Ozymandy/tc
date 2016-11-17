@@ -38,6 +38,8 @@ public interface CourseService {
 
     void setOpen(Course course);
 
+    void setReady(Course course);
+
     void processReviewResult(Course course);
 
     boolean isProposal(Course course);
@@ -61,5 +63,7 @@ public interface CourseService {
     boolean canBeDeletedCourse(Course course);
 
     void processSubscriptionCount(Course course);
+
+    void processAttendeeCount(Course course);
 
 }

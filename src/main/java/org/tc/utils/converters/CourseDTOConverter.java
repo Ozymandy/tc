@@ -35,6 +35,7 @@ public class CourseDTOConverter {
         dto.setCanSubscribe(courseService.canSubscribe(source));
         dto.setNew(courseService.isNew(source));
         dto.setOpen(courseService.isOpen(source));
+        dto.setReady(courseService.isReady(source));
         dto.setCanAttend(courseService.canAttend(source));
         return dto;
     }

@@ -39,5 +39,6 @@ public class UserCourseServiceImpl implements UserCourseService {
         attendee.setCourse(course);
         attendee.setUser(user);
         userCourseDao.create(attendee);
+        courseService.processAttendeeCount(course);
     }
 }

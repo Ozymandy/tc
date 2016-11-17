@@ -8,9 +8,18 @@ public class CourseDTO extends AbstractCourseDTO {
     private boolean isRejected;
     private boolean isNew;
     private boolean isOpen;
+    private boolean isReady;
     private boolean canSubscribe;
     private boolean canAttend;
     private String attendeeSubscriber;
+
+    public boolean isReady() {
+        return isReady;
+    }
+
+    public void setReady(boolean ready) {
+        isReady = ready;
+    }
 
     public boolean canAttend() {
         return canAttend;

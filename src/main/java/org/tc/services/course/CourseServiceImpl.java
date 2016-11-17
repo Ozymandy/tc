@@ -105,6 +105,13 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public void setReady(Course course) {
+        course.setState(StateEnum.READY);
+        courseDao.update(course);
+        mailSender.sendReadyCourseNotification(course);
+    }
+
+    @Override
     public void processReviewResult(Course course) {
         Course reviewdCourse = courseDao.getById(course.getId());
         List<Decision> decisions = reviewdCourse.getDecisions();
@@ -182,6 +189,16 @@ public class CourseServiceImpl implements CourseService {
                 courseForProcessing.getMinSubscribers();
         if (hasEnoughSubscribers) {
             setOpen(course);
+        }
+    }
+
+    @Override
+    public void processAttendeeCount(Course course) {
+        Course courseForProcessing = getById(course.getId());
+        boolean hasEnoughAttendees = courseForProcessing.getSubscribers().size() >=
+                courseForProcessing.getMinSubscribers();
+        if(hasEnoughAttendees){
+            setReady(course);
         }
     }
 

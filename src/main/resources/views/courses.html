@@ -61,6 +61,8 @@
                       th:if="${course.isNew()}">New</span>
                 <span class="label label-info"
                       th:if="${course.isOpen()}">Open</span>
+                <span class="label label-default"
+                      th:if="${course.isReady()}">Ready</span>
             </td>
             <td th:text="${course.getCategoryName()}"></td>
             <td>

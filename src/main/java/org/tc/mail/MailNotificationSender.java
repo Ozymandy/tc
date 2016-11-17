@@ -27,6 +27,7 @@ public class MailNotificationSender {
     private static final String REJECTED_COURSE_NOTIFICATION_SUBJECT = "Course rejected";
     private static final String DELETED_COURSE_NOTIFICATION_SUBJECT = "Course Deleted";
     private static final String OPEN_COURSE_NOTIFICATION_SUBJECT = "Course opened";
+    private static final String READY_COURSE_NOTIFICATION_SUBJECT = "Course is ready to start";
 
     @Autowired
     private JavaMailSender javaMailSender;
@@ -132,6 +133,19 @@ public class MailNotificationSender {
             helper.setTo(emailsTo);
             helper.setCc(course.getOwner().getEmail());
             helper.setText(contentBuilder.buildOpenCourseNotification(course), true);
+        } catch (MessagingException e) {
+            LOG.debug(String.format("Message didn't send on courseId %1$d", course.getId()));
+        }
+        javaMailSender.send(message);
+    }
+
+    public void sendReadyCourseNotification(Course course) {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setSubject(READY_COURSE_NOTIFICATION_SUBJECT);
+            helper.setTo(course.getOwner().getEmail());
+            helper.setText(contentBuilder.buildReadyCourseNotification(course), true);
         } catch (MessagingException e) {
             LOG.debug(String.format("Message didn't send on courseId %1$d", course.getId()));
         }
