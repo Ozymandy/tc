@@ -107,6 +107,9 @@
                         <li th:if="${course.isInProgress()}">
                             <a th:href="@{'/courses/'+${course.getId()}+'/finish'}">Finish</a>
                         </li>
+                        <li th:if="${course.isFinished()}">
+                            <a th:href="@{'/courses/'+${course.getId()}+'/notify'}">Notify</a>
+                        </li>
                     </ul>
                 </div>
             </td>

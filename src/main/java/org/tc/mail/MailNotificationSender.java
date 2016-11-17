@@ -54,10 +54,10 @@ public class MailNotificationSender {
             helper.setTo(emailsTo);
             helper.setCc(course.getOwner().getEmail());
             helper.setText(contentBuilder.buildManagerNotification(course), true);
+            javaMailSender.send(message);
         } catch (MessagingException e) {
             LOG.debug(String.format("Message didn't send on courseId %1$d", course.getId()));
         }
-        javaMailSender.send(message);
 
     }
 
@@ -71,10 +71,10 @@ public class MailNotificationSender {
                     roleService.getKnowledgeManager().get().getEmail()};
             helper.setCc(emailsCc);
             helper.setText(contentBuilder.buildCourseApprovalUpdate(decision), true);
+            javaMailSender.send(message);
         } catch (MessagingException e) {
             LOG.debug(String.format("Message didn't send on courseId %1$d", decision.getCourseForReview().getId()));
         }
-        javaMailSender.send(message);
     }
 
     public void sendNewCourseNotification(Course course) {
@@ -87,10 +87,10 @@ public class MailNotificationSender {
             helper.setTo(userService.getAllEmails());
             helper.setCc(emailsCc);
             helper.setText(contentBuilder.buildNewCourseNotification(course), true);
+            javaMailSender.send(message);
         } catch (MessagingException e) {
             LOG.debug(String.format("Message didn't send on courseId %1$d", course.getId()));
         }
-        javaMailSender.send(message);
     }
 
     public void sendRejectedCourseNotification(Course course) {
@@ -103,10 +103,10 @@ public class MailNotificationSender {
                     roleService.getKnowledgeManager().get().getEmail()};
             helper.setCc(emailsCc);
             helper.setText(contentBuilder.buildRejectedCourseNotification(course), true);
+            javaMailSender.send(message);
         } catch (MessagingException e) {
             LOG.debug(String.format("Message didn't send on courseId %1$d", course.getId()));
         }
-        javaMailSender.send(message);
     }
 
     public void sendDeletedCourseNotification(Course course) {
@@ -119,10 +119,10 @@ public class MailNotificationSender {
             helper.setTo(emailsTo);
             helper.setCc(course.getOwner().getEmail());
             helper.setText(contentBuilder.buildDeletedCourseNotification(course), true);
+            javaMailSender.send(message);
         } catch (MessagingException e) {
             LOG.debug(String.format("Message didn't send on courseId %1$d", course.getId()));
         }
-        javaMailSender.send(message);
     }
 
     public void sendOpenCourseNotification(Course course) {
@@ -135,10 +135,10 @@ public class MailNotificationSender {
             helper.setTo(emailsTo);
             helper.setCc(course.getOwner().getEmail());
             helper.setText(contentBuilder.buildOpenCourseNotification(course), true);
+            javaMailSender.send(message);
         } catch (MessagingException e) {
             LOG.debug(String.format("Message didn't send on courseId %1$d", course.getId()));
         }
-        javaMailSender.send(message);
     }
 
     public void sendReadyCourseNotification(Course course) {
@@ -148,10 +148,10 @@ public class MailNotificationSender {
             helper.setSubject(READY_COURSE_NOTIFICATION_SUBJECT);
             helper.setTo(course.getOwner().getEmail());
             helper.setText(contentBuilder.buildReadyCourseNotification(course), true);
+            javaMailSender.send(message);
         } catch (MessagingException e) {
             LOG.debug(String.format("Message didn't send on courseId %1$d", course.getId()));
         }
-        javaMailSender.send(message);
     }
 
     public void sendStartedCourseNotification(Course course) {
@@ -163,10 +163,10 @@ public class MailNotificationSender {
             String[] emailsTo = listEmails.toArray(new String[listEmails.size()]);
             helper.setTo(emailsTo);
             helper.setText(contentBuilder.buildStartedCourseNotification(course), true);
+            javaMailSender.send(message);
         } catch (MessagingException e) {
             LOG.debug(String.format("Message didn't send on courseId %1$d", course.getId()));
         }
-        javaMailSender.send(message);
     }
 
     public void sendFinishedCourseNotification(Course course) {
@@ -178,9 +178,27 @@ public class MailNotificationSender {
             String[] emailsTo = listEmails.toArray(new String[listEmails.size()]);
             helper.setTo(emailsTo);
             helper.setText(contentBuilder.buildFinishedCourseNotification(course), true);
+            javaMailSender.send(message);
         } catch (MessagingException e) {
             LOG.debug(String.format("Message didn't send on courseId %1$d", course.getId()));
         }
-        javaMailSender.send(message);
+    }
+
+    public void sendEvaluateCourseNotification(Course course) {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setSubject(FINISHED_COURSE_NOTIFICATION_SUBJECT);
+            List<String> listEmails =
+                    courseService.getNotEvaluatedAttendeesEmails(course);
+            if (!listEmails.isEmpty()) {
+                String[] emailsTo = listEmails.toArray(new String[listEmails.size()]);
+                helper.setTo(emailsTo);
+                helper.setText(contentBuilder.buildFinishedCourseNotification(course), true);
+                javaMailSender.send(message);
+            }
+        } catch (MessagingException e) {
+            LOG.debug(String.format("Message didn't send on courseId %1$d", course.getId()));
+        }
     }
 }

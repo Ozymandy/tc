@@ -10,6 +10,7 @@ import org.tc.models.Decision;
 import org.tc.models.User;
 import org.tc.models.enums.DecisionEnum;
 import org.tc.models.enums.StateEnum;
+import org.tc.models.usercourse.AttendeeCourse;
 import org.tc.models.usercourse.SubscribersCourse;
 import org.tc.services.user.UserService;
 
@@ -220,6 +221,15 @@ public class CourseServiceImpl implements CourseService {
         if (hasEnoughAttendees) {
             setReady(course);
         }
+    }
+
+    @Override
+    public List<String> getNotEvaluatedAttendeesEmails(Course course) {
+        return course.getAttendeeCourse().stream().filter(attendee ->
+                course.getEvaluations().stream().noneMatch(evaluation ->
+                        evaluation.getUser().getId() ==
+                                attendee.getUser().getId())).map(user ->
+                user.getUser().getEmail()).collect(Collectors.toList());
     }
 
     @Override

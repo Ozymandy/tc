@@ -1,6 +1,7 @@
 package org.tc.services.course;
 
 import org.tc.models.Course;
+import org.tc.models.usercourse.AttendeeCourse;
 import org.tc.models.usercourse.SubscribersCourse;
 
 import java.util.List;
@@ -71,5 +72,7 @@ public interface CourseService {
     void processSubscriptionCount(Course course);
 
     void processAttendeeCount(Course course);
+
+    List<String> getNotEvaluatedAttendeesEmails(Course course);
 
 }
