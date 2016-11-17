@@ -37,6 +37,7 @@ public class CourseDTOConverter {
         dto.setOpen(courseService.isOpen(source));
         dto.setReady(courseService.isReady(source));
         dto.setCanAttend(courseService.canAttend(source));
+        dto.setInProgress(courseService.isInProgress(source));
         return dto;
     }
 

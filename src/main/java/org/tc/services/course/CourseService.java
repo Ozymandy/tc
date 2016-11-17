@@ -40,6 +40,8 @@ public interface CourseService {
 
     void setReady(Course course);
 
+    void setInProgress(Course course);
+
     void processReviewResult(Course course);
 
     boolean isProposal(Course course);

@@ -55,6 +55,7 @@ public class CourseController {
     private static final String EVALUATION_OBJECT_NAME = "evaluation";
     private static final String APPROVE_VIEW_NAME = "approve";
     private static final String DELETE_COURSE_VIEW_NAME = "delete";
+    private static final String START_COURSE_VIEW_NAME = "start";
     private static final String ACCESS_DENIED_PAGE = "/403";
     private static final String COURSES_PAGE = "/courses";
     @Autowired
@@ -370,5 +371,25 @@ public class CourseController {
         } else {
             return new ModelAndView(new RedirectView(ACCESS_DENIED_PAGE));
         }
+    }
+
+    @RequestMapping(value = "/courses/{id}/start", method = RequestMethod.GET)
+    public ModelAndView start(@PathVariable("id") int id) {
+        Course course = courseService.getById(id);
+        if (courseService.isOwner(course) && courseService.isReady(course)) {
+            ModelAndView mav = new ModelAndView(START_COURSE_VIEW_NAME);
+            mav.addObject(SINGLE_COURSE_OBJECT_NAME, courseDetailsDTOConverter.convert(course));
+            mav.addObject(HEADER_TITLE, "Start course");
+            return mav;
+        } else {
+            return new ModelAndView(new RedirectView(ACCESS_DENIED_PAGE));
+        }
+    }
+
+    @RequestMapping(value = "/courses/{id}/start", method = RequestMethod.POST)
+    public ModelAndView startPost(@PathVariable("id") int id) {
+        Course course = courseService.getById(id);
+        courseService.setInProgress(course);
+        return new ModelAndView(new RedirectView(COURSES_PAGE));
     }
 }

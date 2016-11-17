@@ -9,9 +9,18 @@ public class CourseDTO extends AbstractCourseDTO {
     private boolean isNew;
     private boolean isOpen;
     private boolean isReady;
+    private boolean isInProgress;
     private boolean canSubscribe;
     private boolean canAttend;
     private String attendeeSubscriber;
+
+    public boolean isInProgress() {
+        return isInProgress;
+    }
+
+    public void setInProgress(boolean inProgress) {
+        isInProgress = inProgress;
+    }
 
     public boolean isReady() {
         return isReady;

@@ -63,6 +63,8 @@
                       th:if="${course.isOpen()}">Open</span>
                 <span class="label label-default"
                       th:if="${course.isReady()}">Ready</span>
+                <span class="label label-info"
+                      th:if="${course.isInProgress()}">In Progress</span>
             </td>
             <td th:text="${course.getCategoryName()}"></td>
             <td>
@@ -96,6 +98,9 @@
                         </li>
                         <li th:if="${course.canBeDeleted()}">
                             <a th:href="@{'/courses/'+${course.getId()}+'/delete'}">Delete</a>
+                        </li>
+                        <li>
+                        <a th:href="@{'/courses/'+${course.getId()}+'/start'}">Start</a>
                         </li>
                     </ul>
                 </div>
