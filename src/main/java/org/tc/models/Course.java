@@ -54,10 +54,12 @@ public class Course {
     @Column(nullable = true)
     private Integer minSubscribers;
 
+    @Column(nullable = true)
+    private Integer minAttendees;
+
     @Column(name = "State")
     @Enumerated(EnumType.STRING)
     private StateEnum state;
-
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "courseid")
     private List<Decision> decisions;
@@ -76,6 +78,14 @@ public class Course {
 
     public Course(int id) {
         this.id = id;
+    }
+
+    public Integer getMinAttendees() {
+        return minAttendees;
+    }
+
+    public void setMinAttendees(Integer minAttendees) {
+        this.minAttendees = minAttendees;
     }
 
     public Integer getMinSubscribers() {

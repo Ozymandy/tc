@@ -62,6 +62,7 @@ public class CourseServiceImpl implements CourseService {
         changedCourseWithoutDelta.setLinks(changedCourse.getLinks());
         changedCourseWithoutDelta.setName(changedCourse.getName());
         changedCourseWithoutDelta.setMinSubscribers(changedCourse.getMinSubscribers());
+        changedCourseWithoutDelta.setMinAttendees(changedCourse.getMinAttendees());
         courseDao.update(changedCourseWithoutDelta);
     }
 

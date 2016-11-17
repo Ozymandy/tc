@@ -52,6 +52,13 @@
                 </div>
             </div>
             <div class="control-group">
+                <label class="control-label">Minimal number of attendees</label>
+                <div class="controls">
+                    <input id="minAttendeesField" class="span5" type="text"
+                           th:field="*{minAttendees}" th:value="${course.getMinAttendees()==null?'':course.getMinAttendees()}"/>
+                </div>
+            </div>
+            <div class="control-group">
                 <label class="control-label">Description</label>
                 <div class="controls">
                     <textarea id="descriptionField" class="span5" rows="3"

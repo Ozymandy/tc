@@ -12,17 +12,20 @@ import java.util.Optional;
 @Component
 public class CourseUpdateConverter extends CourseConverter {
     private static final Logger LOG = LoggerFactory.getLogger(CourseUpdateConverter.class);
+
     public Course convertToCourse(CourseUpdateForm source) {
         Course course = super.convertToCourse(source);
-        LOG.debug(String.format("converting courseUpdateForm to Course with id %1$d",source.getCourseId()));
+        LOG.debug(String.format("converting courseUpdateForm to Course with id %1$d", source.getCourseId()));
         course.setMinSubscribers(source.getMinSubscribers());
+        course.setMinAttendees(source.getMinAttendees());
         return course;
     }
 
     public CourseUpdateForm convertToUpdateForm(Course source) {
         CourseUpdateForm updateForm = new CourseUpdateForm();
-        populateCourseForm(source,updateForm);
+        populateCourseForm(source, updateForm);
         updateForm.setMinSubscribers(source.getMinSubscribers());
+        updateForm.setMinAttendees(source.getMinAttendees());
         return updateForm;
     }
 }
