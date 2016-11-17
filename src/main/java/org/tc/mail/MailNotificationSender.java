@@ -48,7 +48,7 @@ public class MailNotificationSender {
             helper.setCc(course.getOwner().getEmail());
             helper.setText(contentBuilder.buildManagerNotification(course), true);
         } catch (MessagingException e) {
-            LOG.warn("Message didn't send on courseId {0}", course.getId());
+            LOG.debug(String.format("Message didn't send on courseId %1$d", course.getId()));
         }
         javaMailSender.send(message);
 
@@ -65,7 +65,7 @@ public class MailNotificationSender {
             helper.setCc(emailsCc);
             helper.setText(contentBuilder.buildCourseApprovalUpdate(decision), true);
         } catch (MessagingException e) {
-            LOG.warn("Message didn't send on courseId {0}", decision.getCourseForReview().getId());
+            LOG.debug(String.format("Message didn't send on courseId %1$d", decision.getCourseForReview().getId()));
         }
         javaMailSender.send(message);
     }
@@ -81,7 +81,7 @@ public class MailNotificationSender {
             helper.setCc(emailsCc);
             helper.setText(contentBuilder.buildNewCourseNotification(course), true);
         } catch (MessagingException e) {
-            LOG.warn("Message didn't send on courseId {0}", course.getId());
+            LOG.debug(String.format("Message didn't send on courseId %1$d", course.getId()));
         }
         javaMailSender.send(message);
     }
@@ -97,7 +97,7 @@ public class MailNotificationSender {
             helper.setCc(emailsCc);
             helper.setText(contentBuilder.buildRejectedCourseNotification(course), true);
         } catch (MessagingException e) {
-            LOG.warn("Message didn't send on courseId {0}", course.getId());
+            LOG.debug(String.format("Message didn't send on courseId %1$d", course.getId()));
         }
         javaMailSender.send(message);
     }
@@ -113,7 +113,7 @@ public class MailNotificationSender {
             helper.setCc(course.getOwner().getEmail());
             helper.setText(contentBuilder.buildDeletedCourseNotification(course), true);
         } catch (MessagingException e) {
-            LOG.warn("Message didn't send on courseId {0}", course.getId());
+            LOG.debug(String.format("Message didn't send on courseId %1$d", course.getId()));
         }
         javaMailSender.send(message);
     }

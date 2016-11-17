@@ -18,6 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Table(name = "Course")
@@ -50,6 +51,9 @@ public class Course {
     @JoinColumn(name = "courseid")
     private List<Evaluation> evaluations;
 
+    @Column(nullable = true)
+    private Integer minSubscribers;
+
     @Column(name = "State")
     @Enumerated(EnumType.STRING)
     private StateEnum state;
@@ -72,6 +76,14 @@ public class Course {
 
     public Course(int id) {
         this.id = id;
+    }
+
+    public Integer getMinSubscribers() {
+        return minSubscribers;
+    }
+
+    public void setMinSubscribers(Integer minSubscribers) {
+        this.minSubscribers = minSubscribers;
     }
 
     public List<Decision> getDecisions() {

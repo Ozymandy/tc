@@ -17,6 +17,7 @@ import org.tc.models.Decision;
 import org.tc.models.Evaluation;
 import org.tc.models.User;
 import org.tc.models.forms.CourseForm;
+import org.tc.models.forms.CourseUpdateForm;
 import org.tc.models.forms.DecisionForm;
 import org.tc.services.category.CategoryService;
 import org.tc.services.course.CourseService;
@@ -29,6 +30,7 @@ import org.tc.utils.converters.CourseApproveDTOConverter;
 import org.tc.utils.converters.CourseConverter;
 import org.tc.utils.converters.CourseDTOConverter;
 import org.tc.utils.converters.CourseDetailsDTOConverter;
+import org.tc.utils.converters.CourseUpdateConverter;
 import org.tc.utils.converters.DecisionConverter;
 
 import javax.validation.Valid;
@@ -56,6 +58,9 @@ public class CourseController {
     private static final String COURSES_PAGE = "/courses";
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    private CourseUpdateConverter courseUpdateConverter;
 
     @Autowired
     private RoleService roleService;
@@ -161,8 +166,8 @@ public class CourseController {
             mav.addObject(HEADER_TITLE, "Update course");
             List<Category> categories = categoryService.getAll();
             mav.addObject(CATEGORIES_OBJECT_NAME, categories);
-            mav.addObject(SINGLE_COURSE_OBJECT_NAME, courseConverter
-                    .convertToCourseForm(course));
+            mav.addObject(SINGLE_COURSE_OBJECT_NAME, courseUpdateConverter
+                    .convertToUpdateForm(course));
             return mav;
         } else {
             return new ModelAndView(new RedirectView(ACCESS_DENIED_PAGE));
@@ -173,7 +178,7 @@ public class CourseController {
             method = RequestMethod.POST)
     public ModelAndView updatePost(@PathVariable("id") int id,
                                    @Valid
-                                   @ModelAttribute("course") CourseForm course,
+                                   @ModelAttribute("course") CourseUpdateForm course,
                                    BindingResult bindingResult) {
         ModelAndView mav = new ModelAndView(UPDATE_VIEW_NAME);
         List<Category> categories = categoryService.getAll();
@@ -184,7 +189,8 @@ public class CourseController {
             mav.addObject(ERRORS_OBJECT_NAME, bindingResult.getAllErrors());
             return mav;
         }
-        courseService.update(courseConverter.convertToCourse(course));
+        course.setCourseId(id);
+        courseService.update(courseUpdateConverter.convertToCourse(course));
         return mav;
     }
 

@@ -15,7 +15,7 @@
         </div>
         <ul>
             <li th:each="error, iterationStatus : ${errors}"
-                th:text="${#messages.msg(error.getDefaultMessage())}">.
+                th:text="${#messages.msg(error.getCodes()[0])}">.
             </li>
         </ul>
     </div>
@@ -42,6 +42,13 @@
                             Options
                         </option>
                     </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Minimal number of subscribers</label>
+                <div class="controls">
+                    <input id="minSubscribersField" class="span5" type="text"
+                           th:field="*{minSubscribers}" th:value="${course.getMinSubscribers()==null?'':course.minSubscribers}"/>
                 </div>
             </div>
             <div class="control-group">

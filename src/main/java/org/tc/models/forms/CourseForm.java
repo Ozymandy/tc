@@ -2,25 +2,27 @@ package org.tc.models.forms;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class CourseForm {
 
     @Size(
             min = 2,
-            max = 50,
-            message = "Size.Course.Name"
+            max = 50
     )
-    @NotEmpty(message = "Blank.Course.Name")
+    @NotEmpty
     private String name;
 
-    @NotEmpty(message = "Blank.Course.Desc")
+    @NotEmpty
     private String description;
 
-    @NotEmpty(message = "Blank.Course.Link")
+    @NotEmpty
     private String links;
 
-    @NotEmpty(message = "Blank.Course.Category")
+    @NotEmpty
     private String category;
     private String user;
     private int courseId;
