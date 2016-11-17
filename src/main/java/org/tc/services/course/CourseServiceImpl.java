@@ -115,6 +115,7 @@ public class CourseServiceImpl implements CourseService {
     public void setInProgress(Course course) {
         course.setState(StateEnum.IN_PROGRESS);
         courseDao.update(course);
+        mailSender.sendStartedCourseNotification(course);
     }
 
     @Override
