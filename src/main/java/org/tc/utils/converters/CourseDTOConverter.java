@@ -26,8 +26,6 @@ public class CourseDTOConverter {
         dto.setAttendeeCount(source.getAttendeeCourse().size());
         dto.setSubscribersCount(source.getSubscribers().size());
         dto.setCategoryName(source.getCategory().getCategoryName());
-        dto.setSubscribed(userService.isSubscribed(source));
-        dto.setAttendee(userService.isAttendee(source));
         dto.setEvaluated(userService.isEvaluated(source));
         dto.setIsOwner(courseService.isOwner(source));
         dto.setState(source.getState().name());
@@ -37,6 +35,7 @@ public class CourseDTOConverter {
         dto.setCanSubscribe(courseService.canSubscribe(source));
         dto.setNew(courseService.isNew(source));
         dto.setOpen(courseService.isOpen(source));
+        dto.setCanAttend(courseService.canAttend(source));
         return dto;
     }
 

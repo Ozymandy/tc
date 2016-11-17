@@ -2,8 +2,6 @@ package org.tc.dto.course;
 
 public class CourseDTO extends AbstractCourseDTO {
     private boolean isOwner;
-    private boolean isSubscribed;
-    private boolean isAttendee;
     private boolean isEvaluated;
     private boolean isDrafted;
     private boolean isProposal;
@@ -11,7 +9,16 @@ public class CourseDTO extends AbstractCourseDTO {
     private boolean isNew;
     private boolean isOpen;
     private boolean canSubscribe;
+    private boolean canAttend;
     private String attendeeSubscriber;
+
+    public boolean canAttend() {
+        return canAttend;
+    }
+
+    public void setCanAttend(boolean canAttend) {
+        this.canAttend = canAttend;
+    }
 
     public boolean isNew() {
         return isNew;
@@ -83,13 +90,6 @@ public class CourseDTO extends AbstractCourseDTO {
         this.attendeeSubscriber = attendeeSubscriber;
     }
 
-    public boolean isAttendee() {
-        return isAttendee;
-    }
-
-    public void setAttendee(boolean attendee) {
-        isAttendee = attendee;
-    }
 
     public boolean isOwner() {
         return isOwner;
@@ -97,14 +97,6 @@ public class CourseDTO extends AbstractCourseDTO {
 
     public void setOwner(boolean owner) {
         isOwner = owner;
-    }
-
-    public boolean isSubscribed() {
-        return isSubscribed;
-    }
-
-    public void setSubscribed(boolean subscribed) {
-        isSubscribed = subscribed;
     }
 
     public boolean getIsOwner() {

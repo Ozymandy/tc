@@ -219,9 +219,8 @@ public class CourseController {
     @RequestMapping(value = {"/courses/{id}/attend"}, method = RequestMethod.GET)
     public ModelAndView attend(@PathVariable("id") int id) {
         Course course = courseService.getById(id);
-        boolean isCurrentUserSubscriber = userService.isSubscribed(course);
-        boolean canViewCourse = courseService.canViewCourse(course);
-        if (isCurrentUserSubscriber && canViewCourse) {
+        boolean canAttend = courseService.canAttend(course);
+        if (canAttend) {
             ModelAndView mav = new ModelAndView(ATTEND_VIEW_NAME);
             mav.addObject(HEADER_TITLE, "Attend");
             mav.addObject(SINGLE_COURSE_OBJECT_NAME, course);

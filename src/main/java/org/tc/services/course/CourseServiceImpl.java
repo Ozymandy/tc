@@ -162,6 +162,13 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public boolean canAttend(Course course) {
+        return userService.isSubscribed(course) &&
+                !userService.isAttendee(course) &&
+                (isOpen(course) || isReady(course));
+    }
+
+    @Override
     public boolean canBeDeletedCourse(Course course) {
         return isOwner(course) && (isDraft(course) || isRejected(course));
     }
