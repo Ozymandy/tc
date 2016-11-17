@@ -2,7 +2,6 @@ package org.tc.dto.course;
 
 public class CourseDTO extends AbstractCourseDTO {
     private boolean isOwner;
-    private boolean isEvaluated;
     private boolean isDrafted;
     private boolean isProposal;
     private boolean isRejected;
@@ -13,7 +12,16 @@ public class CourseDTO extends AbstractCourseDTO {
     private boolean canSubscribe;
     private boolean canAttend;
     private boolean isFinished;
+    private boolean canEvaluate;
     private String attendeeSubscriber;
+
+    public boolean canEvaluate() {
+        return canEvaluate;
+    }
+
+    public void setCanEvaluate(boolean canEvaluate) {
+        this.canEvaluate = canEvaluate;
+    }
 
     public boolean isFinished() {
         return isFinished;
@@ -93,14 +101,6 @@ public class CourseDTO extends AbstractCourseDTO {
 
     public void setProposal(boolean proposal) {
         isProposal = proposal;
-    }
-
-    public boolean isEvaluated() {
-        return isEvaluated;
-    }
-
-    public void setEvaluated(boolean evaluated) {
-        isEvaluated = evaluated;
     }
 
     public boolean canBeDeleted() {

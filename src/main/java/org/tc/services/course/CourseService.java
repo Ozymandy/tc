@@ -64,6 +64,8 @@ public interface CourseService {
 
     boolean canAttend(Course course);
 
+    boolean canEvaluate(Course course);
+
     boolean canBeDeletedCourse(Course course);
 
     void processSubscriptionCount(Course course);

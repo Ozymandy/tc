@@ -244,12 +244,8 @@ public class CourseController {
             method = RequestMethod.GET)
     public ModelAndView evaluate(@PathVariable("courseId") int id) {
         Course course = courseService.getById(id);
-        User currentUser = userService.getCurrentUser();
-        boolean isCurrentUserAttendee = userService.isAttendee(course);
-        boolean isCurrentUserEvaluated = userService.isEvaluated(course);
-        boolean canViewCourse = courseService.canViewCourse(course);
-        if (isCurrentUserAttendee &&
-                !isCurrentUserEvaluated && canViewCourse) {
+        boolean canEvaluate = courseService.canEvaluate(course);
+        if (canEvaluate) {
             ModelAndView mav = new ModelAndView(EVALUATE_VIEW_NAME);
             mav.addObject(HEADER_TITLE, "Evaluate");
             mav.addObject(SINGLE_COURSE_OBJECT_NAME, course);
@@ -406,6 +402,7 @@ public class CourseController {
             return new ModelAndView(new RedirectView(ACCESS_DENIED_PAGE));
         }
     }
+
     @RequestMapping(value = "/courses/{id}/finish", method = RequestMethod.POST)
     public ModelAndView finishPost(@PathVariable("id") int id) {
         Course course = courseService.getById(id);

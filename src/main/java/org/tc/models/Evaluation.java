@@ -26,7 +26,7 @@ public class Evaluation {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "evaluatedcourseid")
+    @JoinColumn(name = "courseid")
     private Course course;
 
     @Min(1)

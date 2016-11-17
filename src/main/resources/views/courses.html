@@ -82,7 +82,7 @@
                    th:if="${course.canAttend()}"
                    th:href="'/courses/'+${course.getId()}+ '/attend'">Attend</a>
                 <a class="btn btn-mini"
-                   th:if="${course.isEvaluated()}"
+                   th:if="${course.canEvaluate()}"
                    th:href="'/courses/'+${course.getId()}+ '/evaluate'">Evaluate</a>
             </td>
             <td sec:authorize="hasAuthority('Lecturer')">

@@ -191,6 +191,12 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public boolean canEvaluate(Course course) {
+        return userService.isAttendee(course)
+                && !userService.isEvaluated(course) && isFinished(course);
+    }
+
+    @Override
     public boolean canBeDeletedCourse(Course course) {
         return isOwner(course) && (isDraft(course) || isRejected(course));
     }
@@ -211,7 +217,7 @@ public class CourseServiceImpl implements CourseService {
         Course courseForProcessing = getById(course.getId());
         boolean hasEnoughAttendees = courseForProcessing.getSubscribers().size() >=
                 courseForProcessing.getMinSubscribers();
-        if(hasEnoughAttendees){
+        if (hasEnoughAttendees) {
             setReady(course);
         }
     }
