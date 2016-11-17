@@ -56,6 +56,7 @@ public class CourseController {
     private static final String APPROVE_VIEW_NAME = "approve";
     private static final String DELETE_COURSE_VIEW_NAME = "delete";
     private static final String START_COURSE_VIEW_NAME = "start";
+    private static final String FINISH_COURSE_VIEW_NAME = "finish";
     private static final String ACCESS_DENIED_PAGE = "/403";
     private static final String COURSES_PAGE = "/courses";
     @Autowired
@@ -390,6 +391,25 @@ public class CourseController {
     public ModelAndView startPost(@PathVariable("id") int id) {
         Course course = courseService.getById(id);
         courseService.setInProgress(course);
+        return new ModelAndView(new RedirectView(COURSES_PAGE));
+    }
+
+    @RequestMapping(value = "/courses/{id}/finish", method = RequestMethod.GET)
+    public ModelAndView finish(@PathVariable("id") int id) {
+        Course course = courseService.getById(id);
+        if (courseService.isOwner(course) && courseService.isInProgress(course)) {
+            ModelAndView mav = new ModelAndView(FINISH_COURSE_VIEW_NAME);
+            mav.addObject(SINGLE_COURSE_OBJECT_NAME, courseDetailsDTOConverter.convert(course));
+            mav.addObject(HEADER_TITLE, "Finish course");
+            return mav;
+        } else {
+            return new ModelAndView(new RedirectView(ACCESS_DENIED_PAGE));
+        }
+    }
+    @RequestMapping(value = "/courses/{id}/finish", method = RequestMethod.POST)
+    public ModelAndView finishPost(@PathVariable("id") int id) {
+        Course course = courseService.getById(id);
+        courseService.setFinished(course);
         return new ModelAndView(new RedirectView(COURSES_PAGE));
     }
 }

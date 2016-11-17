@@ -119,6 +119,12 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public void setFinished(Course course) {
+        course.setState(StateEnum.FINISHED);
+        courseDao.update(course);
+    }
+
+    @Override
     public void processReviewResult(Course course) {
         Course reviewdCourse = courseDao.getById(course.getId());
         List<Decision> decisions = reviewdCourse.getDecisions();

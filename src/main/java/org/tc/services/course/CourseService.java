@@ -42,6 +42,8 @@ public interface CourseService {
 
     void setInProgress(Course course);
 
+    void setFinished(Course course);
+
     void processReviewResult(Course course);
 
     boolean isProposal(Course course);

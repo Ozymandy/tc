@@ -12,7 +12,16 @@ public class CourseDTO extends AbstractCourseDTO {
     private boolean isInProgress;
     private boolean canSubscribe;
     private boolean canAttend;
+    private boolean isFinished;
     private String attendeeSubscriber;
+
+    public boolean isFinished() {
+        return isFinished;
+    }
+
+    public void setFinished(boolean finished) {
+        isFinished = finished;
+    }
 
     public boolean isInProgress() {
         return isInProgress;
