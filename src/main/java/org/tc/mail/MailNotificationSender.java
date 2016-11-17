@@ -29,6 +29,7 @@ public class MailNotificationSender {
     private static final String OPEN_COURSE_NOTIFICATION_SUBJECT = "Course opened";
     private static final String READY_COURSE_NOTIFICATION_SUBJECT = "Course is ready to start";
     private static final String STARTED_COURSE_NOTIFICATION_SUBJECT = "Course has been started";
+    private static final String FINISHED_COURSE_NOTIFICATION_SUBJECT = "Course was finished";
 
     @Autowired
     private JavaMailSender javaMailSender;
@@ -162,6 +163,21 @@ public class MailNotificationSender {
             String[] emailsTo = listEmails.toArray(new String[listEmails.size()]);
             helper.setTo(emailsTo);
             helper.setText(contentBuilder.buildStartedCourseNotification(course), true);
+        } catch (MessagingException e) {
+            LOG.debug(String.format("Message didn't send on courseId %1$d", course.getId()));
+        }
+        javaMailSender.send(message);
+    }
+
+    public void sendFinishedCourseNotification(Course course) {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setSubject(FINISHED_COURSE_NOTIFICATION_SUBJECT);
+            List<String> listEmails = courseService.getAttendeeEmails(course);
+            String[] emailsTo = listEmails.toArray(new String[listEmails.size()]);
+            helper.setTo(emailsTo);
+            helper.setText(contentBuilder.buildFinishedCourseNotification(course), true);
         } catch (MessagingException e) {
             LOG.debug(String.format("Message didn't send on courseId %1$d", course.getId()));
         }

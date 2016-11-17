@@ -122,6 +122,7 @@ public class CourseServiceImpl implements CourseService {
     public void setFinished(Course course) {
         course.setState(StateEnum.FINISHED);
         courseDao.update(course);
+        mailSender.sendFinishedCourseNotification(course);
     }
 
     @Override
