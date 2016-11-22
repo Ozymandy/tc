@@ -20,11 +20,6 @@ public class EvaluationDaoImpl implements EvaluationDao {
     }
 
     @Override
-    public List<Evaluation> getAll() {
-        return entityManager.createQuery("from evaluation").getResultList();
-    }
-
-    @Override
     public void update(Evaluation changedEvaluation) {
         entityManager.merge(changedEvaluation);
     }

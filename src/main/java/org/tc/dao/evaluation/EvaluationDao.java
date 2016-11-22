@@ -7,8 +7,6 @@ import java.util.List;
 public interface EvaluationDao {
     void create(Evaluation newEvaluation);
 
-    List<Evaluation> getAll();
-
     void update(Evaluation changedEvaluation);
 
 }

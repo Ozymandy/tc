@@ -28,7 +28,6 @@ public class UserDaoImpl implements UserDao {
         return entityManager.createQuery("from User").getResultList();
     }
 
-
     @Override
     public User getByName(String username) {
         try {
