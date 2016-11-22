@@ -4,14 +4,14 @@
     <meta charset="UTF-8"/>
 </head>
 <body>
-<p><span th:text="${course.getCourseName()}"></span> has been started.
+<p><span th:text="${course.courseName}"></span> has been started.
 </p>
 All information about course: <br/>
 --------------------------<br/>
-<span th:inline="text">Name: [[${course.getCourseName()}]]</span><br/>
-<span th:inline="text">Category: [[${course.getCategoryName()}]]</span><br/>
-<span th:inline="text">Description: [[${course.getDescription()}]]</span><br/>
-<span th:inline="text">Links: [[${course.getLinks()}]]</span><br/>
+<span th:inline="text">Name: [[${course.courseName}]]</span><br/>
+<span th:inline="text">Category: [[${course.categoryName}]]</span><br/>
+<span th:inline="text">Description: [[${course.description}]]</span><br/>
+<span th:inline="text">Links: [[${course.links}]]</span><br/>
 --------------------------
 </body>
 </html>

@@ -2,29 +2,35 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/style.css}"/>
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/resources/css/style.css}"/>
 </head>
 <body>
 <div class="container">
-    <header th:replace="header :: header" ></header>
-    <form class="form-horizontal" th:action="@{'/courses/'+${course.getId()}+'/subscribe'}" method="POST">
+    <header th:replace="header :: header"></header>
+    <form class="form-horizontal"
+          th:action="@{'/courses/'+${course.id}+'/subscribe'}" method="POST">
         <fieldset>
             <div class="control-group">
                 <div class="control-label">
                     Course
                 </div>
-                <div id="titleField" class="controls text" th:text="${course.getName()}">
+                <div id="titleField" class="controls text"
+                     th:text="${course.name}">
                 </div>
             </div>
             <div class="control-group">
                 <div class="control-label">
                     Lecturer
                 </div>
-                <div id="ownerField" class="controls text" th:text="${course.getOwner().getEmail()}">
+                <div id="ownerField" class="controls text"
+                     th:text="${course.owner.email}">
                 </div>
             </div>
             <div class="form-actions">
-                <button id="subscribeButton" class="btn btn-success" type="submit">Subscribe</button>
+                <button id="subscribeButton" class="btn btn-success"
+                        type="submit">Subscribe
+                </button>
                 <a class="btn" href="/courses">Cancel</a>
             </div>
         </fieldset>

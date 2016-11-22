@@ -9,11 +9,11 @@
 </p>
 <div th:each="decision:${decisions}">
     --------------------------<br/>
-    <span th:inline="text">Decision: [[${decision.getDecision().getValue()}]]</span><br/>
-    <span th:inline="text">Reason: [[${decision.getReason()}]]</span><br/>
+    <span th:inline="text">Decision: [[${decision.decision.getValue()}]]</span><br/>
+    <span th:inline="text">Reason: [[${decision.reason}]]</span><br/>
 </div>
 --------------------------<br/>
 <span>Update your course <a
-        th:href="${url}+${decisions.get(0).getCourseForReview().getId()}+'/update'">Update</a></span><br/>
+        th:href="${url}+${decisions.get(0).courseForReview.id}+'/update'">Update</a></span><br/>
 </body>
 </html>

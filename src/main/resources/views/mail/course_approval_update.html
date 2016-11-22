@@ -4,14 +4,14 @@
     <meta charset="UTF-8"/>
 </head>
 <body>
-<p><span th:text="${decision.getManager().getUsername()}"></span> had made
+<p><span th:text="${decision.manager.getUsername()}"></span> had made
     decision
 </p>
 --------------------------<br/>
-<span th:inline="text">Name: [[${decision.getCourseForReview().getName()}]]</span><br/>
-<span th:inline="text">Lecturer: [[${decision.getCourseForReview().getOwner().getUsername()}]]</span><br/>
+<span th:inline="text">Name: [[${decision.courseForReview.name}]]</span><br/>
+<span th:inline="text">Lecturer: [[${decision.courseForReview.owner.username}]]</span><br/>
 --------------------------<br/>
-<span th:inline="text">Decision: [[${decision.getDecision().getValue()}]]</span><br/>
-<span th:inline="text">Reason: [[${decision.getReason()}]]</span>
+<span th:inline="text">Decision: [[${decision.decision.getValue()}]]</span><br/>
+<span th:inline="text">Reason: [[${decision.reason}]]</span>
 </body>
 </html>

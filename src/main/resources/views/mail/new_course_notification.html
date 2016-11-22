@@ -5,16 +5,16 @@
 </head>
 <body>
 <p>New course had been added by <span
-        th:text="${course.getOwnerEmail()}"></span>
+        th:text="${course.ownerEmail}"></span>
 </p>
 --------------------------<br/>
-<span th:inline="text">Name: [[${course.getCourseName()}]]</span><br/>
-<span th:inline="text">Category: [[${course.getCategoryName()}]]</span><br/>
-<span th:inline="text">Description: [[${course.getDescription()}]]</span><br/>
-<span th:inline="text">Links: [[${course.getLinks()}]]</span><br/>
+<span th:inline="text">Name: [[${course.courseName}]]</span><br/>
+<span th:inline="text">Category: [[${course.categoryName}]]</span><br/>
+<span th:inline="text">Description: [[${course.description}]]</span><br/>
+<span th:inline="text">Links: [[${course.links}]]</span><br/>
 --------------------------<br/>
-<span>See course <a th:href="${url}+${course.getId()}">details</a></span>
+<span>See course <a th:href="${url}+${course.id}">details</a></span>
 <span>Or became a <a
-        th:href="${url}+${course.getId()}+'/subscribe'">subscriber</a></span><br/>
+        th:href="${url}+${course.id}+'/subscribe'">subscriber</a></span><br/>
 </body>
 </html>

@@ -2,7 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/style.css}"/>
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/resources/css/style.css}"/>
     <Title>Login</Title>
 </head>
 <body>
@@ -11,32 +12,39 @@
         <h1>Login</h1>
     </header>
     <div class="alert alert-error" th:if="${errors}">
-            <div>
+        <div>
             <strong>Okay, Houston, we've had a problem here.</strong>
         </div>
         <ul>
-            <li th:each="error, iterationStatus : ${errors}"  th:text="${#messages.msg(error)}">.</li>
+            <li th:each="error, iterationStatus : ${errors}"
+                th:text="${#messages.msg(error)}">.
+            </li>
         </ul>
     </div>
-    <form class="form-horizontal" th:action="@{/login}" th:object="${user}" method="post">
+    <form class="form-horizontal" th:action="@{/login}" th:object="${user}"
+          method="post">
         <fieldset>
             <div class="control-group">
                 <label class="control-label">Login</label>
                 <div class="controls">
                     <div class="input-prepend">
                         <span class="add-on">@</span>
-                        <input id="loginField" class="span3" th:field="*{username}" type="text" />
+                        <input id="loginField" class="span3"
+                               th:field="*{username}" type="text"/>
                     </div>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label">Password</label>
                 <div class="controls">
-                    <input  id="passwordField" th:field="*{password}" class="span3"  type="password" />
+                    <input id="passwordField" th:field="*{password}"
+                           class="span3" type="password"/>
                 </div>
             </div>
             <div class="form-actions">
-                <button id="loginButton" class="btn btn-primary" type="submit">Login</button>
+                <button id="loginButton" class="btn btn-primary" type="submit">
+                    Login
+                </button>
             </div>
         </fieldset>
     </form>

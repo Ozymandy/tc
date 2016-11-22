@@ -3,6 +3,7 @@ package org.tc.services.role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.tc.dao.role.RoleDao;
+import org.tc.exceptions.ManagerNotFoundException;
 import org.tc.models.Role;
 import org.tc.models.User;
 
@@ -28,13 +29,16 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Optional<User> getKnowledgeManager() {
-        return getByName(KNOWLEDGE_MANAGER_ROLE_NAME).getUserListByRole().stream().findFirst();
+    public User getKnowledgeManager() {
+        return getByName(KNOWLEDGE_MANAGER_ROLE_NAME).getUserListByRole().
+                stream().findFirst()
+                .orElseThrow(() -> new ManagerNotFoundException("Knowledge manager not found"));
     }
 
     @Override
-    public Optional<User> getDepartmentManager() {
-        return getByName(DEPARTMENT_MANAGER_ROLE_NAME).getUserListByRole().stream().findFirst();
-    }
+    public User getDepartmentManager() {
+        return getByName(DEPARTMENT_MANAGER_ROLE_NAME).getUserListByRole().stream().findFirst()
+                .orElseThrow(() -> new ManagerNotFoundException("Department manager not found"));
 
+}
 }

@@ -15,19 +15,19 @@
         </div>
         <ul>
             <li th:each="error, iterationStatus : ${errors}"
-                th:text="${#messages.msg(error.getCodes()[0])}">.
+                th:text="${#messages.msg(error.codes[0])}">.
             </li>
         </ul>
     </div>
     <form class="form-horizontal"
-          th:action="@{'/courses/'+${course.getCourseId()}+'/update'}"
+          th:action="@{'/courses/'+${course.courseId}+'/update'}"
           th:object="${course}" method="POST">
         <fieldset>
             <div class="control-group">
                 <label class="control-label">Name</label>
                 <div class="controls">
                     <input id="titleField" class="span5" type="text"
-                           th:field="*{name}" th:value="${course.getName()}"/>
+                           th:field="*{name}" th:value="${course.name}"/>
                 </div>
             </div>
             <div class="control-group">
@@ -36,26 +36,29 @@
                     <select id="categoryField" name="optionsListId"
                             class="span5" th:field="*{category}">
                         <option th:each="category : ${categories}"
-                                th:value="${category.getCategoryName()}"
-                                th:text="${category.getCategoryName()}"
-                                th:selected="${categories.contains(category.getCategoryName())}">
+                                th:value="${category.categoryName}"
+                                th:text="${category.categoryName}"
+                                th:selected="${categories.contains(category.categoryName)}">
                             Options
                         </option>
                     </select>
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label">Minimal number of subscribers</label>
+                <label class="control-label">Minimal number of
+                    subscribers</label>
                 <div class="controls">
                     <input id="minSubscribersField" class="span5" type="text"
-                           th:field="*{minSubscribers}" th:value="${course.getMinSubscribers()==null?'':course.minSubscribers}"/>
+                           th:field="*{minSubscribers}"
+                           th:value="${course.minSubscribers==null?'':course.minSubscribers}"/>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label">Minimal number of attendees</label>
                 <div class="controls">
                     <input id="minAttendeesField" class="span5" type="text"
-                           th:field="*{minAttendees}" th:value="${course.getMinAttendees()==null?'':course.getMinAttendees()}"/>
+                           th:field="*{minAttendees}"
+                           th:value="${course.minAttendees==null?'':course.minAttendees}"/>
                 </div>
             </div>
             <div class="control-group">
@@ -63,7 +66,7 @@
                 <div class="controls">
                     <textarea id="descriptionField" class="span5" rows="3"
                               th:field="*{description}" th:inline="text">
-                        [[${course.getDescription()}]]
+                        [[${course.description}]]
                     </textarea>
                 </div>
             </div>
@@ -72,7 +75,7 @@
                 <div class="controls">
                     <textarea id="linksField" class="span5" rows="3"
                               th:field="*{links}" th:inline="text">
-                        [[${course.getLinks()}]]
+                        [[${course.links}]]
                     </textarea>
                 </div>
             </div>
@@ -80,8 +83,9 @@
                 <button id="updateButton" class="btn btn-primary" type="submit">
                     Update
                 </button>
-                <a th:href="@{'/send_to_review/'+${course.getCourseId()}}" th:object="${course}"
-                        id="reviewButton" class="btn btn-warning">
+                <a th:href="@{'/send_to_review/'+${course.courseId}}"
+                   th:object="${course}"
+                   id="reviewButton" class="btn btn-warning">
                     Review
                 </a>
                 <a class="btn" href="/courses">Cancel</a>

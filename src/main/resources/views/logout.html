@@ -2,7 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/style.css}"/>
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/resources/css/style.css}"/>
 </head>
 <body>
 <div class="container">
@@ -15,14 +16,17 @@
         <fieldset>
             <div class="control-group">
                 <div class="controls text">
-                    You currently logged as '<span id="currentUserLogin" th:text="${username}"></span>'.
+                    You currently logged as '<span id="currentUserLogin"
+                                                   th:text="${username}"></span>'.
                 </div>
                 <div class="controls text">
                     Are you sure you want to logout?
                 </div>
             </div>
             <div class="form-actions">
-                <button id="logoutButton" class="btn btn-danger" type="submit">Logout</button>
+                <button id="logoutButton" class="btn btn-danger" type="submit">
+                    Logout
+                </button>
                 <a class="btn" th:href="${back}">Back</a>
             </div>
         </fieldset>

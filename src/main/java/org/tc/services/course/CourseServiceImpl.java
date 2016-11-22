@@ -68,18 +68,13 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public boolean isDraft(Course course) {
-        return course.getState().equals(StateEnum.DRAFT);
-    }
-
-    @Override
     public boolean canViewCourse(Course course) {
-        return isOwner(course) || !(isDraft(course) || isProposal(course) || isRejected(course))
+        return isOwner(course) || !(course.isDraft() || course.isProposal() || course.isRejected())
                 || userService.isManager();
     }
 
     @Override
-    public void setProposal(Course course) {
+    public void makeProposal(Course course) {
         Course courseForReview = courseDao.getById(course.getId());
         courseForReview.setState(StateEnum.PROPOSAL);
         courseDao.update(courseForReview);
@@ -87,40 +82,40 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public void setNew(Course course) {
+    public void makeNew(Course course) {
         course.setState(StateEnum.NEW);
         courseDao.update(course);
     }
 
     @Override
-    public void setRejected(Course course) {
+    public void makeRejected(Course course) {
         course.setState(StateEnum.REJECTED);
         courseDao.update(course);
     }
 
     @Override
-    public void setOpen(Course course) {
+    public void makeOpen(Course course) {
         course.setState(StateEnum.OPEN);
         courseDao.update(course);
         mailSender.sendOpenCourseNotification(course);
     }
 
     @Override
-    public void setReady(Course course) {
+    public void makeReady(Course course) {
         course.setState(StateEnum.READY);
         courseDao.update(course);
         mailSender.sendReadyCourseNotification(course);
     }
 
     @Override
-    public void setInProgress(Course course) {
+    public void makeInProgress(Course course) {
         course.setState(StateEnum.IN_PROGRESS);
         courseDao.update(course);
         mailSender.sendStartedCourseNotification(course);
     }
 
     @Override
-    public void setFinished(Course course) {
+    public void makeFinished(Course course) {
         course.setState(StateEnum.FINISHED);
         courseDao.update(course);
         mailSender.sendFinishedCourseNotification(course);
@@ -128,78 +123,68 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public void processReviewResult(Course course) {
-        Course reviewdCourse = courseDao.getById(course.getId());
-        List<Decision> decisions = reviewdCourse.getDecisions();
+        Course reviewedCourse = courseDao.getById(course.getId());
+        List<Decision> decisions = reviewedCourse.getDecisions();
         if (decisions.size() > 1) {
             boolean isApproved = decisions.stream().allMatch(decision ->
                     decision.getDecision() == DecisionEnum.APPROVE);
             if (isApproved) {
-                setNew(reviewdCourse);
-                mailSender.sendNewCourseNotification(reviewdCourse);
+                makeNew(reviewedCourse);
+                mailSender.sendNewCourseNotification(reviewedCourse);
             } else {
-                setRejected(reviewdCourse);
-                mailSender.sendRejectedCourseNotification(reviewdCourse);
+                makeRejected(reviewedCourse);
+                mailSender.sendRejectedCourseNotification(reviewedCourse);
             }
         }
     }
 
     @Override
-    public boolean isProposal(Course course) {
-        return course.getState().equals(StateEnum.PROPOSAL);
-    }
-
-    @Override
-    public boolean isRejected(Course course) {
-        return course.getState().equals(StateEnum.REJECTED);
-    }
-
-    @Override
-    public boolean isNew(Course course) {
-        return course.getState().equals(StateEnum.NEW);
-    }
-
-    @Override
-    public boolean isOpen(Course course) {
-        return course.getState().equals(StateEnum.OPEN);
-    }
-
-    @Override
-    public boolean isReady(Course course) {
-        return course.getState().equals(StateEnum.READY);
-    }
-
-    @Override
-    public boolean isInProgress(Course course) {
-        return course.getState().equals(StateEnum.IN_PROGRESS);
-    }
-
-    @Override
-    public boolean isFinished(Course course) {
-        return course.getState().equals(StateEnum.FINISHED);
-    }
-
-    @Override
     public boolean canSubscribe(Course course) {
-        return !userService.isSubscribed(course) && (isNew(course) ||
-                isOpen(course) || isReady(course));
+        return !userService.isSubscribed(course) && (course.isNew() ||
+                course.isOpen() || course.isReady());
     }
 
     @Override
     public boolean canAttend(Course course) {
         return userService.isSubscribed(course) &&
                 !userService.isAttendee(course) &&
-                (isOpen(course) || isReady(course));
+                (course.isOpen() || course.isReady());
     }
 
     @Override
     public boolean canEvaluate(Course course) {
         return userService.isAttendee(course)
-                && !userService.isEvaluated(course) && isFinished(course);
+                && !userService.isEvaluated(course) && course.isFinished();
     }
 
     @Override
-    public boolean canBeDeletedCourse(Course course) {
-        return isOwner(course) && (isDraft(course) || isRejected(course));
+    public boolean canDelete(Course course) {
+        return isOwner(course) && (course.isDraft() || course.isRejected());
+    }
+
+    @Override
+    public boolean canStart(Course course) {
+        return isOwner(course) && course.isReady();
+    }
+
+    @Override
+    public boolean canFinish(Course course) {
+        return course.isInProgress() && isOwner(course);
+    }
+
+    @Override
+    public boolean canUpdate(Course course) {
+        return isOwner(course) && (course.isDraft() || course.isRejected());
+    }
+
+    @Override
+    public boolean canSendToReview(Course course) {
+        return !course.isProposal() && isOwner(course);
+    }
+
+    @Override
+    public boolean canApprove(Course course) {
+        return course.isProposal() && userService.isManager();
     }
 
     @Override
@@ -209,7 +194,7 @@ public class CourseServiceImpl implements CourseService {
         boolean hasEnoughSubscribers = courseForProcessing.getSubscribers().size() >=
                 courseForProcessing.getMinSubscribers();
         if (hasEnoughSubscribers) {
-            setOpen(course);
+            makeOpen(course);
         }
     }
 
@@ -219,7 +204,7 @@ public class CourseServiceImpl implements CourseService {
         boolean hasEnoughAttendees = courseForProcessing.getSubscribers().size() >=
                 courseForProcessing.getMinSubscribers();
         if (hasEnoughAttendees) {
-            setReady(course);
+            makeReady(course);
         }
     }
 

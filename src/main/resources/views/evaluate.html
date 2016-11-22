@@ -13,11 +13,13 @@
             <strong>Okay, Houston, we've had a problem here.</strong>
         </div>
         <ul>
-            <li th:each="error, iterationStatus : ${errors}"  th:text="${#messages.msg(error.getCodes()[0])}">.</li>
+            <li th:each="error, iterationStatus : ${errors}"
+                th:text="${#messages.msg(error.codes[0])}">.
+            </li>
         </ul>
     </div>
     <form class="form-horizontal"
-          th:action="@{'/courses/'+${course.getId()}+'/evaluate'}"
+          th:action="@{'/courses/'+${course.id}+'/evaluate'}"
           th:object="${evaluation}" method="POST">
         <fieldset>
             <div class="control-group">
@@ -25,14 +27,14 @@
                     Course
                 </div>
                 <div id="titleField" class="controls text"
-                     th:text="${course.getName()}"></div>
+                     th:text="${course.name}"></div>
             </div>
             <div class="control-group">
                 <div class="control-label">
                     Lecturer
                 </div>
                 <div id="ownerField" class="controls text"
-                     th:text="${course.getOwner().getEmail()}"></div>
+                     th:text="${course.owner.email}"></div>
             </div>
             <div class="control-group">
                 <label id="gradeField" class="control-label">Grade</label>

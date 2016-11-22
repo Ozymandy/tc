@@ -9,14 +9,14 @@
 <div class="container">
     <header th:replace="header :: header"></header>
     <form class="form-horizontal"
-          th:action="@{'/courses/'+${course.getId()}+'/notify'}" method="POST">
+          th:action="@{'/courses/'+${course.id}+'/notify'}" method="POST">
         <fieldset>
             <div class="control-group">
                 <div class="control-label">
                     Course
                 </div>
                 <div id="titleField" class="controls text"
-                     th:text="${course.getCourseName()}">
+                     th:text="${course.courseName}">
                 </div>
             </div>
             <div class="form-actions">

@@ -9,17 +9,17 @@
 <div class="container">
     <header th:replace="header :: header"></header>
     <form class="form-horizontal"
-          th:action="@{'/courses/'+${course.getId()}+'/delete'}" method="POST">
+          th:action="@{'/courses/'+${course.id}+'/delete'}" method="POST">
         <fieldset>
             <div class="control-group">
                 <div class="control-label">Name</div>
                 <div id="titleField" class="controls text"
-                     th:text="${course.getCourseName()}"></div>
+                     th:text="${course.courseName}"></div>
             </div>
             <div class="control-group">
                 <div class="control-label">Category</div>
                 <div id="categoryField" class="controls text"
-                     th:text="${course.getCategoryName()}"></div>
+                     th:text="${course.categoryName}"></div>
             </div>
             <div class="form-actions">
                 <button id="deleteButton" class="btn btn-danger" type="submit">

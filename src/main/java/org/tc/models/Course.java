@@ -191,5 +191,28 @@ public class Course {
     public void setOwner(User user) {
         this.owner = user;
     }
-
+    public boolean isDraft(){
+        return this.state.equals(StateEnum.DRAFT);
+    }
+    public boolean isProposal(){
+        return this.state.equals(StateEnum.PROPOSAL);
+    }
+    public boolean isRejected(){
+        return this.state.equals(StateEnum.REJECTED);
+    }
+    public boolean isNew(){
+        return this.state.equals(StateEnum.NEW);
+    }
+    public boolean isOpen(){
+        return this.state.equals(StateEnum.OPEN);
+    }
+    public boolean isReady(){
+        return this.state.equals(StateEnum.READY);
+    }
+    public boolean isInProgress(){
+        return this.state.equals(StateEnum.IN_PROGRESS);
+    }
+    public boolean isFinished(){
+        return this.state.equals(StateEnum.FINISHED);
+    }
 }

@@ -27,39 +27,7 @@ public interface CourseService {
 
     List<String> getAttendeeEmails(Course course);
 
-    boolean isDraft(Course course);
-
     boolean canViewCourse(Course course);
-
-    void setProposal(Course course);
-
-    void setNew(Course course);
-
-    void setRejected(Course course);
-
-    void setOpen(Course course);
-
-    void setReady(Course course);
-
-    void setInProgress(Course course);
-
-    void setFinished(Course course);
-
-    void processReviewResult(Course course);
-
-    boolean isProposal(Course course);
-
-    boolean isRejected(Course course);
-
-    boolean isNew(Course course);
-
-    boolean isOpen(Course course);
-
-    boolean isReady(Course course);
-
-    boolean isInProgress(Course course);
-
-    boolean isFinished(Course course);
 
     boolean canSubscribe(Course course);
 
@@ -67,7 +35,33 @@ public interface CourseService {
 
     boolean canEvaluate(Course course);
 
-    boolean canBeDeletedCourse(Course course);
+    boolean canDelete(Course course);
+
+    boolean canStart(Course course);
+
+    boolean canFinish(Course course);
+
+    boolean canUpdate(Course course);
+
+    boolean canSendToReview(Course course);
+
+    boolean canApprove(Course course);
+
+    void makeProposal(Course course);
+
+    void makeNew(Course course);
+
+    void makeRejected(Course course);
+
+    void makeOpen(Course course);
+
+    void makeReady(Course course);
+
+    void makeInProgress(Course course);
+
+    void makeFinished(Course course);
+
+    void processReviewResult(Course course);
 
     void processSubscriptionCount(Course course);
 

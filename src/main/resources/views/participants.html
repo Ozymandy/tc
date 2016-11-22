@@ -12,18 +12,18 @@
         <div class="control-group">
             <div class="control-label">Name</div>
             <div id="titleField" class="controls text"
-                 th:text="${course.getCourseName()}"></div>
+                 th:text="${course.courseName}"></div>
         </div>
         <div class="control-group">
             <div class="control-label">Lecturer</div>
             <div id="ownerField" class="controls text"
-                 th:text="${course.getOwnerEmail()}"></div>
+                 th:text="${course.ownerEmail}"></div>
         </div>
         <div class="control-group">
             <div class="control-label">Subscribers</div>
             <div id="subscribersList" class="controls text">
                 <ul class="unstyled">
-                    <li th:each="subscriber : ${course.getSubscribersCourse()}"
+                    <li th:each="subscriber : ${course.subscribersCourse}"
                         th:text="${subscriber}"></li>
                 </ul>
             </div>
@@ -32,7 +32,7 @@
             <div class="control-label">Attendee</div>
             <div id="attendeeList" class="controls text">
                 <ul class="unstyled">
-                    <li th:each="attend : ${course.getAttendeeCourse()}"
+                    <li th:each="attend : ${course.attendeeCourse}"
                         th:text="${attend}"></li>
                 </ul>
             </div>

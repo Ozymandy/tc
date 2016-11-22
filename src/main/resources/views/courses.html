@@ -10,21 +10,21 @@
     <header th:replace="header :: header"></header>
     <div class="courses-top-control">
         <a class="btn"
-           th:href="${#httpServletRequest.getRequestURI()=='/courses'?'/mycourses':'/courses'}"
-           th:text="${#httpServletRequest.getRequestURI()=='/courses'?'My courses':'Courses'}"></a>
-        <a th:if="${#httpServletRequest.getRequestURI()=='/courses'}"
+           th:href="${#httpServletRequest.requestURI=='/courses'?'/mycourses':'/courses'}"
+           th:text="${#httpServletRequest.requestURI=='/courses'?'My courses':'Courses'}"></a>
+        <a th:if="${#httpServletRequest.requestURI=='/courses'}"
            id="createCourseButton" class="btn btn-primary"
            href="/courses/create" sec:authorize="hasAuthority('Lecturer')">Create</a>
         <div class="search-box">
             <form class="form-search"
-                  th:action="${#httpServletRequest.getRequestURI()}"
+                  th:action="${#httpServletRequest.requestURI}"
                   th:object="${category}" method="GET">
                 <select id="categoryField" name="optionsListId" class="span5"
                         th:field="*{categoryName}">
                     <option th:value="All" th:text="All"></option>
                     <option th:each="category : ${categories}"
-                            th:value="${category.getCategoryName()}"
-                            th:text="${category.getCategoryName()}"
+                            th:value="${category.categoryName}"
+                            th:text="${category.categoryName}"
                     >
                     </option>
                 </select>
@@ -45,9 +45,9 @@
         </thead>
         <tbody>
         <tr th:each="course : ${courses}">
-            <td th:text="${course.getId()}"></td>
-            <td><a th:href="@{'/courses/'+${course.getId()}}"
-                   th:text="${course.getCourseName()}"></a>
+            <td th:text="${course.id}"></td>
+            <td><a th:href="@{'/courses/'+${course.id}}"
+                   th:text="${course.courseName}"></a>
                 <span sec:authorize="hasAnyAuthority('Lecturer','Knowledge Manager', 'Department Manager')"
                       class="label"
                       th:if="${course.isDrafted()}">Draft</span>
@@ -68,47 +68,47 @@
                 <span class="label label-important"
                       th:if="${course.isFinished()}">Finished</span>
             </td>
-            <td th:text="${course.getCategoryName()}"></td>
+            <td th:text="${course.categoryName}"></td>
             <td>
-                <a th:href="@{'/courses/'+${course.getId()}+ '/participants'}"
-                   th:text="${course.getAttendeeSubscriber()}"></a>
+                <a th:href="@{'/courses/'+${course.id}+ '/participants'}"
+                   th:text="${course.attendeeSubscriber}"></a>
             </td>
-            <td th:text="${course.getAverageGrade()>0?course.getAverageGrade():''}"></td>
+            <td th:text="${course.averageGrade>0?course.averageGrade:''}"></td>
             <td sec:authorize="hasAuthority('user')">
                 <a class="btn btn-mini"
                    th:if="${course.canSubscribe()}"
-                   th:href="'/courses/'+${course.getId()}+ '/subscribe'">Subscribe</a>
+                   th:href="'/courses/'+${course.id}+ '/subscribe'">Subscribe</a>
                 <a class="btn btn-mini"
                    th:if="${course.canAttend()}"
-                   th:href="'/courses/'+${course.getId()}+ '/attend'">Attend</a>
+                   th:href="'/courses/'+${course.id}+ '/attend'">Attend</a>
                 <a class="btn btn-mini"
                    th:if="${course.canEvaluate()}"
-                   th:href="'/courses/'+${course.getId()}+ '/evaluate'">Evaluate</a>
+                   th:href="'/courses/'+${course.id}+ '/evaluate'">Evaluate</a>
             </td>
             <td sec:authorize="hasAuthority('Lecturer')">
                 <div class="btn-group" th:unless="${course.isProposal()}">
-                    <a th:if="${course.getIsOwner()}" class="btn btn-mini"
-                       th:href="@{'/courses/'+${course.getId()}+'/update'}">Update</a>
-                    <a th:if="${course.getIsOwner()}"
+                    <a th:if="${course.isOwner()}" class="btn btn-mini"
+                       th:href="@{'/courses/'+${course.id}+'/update'}">Update</a>
+                    <a th:if="${course.isOwner()}"
                        class="btn dropdown-toggle btn-mini"
                        data-toggle="dropdown" href="#"><span
                             class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a th:href="@{'/courses/'+${course.getId()}+'/update'}">Send
+                            <a th:href="@{'/courses/'+${course.id}+'/update'}">Send
                                 to Review</a>
                         </li>
                         <li th:if="${course.canBeDeleted()}">
-                            <a th:href="@{'/courses/'+${course.getId()}+'/delete'}">Delete</a>
+                            <a th:href="@{'/courses/'+${course.id}+'/delete'}">Delete</a>
                         </li>
                         <li th:if="${course.isReady()}">
-                        <a th:href="@{'/courses/'+${course.getId()}+'/start'}">Start</a>
+                            <a th:href="@{'/courses/'+${course.id}+'/start'}">Start</a>
                         </li>
                         <li th:if="${course.isInProgress()}">
-                            <a th:href="@{'/courses/'+${course.getId()}+'/finish'}">Finish</a>
+                            <a th:href="@{'/courses/'+${course.id}+'/finish'}">Finish</a>
                         </li>
                         <li th:if="${course.isFinished()}">
-                            <a th:href="@{'/courses/'+${course.getId()}+'/notify'}">Notify</a>
+                            <a th:href="@{'/courses/'+${course.id}+'/notify'}">Notify</a>
                         </li>
                     </ul>
                 </div>
@@ -116,7 +116,7 @@
             <td sec:authorize="hasAnyAuthority('Knowledge Manager','Department Manager')">
                 <a class="btn btn-mini"
                    th:if="${course.isProposal()}"
-                   th:href="'/courses/'+${course.getId()}+ '/approve'">Approve</a>
+                   th:href="'/courses/'+${course.id}+ '/approve'">Approve</a>
             </td>
         </tr>
         </tbody>

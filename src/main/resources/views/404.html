@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" type="text/css" th:href="@{/resources/css/style.css}"/>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/resources/css/style.css}"/>
     <title>404 - Not found</title>
 </head>
 <body>
@@ -10,19 +11,19 @@
     <header>
         <h1>Error</h1>
     </header>
-<div class="alert alert-error">
-    <div>
-        <strong>Okay, Houston, we've had a problem here.</strong>
+    <div class="alert alert-error">
+        <div>
+            <strong>Okay, Houston, we've had a problem here.</strong>
+        </div>
+        <ul>
+            <li>Oops, this page is not found</li>
+        </ul>
     </div>
-    <ul>
-        <li>Oops, this page is not found</li>
-    </ul>
-</div>
     <div class="form-horizontal">
         <div class="form-actions">
             <a class="btn" href="/courses">Back</a>
         </div>
     </div>
-    </div>
+</div>
 </body>
 </html>

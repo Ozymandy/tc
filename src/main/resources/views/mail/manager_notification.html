@@ -4,15 +4,15 @@
     <meta charset="UTF-8"/>
 </head>
 <body>
-<p><span th:text="${course.getOwnerEmail()}"></span> had created a new course.
+<p><span th:text="${course.ownerEmail}"></span> had created a new course.
 </p>
 --------------------------<br/>
-<span th:inline="text">Name: [[${course.getCourseName()}]]</span><br/>
-<span th:inline="text">Category: [[${course.getCategoryName()}]]</span><br/>
-<span th:inline="text">Description: [[${course.getDescription()}]]</span><br/>
-<span th:inline="text">Links: [[${course.getLinks()}]]</span><br/>
+<span th:inline="text">Name: [[${course.courseName}]]</span><br/>
+<span th:inline="text">Category: [[${course.categoryName}]]</span><br/>
+<span th:inline="text">Description: [[${course.description}]]</span><br/>
+<span th:inline="text">Links: [[${course.links}]]</span><br/>
 --------------------------
 <p>Please, review this course at <a
-        th:href="${url}+${course.getId()}+'/approve'">link</a></p>
+        th:href="${url}+${course.id}+'/approve'">link</a></p>
 </body>
 </html>

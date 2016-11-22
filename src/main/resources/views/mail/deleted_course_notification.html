@@ -5,17 +5,17 @@
 </head>
 <body>
 <p>Course deleted by by <span
-        th:text="${course.getOwner().getEmail()}"></span>
+        th:text="${course.owner.getEmail()}"></span>
 </p>
 --------------------------<br/>
-<span th:inline="text">Name: [[${course.getCourseName()}]]</span><br/>
-<span th:inline="text">Category: [[${course.getCategoryName()}]]</span><br/>
-<span th:inline="text">Description: [[${course.getDescription()}]]</span><br/>
-<span th:inline="text">Links: [[${course.getLinks()}]]</span><br/>
-<div th:each="decision:${course.getDecisions()}">
+<span th:inline="text">Name: [[${course.courseName}]]</span><br/>
+<span th:inline="text">Category: [[${course.categoryName}]]</span><br/>
+<span th:inline="text">Description: [[${course.description}]]</span><br/>
+<span th:inline="text">Links: [[${course.links}]]</span><br/>
+<div th:each="decision:${course.decisions}">
     --------------------------<br/>
-    <span th:inline="text">Decision: [[${decision.getDecision().getValue()}]]</span><br/>
-    <span th:inline="text">Reason: [[${decision.getReason()}]]</span><br/>
+    <span th:inline="text">Decision: [[${decision.decision.getValue()}]]</span><br/>
+    <span th:inline="text">Reason: [[${decision.reason}]]</span><br/>
 </div>
 </body>
 </html>

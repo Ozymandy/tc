@@ -28,16 +28,17 @@ public class CourseDTOConverter {
         dto.setCategoryName(source.getCategory().getCategoryName());
         dto.setIsOwner(courseService.isOwner(source));
         dto.setState(source.getState().name());
-        dto.setProposal(courseService.isProposal(source));
-        dto.setDrafted(courseService.isDraft(source));
-        dto.setRejected(courseService.isRejected(source));
+        dto.setProposal(source.isProposal());
+        dto.setDrafted(source.isDraft());
+        dto.setRejected(source.isRejected());
         dto.setCanSubscribe(courseService.canSubscribe(source));
-        dto.setNew(courseService.isNew(source));
-        dto.setOpen(courseService.isOpen(source));
-        dto.setReady(courseService.isReady(source));
+        dto.setNew(source.isNew());
+        dto.setOpen(source.isOpen());
+        dto.setReady(source.isReady());
         dto.setCanAttend(courseService.canAttend(source));
-        dto.setInProgress(courseService.isInProgress(source));
-        dto.setFinished(courseService.isFinished(source));
+        dto.setInProgress(source.isInProgress());
+        dto.setFinished(source.isFinished());
+        dto.setCanUpdate(courseService.canUpdate(source));
         dto.setCanEvaluate(courseService.canEvaluate(source));
         return dto;
     }

@@ -30,7 +30,7 @@ public class UserController {
     private static final String REGISTRATION_VIEW_NAME = "registration";
     private static final String LOGOUT_VIEW_NAME = "logout";
     private static final String LOGIN_VIEW_NAME = "login";
-    private static final String ERRORS_OBJECT_NAME = "errors";
+    private static final String ERRORS_KEY = "errors";
     @Autowired
     private SecurityService securityService;
     @Autowired
@@ -79,7 +79,7 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             List<Role> roles = roleService.getAll();
             mav.addObject("roles", roles);
-            mav.addObject(ERRORS_OBJECT_NAME, bindingResult.getAllErrors());
+            mav.addObject(ERRORS_KEY, bindingResult.getAllErrors());
             return mav;
         }
         User newUser = userConverter.convert(form);

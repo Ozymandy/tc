@@ -13,7 +13,16 @@ public class CourseDTO extends AbstractCourseDTO {
     private boolean canAttend;
     private boolean isFinished;
     private boolean canEvaluate;
+    private boolean canUpdate;
     private String attendeeSubscriber;
+
+    public boolean canUpdate() {
+        return canUpdate;
+    }
+
+    public void setCanUpdate(boolean canUpdate) {
+        this.canUpdate = canUpdate;
+    }
 
     public boolean canEvaluate() {
         return canEvaluate;
@@ -112,11 +121,6 @@ public class CourseDTO extends AbstractCourseDTO {
                 (getAttendeeCount() > 0 ? "\\" +
                         getAttendeeCount() : "");
     }
-
-    public void setAttendeeSubscriber(String attendeeSubscriber) {
-        this.attendeeSubscriber = attendeeSubscriber;
-    }
-
 
     public boolean isOwner() {
         return isOwner;

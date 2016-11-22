@@ -11,7 +11,7 @@ public interface RoleService {
 
     Role getByName(String name);
 
-    Optional<User> getKnowledgeManager();
+    User getKnowledgeManager();
 
-    Optional<User> getDepartmentManager();
+    User getDepartmentManager();
 }
