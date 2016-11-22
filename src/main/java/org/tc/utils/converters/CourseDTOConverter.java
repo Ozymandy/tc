@@ -27,7 +27,6 @@ public class CourseDTOConverter {
         dto.setSubscribersCount(source.getSubscribers().size());
         dto.setCategoryName(source.getCategory().getCategoryName());
         dto.setIsOwner(courseService.isOwner(source));
-        dto.setState(source.getState().name());
         dto.setProposal(source.isProposal());
         dto.setDrafted(source.isDraft());
         dto.setRejected(source.isRejected());
