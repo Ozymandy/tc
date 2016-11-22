@@ -19,12 +19,6 @@ public class EvaluationServiceImpl implements EvaluationService {
 
 
     @Override
-    public List<Evaluation> getAll() {
-        return evaluationDao.getAll();
-    }
-
-
-    @Override
     public void evaluate(Course course, Evaluation evaluation) {
         User user = userService.getCurrentUser();
         evaluation.setCourse(course);
